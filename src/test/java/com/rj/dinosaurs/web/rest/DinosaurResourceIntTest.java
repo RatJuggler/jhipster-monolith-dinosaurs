@@ -22,6 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
 import java.time.Instant;
@@ -66,10 +67,8 @@ public class DinosaurResourceIntTest {
     @Autowired
     private DinosaurRepository dinosaurRepository;
 
-
     @Autowired
     private DinosaurMapper dinosaurMapper;
-    
 
     @Autowired
     private DinosaurService dinosaurService;
@@ -86,6 +85,9 @@ public class DinosaurResourceIntTest {
     @Autowired
     private EntityManager em;
 
+    @Autowired
+    private Validator validator;
+
     private MockMvc restDinosaurMockMvc;
 
     private Dinosaur dinosaur;
@@ -98,7 +100,8 @@ public class DinosaurResourceIntTest {
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
             .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
+            .setMessageConverters(jacksonMessageConverter)
+            .setValidator(validator).build();
     }
 
     /**
@@ -243,7 +246,6 @@ public class DinosaurResourceIntTest {
             .andExpect(jsonPath("$.[*].modifiedDt").value(hasItem(DEFAULT_MODIFIED_DT.toString())));
     }
     
-
     @Test
     @Transactional
     public void getDinosaur() throws Exception {
@@ -262,6 +264,7 @@ public class DinosaurResourceIntTest {
             .andExpect(jsonPath("$.insertDt").value(DEFAULT_INSERT_DT.toString()))
             .andExpect(jsonPath("$.modifiedDt").value(DEFAULT_MODIFIED_DT.toString()));
     }
+
     @Test
     @Transactional
     public void getNonExistingDinosaur() throws Exception {
@@ -316,7 +319,7 @@ public class DinosaurResourceIntTest {
         // Create the Dinosaur
         DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
 
-        // If the entity doesn't have an ID, it will be created instead of just being updated
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restDinosaurMockMvc.perform(put("/api/dinosaurs")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
@@ -335,7 +338,7 @@ public class DinosaurResourceIntTest {
 
         int databaseSizeBeforeDelete = dinosaurRepository.findAll().size();
 
-        // Get the dinosaur
+        // Delete the dinosaur
         restDinosaurMockMvc.perform(delete("/api/dinosaurs/{id}", dinosaur.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());

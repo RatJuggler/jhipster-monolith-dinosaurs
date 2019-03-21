@@ -1,46 +1,35 @@
 {
-  "generator-jhipster": {
-    "promptValues": {
-      "packageName": "com.rj.dinosaurs"
-    },
-    "jhipsterVersion": "5.1.0",
-    "baseName": "dinosaurs",
-    "packageName": "com.rj.dinosaurs",
-    "packageFolder": "com/rj/dinosaurs",
-    "serverPort": "8080",
-    "authenticationType": "jwt",
-    "cacheProvider": "ehcache",
-    "enableHibernateCache": true,
-    "websocket": false,
-    "databaseType": "sql",
-    "devDatabaseType": "h2Disk",
-    "prodDatabaseType": "mysql",
-    "searchEngine": false,
-    "messageBroker": false,
-    "serviceDiscoveryType": false,
-    "buildTool": "maven",
-    "enableSocialSignIn": false,
-    "enableSwaggerCodegen": false,
-    "jwtSecretKey": "ac363d489620dba2cc450af1ddf815cebfb46c2a",
-    "clientFramework": "angularX",
-    "useSass": false,
-    "clientPackageManager": "yarn",
-    "applicationType": "monolith",
-    "testFrameworks": [
-      "gatling",
-      "cucumber",
-      "protractor"
-    ],
-    "jhiPrefix": "jhi",
-    "enableTranslation": false,
-    "herokuDeployType": "jar",
-    "appsFolders": [
-      "jhipster-dinosaurs"
-    ],
-    "directoryPath": "../",
-    "dockerRepositoryName": "johnchase",
-    "dockerPushCommand": "docker push",
-    "kubernetesNamespace": "default",
-    "kubernetesServiceType": "LoadBalancer"
-  }
+    "generator-jhipster": {
+        "promptValues": {
+            "packageName": "com.rj.dinosaurs"
+        },
+        "jhipsterVersion": "5.8.2",
+        "applicationType": "monolith",
+        "baseName": "dinosaurs",
+        "packageName": "com.rj.dinosaurs",
+        "packageFolder": "com/rj/dinosaurs",
+        "serverPort": "8080",
+        "authenticationType": "jwt",
+        "cacheProvider": "ehcache",
+        "enableHibernateCache": true,
+        "websocket": false,
+        "databaseType": "sql",
+        "devDatabaseType": "h2Disk",
+        "prodDatabaseType": "mysql",
+        "searchEngine": false,
+        "messageBroker": false,
+        "serviceDiscoveryType": false,
+        "buildTool": "maven",
+        "enableSwaggerCodegen": false,
+        "jwtSecretKey": "OWRhYzIwMTkwMDlmYjk2M2JiNjg4ZmVmMDhhNTk0YTczZWZmZWY2NDEyMzM2OTAzNGExODYyNTkxZWMxZTQzNmUwOWM5MjdlOGY2ZDFmYTc5MzkxYTgyMTk0NDdlNTFlNDRiZDUwZTgzMmZmNTk2NjM1ZTMwMzljMjdmODY4YWI=",
+        "clientFramework": "angularX",
+        "useSass": false,
+        "clientPackageManager": "npm",
+        "testFrameworks": ["gatling", "cucumber", "protractor"],
+        "jhiPrefix": "jhi",
+        "entitySuffix": "",
+        "dtoSuffix": "DTO",
+        "otherModules": [],
+        "enableTranslation": false
+    }
 }

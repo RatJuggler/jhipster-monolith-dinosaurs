@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
 import { IDinosaur } from 'app/shared/model/dinosaur.model';
-import { Principal } from 'app/core';
+import { AccountService } from 'app/core';
 
 import { ITEMS_PER_PAGE } from 'app/shared';
 import { DinosaurService } from './dinosaur.service';
@@ -21,16 +22,15 @@ export class DinosaurComponent implements OnInit, OnDestroy {
     links: any;
     page: any;
     predicate: any;
-    queryCount: any;
     reverse: any;
     totalItems: number;
 
     constructor(
-        private dinosaurService: DinosaurService,
-        private jhiAlertService: JhiAlertService,
-        private eventManager: JhiEventManager,
-        private parseLinks: JhiParseLinks,
-        private principal: Principal
+        protected dinosaurService: DinosaurService,
+        protected jhiAlertService: JhiAlertService,
+        protected eventManager: JhiEventManager,
+        protected parseLinks: JhiParseLinks,
+        protected accountService: AccountService
     ) {
         this.dinosaurs = [];
         this.itemsPerPage = ITEMS_PER_PAGE;
@@ -68,7 +68,7 @@ export class DinosaurComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.loadAll();
-        this.principal.identity().then(account => {
+        this.accountService.identity().then(account => {
             this.currentAccount = account;
         });
         this.registerChangeInDinosaurs();
@@ -94,7 +94,7 @@ export class DinosaurComponent implements OnInit, OnDestroy {
         return result;
     }
 
-    private paginateDinosaurs(data: IDinosaur[], headers: HttpHeaders) {
+    protected paginateDinosaurs(data: IDinosaur[], headers: HttpHeaders) {
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
         for (let i = 0; i < data.length; i++) {
@@ -102,7 +102,7 @@ export class DinosaurComponent implements OnInit, OnDestroy {
         }
     }
 
-    private onError(errorMessage: string) {
+    protected onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
     }
 }

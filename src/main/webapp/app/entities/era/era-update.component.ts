@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { filter, map } from 'rxjs/operators';
 import { IEra } from 'app/shared/model/era.model';
 import { EraService } from './era.service';
 
@@ -11,10 +11,10 @@ import { EraService } from './era.service';
     templateUrl: './era-update.component.html'
 })
 export class EraUpdateComponent implements OnInit {
-    private _era: IEra;
+    era: IEra;
     isSaving: boolean;
 
-    constructor(private eraService: EraService, private activatedRoute: ActivatedRoute) {}
+    constructor(protected eraService: EraService, protected activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
         this.isSaving = false;
@@ -36,23 +36,16 @@ export class EraUpdateComponent implements OnInit {
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<HttpResponse<IEra>>) {
+    protected subscribeToSaveResponse(result: Observable<HttpResponse<IEra>>) {
         result.subscribe((res: HttpResponse<IEra>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
     }
 
-    private onSaveSuccess() {
+    protected onSaveSuccess() {
         this.isSaving = false;
         this.previousState();
     }
 
-    private onSaveError() {
+    protected onSaveError() {
         this.isSaving = false;
-    }
-    get era() {
-        return this._era;
-    }
-
-    set era(era: IEra) {
-        this._era = era;
     }
 }

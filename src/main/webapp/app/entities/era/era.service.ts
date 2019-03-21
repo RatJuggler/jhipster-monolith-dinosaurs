@@ -11,9 +11,9 @@ type EntityArrayResponseType = HttpResponse<IEra[]>;
 
 @Injectable({ providedIn: 'root' })
 export class EraService {
-    private resourceUrl = SERVER_API_URL + 'api/eras';
+    public resourceUrl = SERVER_API_URL + 'api/eras';
 
-    constructor(private http: HttpClient) {}
+    constructor(protected http: HttpClient) {}
 
     create(era: IEra): Observable<EntityResponseType> {
         return this.http.post<IEra>(this.resourceUrl, era, { observe: 'response' });

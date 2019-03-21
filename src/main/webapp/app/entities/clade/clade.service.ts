@@ -11,9 +11,9 @@ type EntityArrayResponseType = HttpResponse<IClade[]>;
 
 @Injectable({ providedIn: 'root' })
 export class CladeService {
-    private resourceUrl = SERVER_API_URL + 'api/clades';
+    public resourceUrl = SERVER_API_URL + 'api/clades';
 
-    constructor(private http: HttpClient) {}
+    constructor(protected http: HttpClient) {}
 
     create(clade: IClade): Observable<EntityResponseType> {
         return this.http.post<IClade>(this.resourceUrl, clade, { observe: 'response' });

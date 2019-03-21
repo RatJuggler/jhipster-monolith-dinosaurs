@@ -1,6 +1,4 @@
 package com.rj.dinosaurs.web.rest;
-
-import com.codahale.metrics.annotation.Timed;
 import com.rj.dinosaurs.service.EraService;
 import com.rj.dinosaurs.web.rest.errors.BadRequestAlertException;
 import com.rj.dinosaurs.web.rest.util.HeaderUtil;
@@ -48,7 +46,6 @@ public class EraResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/eras")
-    @Timed
     public ResponseEntity<EraDTO> createEra(@Valid @RequestBody EraDTO eraDTO) throws URISyntaxException {
         log.debug("REST request to save Era : {}", eraDTO);
         if (eraDTO.getId() != null) {
@@ -70,7 +67,6 @@ public class EraResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/eras")
-    @Timed
     public ResponseEntity<EraDTO> updateEra(@Valid @RequestBody EraDTO eraDTO) throws URISyntaxException {
         log.debug("REST request to update Era : {}", eraDTO);
         if (eraDTO.getId() == null) {
@@ -89,12 +85,11 @@ public class EraResource {
      * @return the ResponseEntity with status 200 (OK) and the list of eras in body
      */
     @GetMapping("/eras")
-    @Timed
     public ResponseEntity<List<EraDTO>> getAllEras(Pageable pageable) {
         log.debug("REST request to get a page of Eras");
         Page<EraDTO> page = eraService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/eras");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -104,7 +99,6 @@ public class EraResource {
      * @return the ResponseEntity with status 200 (OK) and with body the eraDTO, or with status 404 (Not Found)
      */
     @GetMapping("/eras/{id}")
-    @Timed
     public ResponseEntity<EraDTO> getEra(@PathVariable Long id) {
         log.debug("REST request to get Era : {}", id);
         Optional<EraDTO> eraDTO = eraService.findOne(id);
@@ -118,7 +112,6 @@ public class EraResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/eras/{id}")
-    @Timed
     public ResponseEntity<Void> deleteEra(@PathVariable Long id) {
         log.debug("REST request to delete Era : {}", id);
         eraService.delete(id);

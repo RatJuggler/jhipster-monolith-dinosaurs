@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { filter, map } from 'rxjs/operators';
 import { IClade } from 'app/shared/model/clade.model';
 import { CladeService } from './clade.service';
 
@@ -11,10 +11,10 @@ import { CladeService } from './clade.service';
     templateUrl: './clade-update.component.html'
 })
 export class CladeUpdateComponent implements OnInit {
-    private _clade: IClade;
+    clade: IClade;
     isSaving: boolean;
 
-    constructor(private cladeService: CladeService, private activatedRoute: ActivatedRoute) {}
+    constructor(protected cladeService: CladeService, protected activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
         this.isSaving = false;
@@ -36,23 +36,16 @@ export class CladeUpdateComponent implements OnInit {
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<HttpResponse<IClade>>) {
+    protected subscribeToSaveResponse(result: Observable<HttpResponse<IClade>>) {
         result.subscribe((res: HttpResponse<IClade>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
     }
 
-    private onSaveSuccess() {
+    protected onSaveSuccess() {
         this.isSaving = false;
         this.previousState();
     }
 
-    private onSaveError() {
+    protected onSaveError() {
         this.isSaving = false;
-    }
-    get clade() {
-        return this._clade;
-    }
-
-    set clade(clade: IClade) {
-        this._clade = clade;
     }
 }

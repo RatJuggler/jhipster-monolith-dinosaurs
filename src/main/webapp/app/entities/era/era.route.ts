@@ -3,8 +3,8 @@ import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
 import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
 import { UserRouteAccessService } from 'app/core';
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { Era } from 'app/shared/model/era.model';
 import { EraService } from './era.service';
 import { EraComponent } from './era.component';
@@ -17,10 +17,13 @@ import { IEra } from 'app/shared/model/era.model';
 export class EraResolve implements Resolve<IEra> {
     constructor(private service: EraService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IEra> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
-            return this.service.find(id).pipe(map((era: HttpResponse<Era>) => era.body));
+            return this.service.find(id).pipe(
+                filter((response: HttpResponse<Era>) => response.ok),
+                map((era: HttpResponse<Era>) => era.body)
+            );
         }
         return of(new Era());
     }
@@ -28,7 +31,7 @@ export class EraResolve implements Resolve<IEra> {
 
 export const eraRoute: Routes = [
     {
-        path: 'era',
+        path: '',
         component: EraComponent,
         resolve: {
             pagingParams: JhiResolvePagingParams
@@ -41,7 +44,7 @@ export const eraRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'era/:id/view',
+        path: ':id/view',
         component: EraDetailComponent,
         resolve: {
             era: EraResolve
@@ -53,7 +56,7 @@ export const eraRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'era/new',
+        path: 'new',
         component: EraUpdateComponent,
         resolve: {
             era: EraResolve
@@ -65,7 +68,7 @@ export const eraRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'era/:id/edit',
+        path: ':id/edit',
         component: EraUpdateComponent,
         resolve: {
             era: EraResolve
@@ -80,7 +83,7 @@ export const eraRoute: Routes = [
 
 export const eraPopupRoute: Routes = [
     {
-        path: 'era/:id/delete',
+        path: ':id/delete',
         component: EraDeletePopupComponent,
         resolve: {
             era: EraResolve

@@ -10,7 +10,7 @@ import { IEra } from 'app/shared/model/era.model';
 export class EraDetailComponent implements OnInit {
     era: IEra;
 
-    constructor(private activatedRoute: ActivatedRoute) {}
+    constructor(protected activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ era }) => {

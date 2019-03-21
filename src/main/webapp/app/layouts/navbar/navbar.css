@@ -1,6 +1,10 @@
 /* ==========================================================================
 Navbar
 ========================================================================== */
+.navbar-version {
+    font-size: 10px;
+    color: #ccc;
+}
 
 .jh-navbar {
     background-color: #353d47;
@@ -70,16 +74,16 @@ Logo styles
     padding: 5px 15px;
 }
 
-.logo .logo-img {
-    height: 45px;
-    display: inline-block;
-    vertical-align: middle;
-    width: 70px;
-}
-
 .logo-img {
     height: 100%;
     background: url('../../../content/images/logo-jhipster.png') no-repeat center center;
     background-size: contain;
     width: 100%;
+}
+
+.logo .logo-img {
+    height: 45px;
+    display: inline-block;
+    vertical-align: middle;
+    width: 70px;
 }

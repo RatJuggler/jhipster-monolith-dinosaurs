@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
 import { UserRouteAccessService } from 'app/core';
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { Dinosaur } from 'app/shared/model/dinosaur.model';
 import { DinosaurService } from './dinosaur.service';
 import { DinosaurComponent } from './dinosaur.component';
@@ -16,10 +16,13 @@ import { IDinosaur } from 'app/shared/model/dinosaur.model';
 export class DinosaurResolve implements Resolve<IDinosaur> {
     constructor(private service: DinosaurService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IDinosaur> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
-            return this.service.find(id).pipe(map((dinosaur: HttpResponse<Dinosaur>) => dinosaur.body));
+            return this.service.find(id).pipe(
+                filter((response: HttpResponse<Dinosaur>) => response.ok),
+                map((dinosaur: HttpResponse<Dinosaur>) => dinosaur.body)
+            );
         }
         return of(new Dinosaur());
     }
@@ -27,7 +30,7 @@ export class DinosaurResolve implements Resolve<IDinosaur> {
 
 export const dinosaurRoute: Routes = [
     {
-        path: 'dinosaur',
+        path: '',
         component: DinosaurComponent,
         data: {
             authorities: ['ROLE_USER'],
@@ -36,7 +39,7 @@ export const dinosaurRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'dinosaur/:id/view',
+        path: ':id/view',
         component: DinosaurDetailComponent,
         resolve: {
             dinosaur: DinosaurResolve
@@ -48,7 +51,7 @@ export const dinosaurRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'dinosaur/new',
+        path: 'new',
         component: DinosaurUpdateComponent,
         resolve: {
             dinosaur: DinosaurResolve
@@ -60,7 +63,7 @@ export const dinosaurRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'dinosaur/:id/edit',
+        path: ':id/edit',
         component: DinosaurUpdateComponent,
         resolve: {
             dinosaur: DinosaurResolve
@@ -75,7 +78,7 @@ export const dinosaurRoute: Routes = [
 
 export const dinosaurPopupRoute: Routes = [
     {
-        path: 'dinosaur/:id/delete',
+        path: ':id/delete',
         component: DinosaurDeletePopupComponent,
         resolve: {
             dinosaur: DinosaurResolve

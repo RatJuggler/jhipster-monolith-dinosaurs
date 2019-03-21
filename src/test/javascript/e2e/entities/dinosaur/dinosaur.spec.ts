@@ -1,53 +1,77 @@
-import { browser, protractor } from 'protractor';
-import { NavBarPage } from './../../page-objects/jhi-page-objects';
-import { DinosaurComponentsPage, DinosaurUpdatePage } from './dinosaur.page-object';
+/* tslint:disable no-unused-expression */
+import { browser, ExpectedConditions as ec, protractor, promise } from 'protractor';
+import { NavBarPage, SignInPage } from '../../page-objects/jhi-page-objects';
+
+import { DinosaurComponentsPage, DinosaurDeleteDialog, DinosaurUpdatePage } from './dinosaur.page-object';
+
+const expect = chai.expect;
 
 describe('Dinosaur e2e test', () => {
     let navBarPage: NavBarPage;
+    let signInPage: SignInPage;
     let dinosaurUpdatePage: DinosaurUpdatePage;
     let dinosaurComponentsPage: DinosaurComponentsPage;
+    let dinosaurDeleteDialog: DinosaurDeleteDialog;
 
-    beforeAll(() => {
-        browser.get('/');
-        browser.waitForAngular();
+    before(async () => {
+        await browser.get('/');
         navBarPage = new NavBarPage();
-        navBarPage.getSignInPage().autoSignInUsing('admin', 'admin');
-        browser.waitForAngular();
+        signInPage = await navBarPage.getSignInPage();
+        await signInPage.autoSignInUsing('admin', 'admin');
+        await browser.wait(ec.visibilityOf(navBarPage.entityMenu), 5000);
     });
 
-    it('should load Dinosaurs', () => {
-        navBarPage.goToEntity('dinosaur');
+    it('should load Dinosaurs', async () => {
+        await navBarPage.goToEntity('dinosaur');
         dinosaurComponentsPage = new DinosaurComponentsPage();
-        expect(dinosaurComponentsPage.getTitle()).toMatch(/Dinosaurs/);
+        await browser.wait(ec.visibilityOf(dinosaurComponentsPage.title), 5000);
+        expect(await dinosaurComponentsPage.getTitle()).to.eq('Dinosaurs');
     });
 
-    it('should load create Dinosaur page', () => {
-        dinosaurComponentsPage.clickOnCreateButton();
+    it('should load create Dinosaur page', async () => {
+        await dinosaurComponentsPage.clickOnCreateButton();
         dinosaurUpdatePage = new DinosaurUpdatePage();
-        expect(dinosaurUpdatePage.getPageTitle()).toMatch(/Create or edit a Dinosaur/);
-        dinosaurUpdatePage.cancel();
+        expect(await dinosaurUpdatePage.getPageTitle()).to.eq('Create or edit a Dinosaur');
+        await dinosaurUpdatePage.cancel();
     });
 
-    it('should create and save Dinosaurs', () => {
-        dinosaurComponentsPage.clickOnCreateButton();
-        dinosaurUpdatePage.setNameInput('name');
-        expect(dinosaurUpdatePage.getNameInput()).toMatch('name');
-        dinosaurUpdatePage.setWeightInput('5');
-        expect(dinosaurUpdatePage.getWeightInput()).toMatch('5');
-        dinosaurUpdatePage.setLengthInput('5');
-        expect(dinosaurUpdatePage.getLengthInput()).toMatch('5');
-        dinosaurUpdatePage.dietSelectLastOption();
-        dinosaurUpdatePage.setInsertDtInput('01/01/2001' + protractor.Key.TAB + '02:30AM');
-        expect(dinosaurUpdatePage.getInsertDtInput()).toContain('2001-01-01T02:30');
-        dinosaurUpdatePage.setModifiedDtInput('01/01/2001' + protractor.Key.TAB + '02:30AM');
-        expect(dinosaurUpdatePage.getModifiedDtInput()).toContain('2001-01-01T02:30');
-        dinosaurUpdatePage.eraSelectLastOption();
-        dinosaurUpdatePage.cladeSelectLastOption();
-        dinosaurUpdatePage.save();
-        expect(dinosaurUpdatePage.getSaveButton().isPresent()).toBeFalsy();
+    it('should create and save Dinosaurs', async () => {
+        const nbButtonsBeforeCreate = await dinosaurComponentsPage.countDeleteButtons();
+
+        await dinosaurComponentsPage.clickOnCreateButton();
+        await promise.all([
+            dinosaurUpdatePage.setNameInput('name'),
+            dinosaurUpdatePage.setWeightInput('5'),
+            dinosaurUpdatePage.setLengthInput('5'),
+            dinosaurUpdatePage.dietSelectLastOption(),
+            dinosaurUpdatePage.setInsertDtInput('01/01/2001' + protractor.Key.TAB + '02:30AM'),
+            dinosaurUpdatePage.setModifiedDtInput('01/01/2001' + protractor.Key.TAB + '02:30AM'),
+            dinosaurUpdatePage.eraSelectLastOption(),
+            dinosaurUpdatePage.cladeSelectLastOption()
+        ]);
+        expect(await dinosaurUpdatePage.getNameInput()).to.eq('name');
+        expect(await dinosaurUpdatePage.getWeightInput()).to.eq('5');
+        expect(await dinosaurUpdatePage.getLengthInput()).to.eq('5');
+        expect(await dinosaurUpdatePage.getInsertDtInput()).to.contain('2001-01-01T02:30');
+        expect(await dinosaurUpdatePage.getModifiedDtInput()).to.contain('2001-01-01T02:30');
+        await dinosaurUpdatePage.save();
+        expect(await dinosaurUpdatePage.getSaveButton().isPresent()).to.be.false;
+
+        expect(await dinosaurComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeCreate + 1);
     });
 
-    afterAll(() => {
-        navBarPage.autoSignOut();
+    it('should delete last Dinosaur', async () => {
+        const nbButtonsBeforeDelete = await dinosaurComponentsPage.countDeleteButtons();
+        await dinosaurComponentsPage.clickOnLastDeleteButton();
+
+        dinosaurDeleteDialog = new DinosaurDeleteDialog();
+        expect(await dinosaurDeleteDialog.getDialogTitle()).to.eq('Are you sure you want to delete this Dinosaur?');
+        await dinosaurDeleteDialog.clickOnConfirmButton();
+
+        expect(await dinosaurComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeDelete - 1);
+    });
+
+    after(async () => {
+        await navBarPage.autoSignOut();
     });
 });

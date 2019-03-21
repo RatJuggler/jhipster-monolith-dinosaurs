@@ -60,7 +60,7 @@
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'dinosaur/'+ dinosaur.id + '/delete'} }]"
+                                [routerLink]="['/', 'dinosaur', { outlets: { popup: dinosaur.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">

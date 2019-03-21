@@ -12,4 +12,10 @@ import { DinosaursSharedLibsModule, DinosaursSharedCommonModule, JhiLoginModalCo
     exports: [DinosaursSharedCommonModule, JhiLoginModalComponent, HasAnyAuthorityDirective],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class DinosaursSharedModule {}
+export class DinosaursSharedModule {
+    static forRoot() {
+        return {
+            ngModule: DinosaursSharedModule
+        };
+    }
+}

@@ -14,7 +14,7 @@ import { CladeService } from './clade.service';
 export class CladeDeleteDialogComponent {
     clade: IClade;
 
-    constructor(private cladeService: CladeService, public activeModal: NgbActiveModal, private eventManager: JhiEventManager) {}
+    constructor(protected cladeService: CladeService, public activeModal: NgbActiveModal, protected eventManager: JhiEventManager) {}
 
     clear() {
         this.activeModal.dismiss('cancel');
@@ -36,9 +36,9 @@ export class CladeDeleteDialogComponent {
     template: ''
 })
 export class CladeDeletePopupComponent implements OnInit, OnDestroy {
-    private ngbModalRef: NgbModalRef;
+    protected ngbModalRef: NgbModalRef;
 
-    constructor(private activatedRoute: ActivatedRoute, private router: Router, private modalService: NgbModal) {}
+    constructor(protected activatedRoute: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ clade }) => {
@@ -47,11 +47,11 @@ export class CladeDeletePopupComponent implements OnInit, OnDestroy {
                 this.ngbModalRef.componentInstance.clade = clade;
                 this.ngbModalRef.result.then(
                     result => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.router.navigate(['/clade', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     },
                     reason => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.router.navigate(['/clade', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     }
                 );

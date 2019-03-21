@@ -14,7 +14,7 @@ import { EraService } from './era.service';
 export class EraDeleteDialogComponent {
     era: IEra;
 
-    constructor(private eraService: EraService, public activeModal: NgbActiveModal, private eventManager: JhiEventManager) {}
+    constructor(protected eraService: EraService, public activeModal: NgbActiveModal, protected eventManager: JhiEventManager) {}
 
     clear() {
         this.activeModal.dismiss('cancel');
@@ -36,9 +36,9 @@ export class EraDeleteDialogComponent {
     template: ''
 })
 export class EraDeletePopupComponent implements OnInit, OnDestroy {
-    private ngbModalRef: NgbModalRef;
+    protected ngbModalRef: NgbModalRef;
 
-    constructor(private activatedRoute: ActivatedRoute, private router: Router, private modalService: NgbModal) {}
+    constructor(protected activatedRoute: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ era }) => {
@@ -47,11 +47,11 @@ export class EraDeletePopupComponent implements OnInit, OnDestroy {
                 this.ngbModalRef.componentInstance.era = era;
                 this.ngbModalRef.result.then(
                     result => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.router.navigate(['/era', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     },
                     reason => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.router.navigate(['/era', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     }
                 );

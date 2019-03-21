@@ -10,7 +10,7 @@ import { IClade } from 'app/shared/model/clade.model';
 export class CladeDetailComponent implements OnInit {
     clade: IClade;
 
-    constructor(private activatedRoute: ActivatedRoute) {}
+    constructor(protected activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ clade }) => {

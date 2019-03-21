@@ -22,6 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -48,10 +49,8 @@ public class CladeResourceIntTest {
     @Autowired
     private CladeRepository cladeRepository;
 
-
     @Autowired
     private CladeMapper cladeMapper;
-    
 
     @Autowired
     private CladeService cladeService;
@@ -68,6 +67,9 @@ public class CladeResourceIntTest {
     @Autowired
     private EntityManager em;
 
+    @Autowired
+    private Validator validator;
+
     private MockMvc restCladeMockMvc;
 
     private Clade clade;
@@ -80,7 +82,8 @@ public class CladeResourceIntTest {
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
             .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
+            .setMessageConverters(jacksonMessageConverter)
+            .setValidator(validator).build();
     }
 
     /**
@@ -172,7 +175,6 @@ public class CladeResourceIntTest {
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
     
-
     @Test
     @Transactional
     public void getClade() throws Exception {
@@ -186,6 +188,7 @@ public class CladeResourceIntTest {
             .andExpect(jsonPath("$.id").value(clade.getId().intValue()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
     }
+
     @Test
     @Transactional
     public void getNonExistingClade() throws Exception {
@@ -230,7 +233,7 @@ public class CladeResourceIntTest {
         // Create the Clade
         CladeDTO cladeDTO = cladeMapper.toDto(clade);
 
-        // If the entity doesn't have an ID, it will be created instead of just being updated
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restCladeMockMvc.perform(put("/api/clades")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(cladeDTO)))
@@ -249,7 +252,7 @@ public class CladeResourceIntTest {
 
         int databaseSizeBeforeDelete = cladeRepository.findAll().size();
 
-        // Get the clade
+        // Delete the clade
         restCladeMockMvc.perform(delete("/api/clades/{id}", clade.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());

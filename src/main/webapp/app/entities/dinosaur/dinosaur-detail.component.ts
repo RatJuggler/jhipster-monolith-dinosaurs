@@ -10,7 +10,7 @@ import { IDinosaur } from 'app/shared/model/dinosaur.model';
 export class DinosaurDetailComponent implements OnInit {
     dinosaur: IDinosaur;
 
-    constructor(private activatedRoute: ActivatedRoute) {}
+    constructor(protected activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ dinosaur }) => {

@@ -22,6 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -54,10 +55,8 @@ public class EraResourceIntTest {
     @Autowired
     private EraRepository eraRepository;
 
-
     @Autowired
     private EraMapper eraMapper;
-    
 
     @Autowired
     private EraService eraService;
@@ -74,6 +73,9 @@ public class EraResourceIntTest {
     @Autowired
     private EntityManager em;
 
+    @Autowired
+    private Validator validator;
+
     private MockMvc restEraMockMvc;
 
     private Era era;
@@ -86,7 +88,8 @@ public class EraResourceIntTest {
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
             .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
+            .setMessageConverters(jacksonMessageConverter)
+            .setValidator(validator).build();
     }
 
     /**
@@ -184,7 +187,6 @@ public class EraResourceIntTest {
             .andExpect(jsonPath("$.[*].toMa").value(hasItem(DEFAULT_TO_MA)));
     }
     
-
     @Test
     @Transactional
     public void getEra() throws Exception {
@@ -200,6 +202,7 @@ public class EraResourceIntTest {
             .andExpect(jsonPath("$.fromMa").value(DEFAULT_FROM_MA))
             .andExpect(jsonPath("$.toMa").value(DEFAULT_TO_MA));
     }
+
     @Test
     @Transactional
     public void getNonExistingEra() throws Exception {
@@ -248,7 +251,7 @@ public class EraResourceIntTest {
         // Create the Era
         EraDTO eraDTO = eraMapper.toDto(era);
 
-        // If the entity doesn't have an ID, it will be created instead of just being updated
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restEraMockMvc.perform(put("/api/eras")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(eraDTO)))
@@ -267,7 +270,7 @@ public class EraResourceIntTest {
 
         int databaseSizeBeforeDelete = eraRepository.findAll().size();
 
-        // Get the era
+        // Delete the era
         restEraMockMvc.perform(delete("/api/eras/{id}", era.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());

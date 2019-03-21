@@ -1,6 +1,4 @@
 package com.rj.dinosaurs.web.rest;
-
-import com.codahale.metrics.annotation.Timed;
 import com.rj.dinosaurs.service.DinosaurService;
 import com.rj.dinosaurs.web.rest.errors.BadRequestAlertException;
 import com.rj.dinosaurs.web.rest.util.HeaderUtil;
@@ -48,7 +46,6 @@ public class DinosaurResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/dinosaurs")
-    @Timed
     public ResponseEntity<DinosaurDTO> createDinosaur(@Valid @RequestBody DinosaurDTO dinosaurDTO) throws URISyntaxException {
         log.debug("REST request to save Dinosaur : {}", dinosaurDTO);
         if (dinosaurDTO.getId() != null) {
@@ -70,7 +67,6 @@ public class DinosaurResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/dinosaurs")
-    @Timed
     public ResponseEntity<DinosaurDTO> updateDinosaur(@Valid @RequestBody DinosaurDTO dinosaurDTO) throws URISyntaxException {
         log.debug("REST request to update Dinosaur : {}", dinosaurDTO);
         if (dinosaurDTO.getId() == null) {
@@ -89,12 +85,11 @@ public class DinosaurResource {
      * @return the ResponseEntity with status 200 (OK) and the list of dinosaurs in body
      */
     @GetMapping("/dinosaurs")
-    @Timed
     public ResponseEntity<List<DinosaurDTO>> getAllDinosaurs(Pageable pageable) {
         log.debug("REST request to get a page of Dinosaurs");
         Page<DinosaurDTO> page = dinosaurService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/dinosaurs");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -104,7 +99,6 @@ public class DinosaurResource {
      * @return the ResponseEntity with status 200 (OK) and with body the dinosaurDTO, or with status 404 (Not Found)
      */
     @GetMapping("/dinosaurs/{id}")
-    @Timed
     public ResponseEntity<DinosaurDTO> getDinosaur(@PathVariable Long id) {
         log.debug("REST request to get Dinosaur : {}", id);
         Optional<DinosaurDTO> dinosaurDTO = dinosaurService.findOne(id);
@@ -118,7 +112,6 @@ public class DinosaurResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/dinosaurs/{id}")
-    @Timed
     public ResponseEntity<Void> deleteDinosaur(@PathVariable Long id) {
         log.debug("REST request to delete Dinosaur : {}", id);
         dinosaurService.delete(id);

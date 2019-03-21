@@ -25,6 +25,8 @@ spring:
         name:
         username:
         password:
+        hikari:
+            auto-commit: false
     jpa:
         database-platform: io.github.jhipster.domain.util.FixedH2Dialect
         database: H2
@@ -37,10 +39,12 @@ spring:
                 implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
         properties:
             hibernate.id.new_generator_mappings: true
+            hibernate.connection.provider_disables_autocommit: true
             hibernate.cache.use_second_level_cache: false
             hibernate.cache.use_query_cache: false
-            hibernate.generate_statistics: true
+            hibernate.generate_statistics: false
             hibernate.hbm2ddl.auto: validate
+            hibernate.jdbc.time_zone: UTC
     liquibase:
         contexts: test
     mail:
@@ -52,15 +56,11 @@ spring:
             enabled: false
     thymeleaf:
         mode: HTML
-        
+
 
 server:
     port: 10344
     address: localhost
-
-info:
-    project:
-        version: #project.version#
 
 # ===================================================================
 # JHipster specific properties
@@ -86,12 +86,12 @@ jhipster:
     security:
         authentication:
             jwt:
-                secret: ac363d489620dba2cc450af1ddf815cebfb46c2a
+                # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
+                base64-secret: OWRhYzIwMTkwMDlmYjk2M2JiNjg4ZmVmMDhhNTk0YTczZWZmZWY2NDEyMzM2OTAzNGExODYyNTkxZWMxZTQzNmUwOWM5MjdlOGY2ZDFmYTc5MzkxYTgyMTk0NDdlNTFlNDRiZDUwZTgzMmZmNTk2NjM1ZTMwMzljMjdmODY4YWI=
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
-    metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
-        jmx.enabled: true
-        logs: # Reports Dropwizard metrics in the logs
+    metrics:
+        logs: # Reports metrics in the logs
             enabled: true
             report-frequency: 60 # in seconds
 

@@ -1,46 +1,66 @@
-import { browser } from 'protractor';
-import { NavBarPage } from './../../page-objects/jhi-page-objects';
-import { EraComponentsPage, EraUpdatePage } from './era.page-object';
+/* tslint:disable no-unused-expression */
+import { browser, ExpectedConditions as ec, promise } from 'protractor';
+import { NavBarPage, SignInPage } from '../../page-objects/jhi-page-objects';
+
+import { EraComponentsPage, EraDeleteDialog, EraUpdatePage } from './era.page-object';
+
+const expect = chai.expect;
 
 describe('Era e2e test', () => {
     let navBarPage: NavBarPage;
+    let signInPage: SignInPage;
     let eraUpdatePage: EraUpdatePage;
     let eraComponentsPage: EraComponentsPage;
+    let eraDeleteDialog: EraDeleteDialog;
 
-    beforeAll(() => {
-        browser.get('/');
-        browser.waitForAngular();
+    before(async () => {
+        await browser.get('/');
         navBarPage = new NavBarPage();
-        navBarPage.getSignInPage().autoSignInUsing('admin', 'admin');
-        browser.waitForAngular();
+        signInPage = await navBarPage.getSignInPage();
+        await signInPage.autoSignInUsing('admin', 'admin');
+        await browser.wait(ec.visibilityOf(navBarPage.entityMenu), 5000);
     });
 
-    it('should load Eras', () => {
-        navBarPage.goToEntity('era');
+    it('should load Eras', async () => {
+        await navBarPage.goToEntity('era');
         eraComponentsPage = new EraComponentsPage();
-        expect(eraComponentsPage.getTitle()).toMatch(/Eras/);
+        await browser.wait(ec.visibilityOf(eraComponentsPage.title), 5000);
+        expect(await eraComponentsPage.getTitle()).to.eq('Eras');
     });
 
-    it('should load create Era page', () => {
-        eraComponentsPage.clickOnCreateButton();
+    it('should load create Era page', async () => {
+        await eraComponentsPage.clickOnCreateButton();
         eraUpdatePage = new EraUpdatePage();
-        expect(eraUpdatePage.getPageTitle()).toMatch(/Create or edit a Era/);
-        eraUpdatePage.cancel();
+        expect(await eraUpdatePage.getPageTitle()).to.eq('Create or edit a Era');
+        await eraUpdatePage.cancel();
     });
 
-    it('should create and save Eras', () => {
-        eraComponentsPage.clickOnCreateButton();
-        eraUpdatePage.setNameInput('name');
-        expect(eraUpdatePage.getNameInput()).toMatch('name');
-        eraUpdatePage.setFromMaInput('5');
-        expect(eraUpdatePage.getFromMaInput()).toMatch('5');
-        eraUpdatePage.setToMaInput('5');
-        expect(eraUpdatePage.getToMaInput()).toMatch('5');
-        eraUpdatePage.save();
-        expect(eraUpdatePage.getSaveButton().isPresent()).toBeFalsy();
+    it('should create and save Eras', async () => {
+        const nbButtonsBeforeCreate = await eraComponentsPage.countDeleteButtons();
+
+        await eraComponentsPage.clickOnCreateButton();
+        await promise.all([eraUpdatePage.setNameInput('name'), eraUpdatePage.setFromMaInput('5'), eraUpdatePage.setToMaInput('5')]);
+        expect(await eraUpdatePage.getNameInput()).to.eq('name');
+        expect(await eraUpdatePage.getFromMaInput()).to.eq('5');
+        expect(await eraUpdatePage.getToMaInput()).to.eq('5');
+        await eraUpdatePage.save();
+        expect(await eraUpdatePage.getSaveButton().isPresent()).to.be.false;
+
+        expect(await eraComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeCreate + 1);
     });
 
-    afterAll(() => {
-        navBarPage.autoSignOut();
+    it('should delete last Era', async () => {
+        const nbButtonsBeforeDelete = await eraComponentsPage.countDeleteButtons();
+        await eraComponentsPage.clickOnLastDeleteButton();
+
+        eraDeleteDialog = new EraDeleteDialog();
+        expect(await eraDeleteDialog.getDialogTitle()).to.eq('Are you sure you want to delete this Era?');
+        await eraDeleteDialog.clickOnConfirmButton();
+
+        expect(await eraComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeDelete - 1);
+    });
+
+    after(async () => {
+        await navBarPage.autoSignOut();
     });
 });

@@ -1,6 +1,4 @@
 package com.rj.dinosaurs.web.rest;
-
-import com.codahale.metrics.annotation.Timed;
 import com.rj.dinosaurs.service.CladeService;
 import com.rj.dinosaurs.web.rest.errors.BadRequestAlertException;
 import com.rj.dinosaurs.web.rest.util.HeaderUtil;
@@ -48,7 +46,6 @@ public class CladeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/clades")
-    @Timed
     public ResponseEntity<CladeDTO> createClade(@Valid @RequestBody CladeDTO cladeDTO) throws URISyntaxException {
         log.debug("REST request to save Clade : {}", cladeDTO);
         if (cladeDTO.getId() != null) {
@@ -70,7 +67,6 @@ public class CladeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/clades")
-    @Timed
     public ResponseEntity<CladeDTO> updateClade(@Valid @RequestBody CladeDTO cladeDTO) throws URISyntaxException {
         log.debug("REST request to update Clade : {}", cladeDTO);
         if (cladeDTO.getId() == null) {
@@ -89,12 +85,11 @@ public class CladeResource {
      * @return the ResponseEntity with status 200 (OK) and the list of clades in body
      */
     @GetMapping("/clades")
-    @Timed
     public ResponseEntity<List<CladeDTO>> getAllClades(Pageable pageable) {
         log.debug("REST request to get a page of Clades");
         Page<CladeDTO> page = cladeService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/clades");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -104,7 +99,6 @@ public class CladeResource {
      * @return the ResponseEntity with status 200 (OK) and with body the cladeDTO, or with status 404 (Not Found)
      */
     @GetMapping("/clades/{id}")
-    @Timed
     public ResponseEntity<CladeDTO> getClade(@PathVariable Long id) {
         log.debug("REST request to get Clade : {}", id);
         Optional<CladeDTO> cladeDTO = cladeService.findOne(id);
@@ -118,7 +112,6 @@ public class CladeResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/clades/{id}")
-    @Timed
     public ResponseEntity<Void> deleteClade(@PathVariable Long id) {
         log.debug("REST request to delete Clade : {}", id);
         cladeService.delete(id);

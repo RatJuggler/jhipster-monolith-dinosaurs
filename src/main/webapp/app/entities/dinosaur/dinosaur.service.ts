@@ -14,9 +14,9 @@ type EntityArrayResponseType = HttpResponse<IDinosaur[]>;
 
 @Injectable({ providedIn: 'root' })
 export class DinosaurService {
-    private resourceUrl = SERVER_API_URL + 'api/dinosaurs';
+    public resourceUrl = SERVER_API_URL + 'api/dinosaurs';
 
-    constructor(private http: HttpClient) {}
+    constructor(protected http: HttpClient) {}
 
     create(dinosaur: IDinosaur): Observable<EntityResponseType> {
         const copy = this.convertDateFromClient(dinosaur);
@@ -49,7 +49,7 @@ export class DinosaurService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    private convertDateFromClient(dinosaur: IDinosaur): IDinosaur {
+    protected convertDateFromClient(dinosaur: IDinosaur): IDinosaur {
         const copy: IDinosaur = Object.assign({}, dinosaur, {
             insertDt: dinosaur.insertDt != null && dinosaur.insertDt.isValid() ? dinosaur.insertDt.toJSON() : null,
             modifiedDt: dinosaur.modifiedDt != null && dinosaur.modifiedDt.isValid() ? dinosaur.modifiedDt.toJSON() : null
@@ -57,17 +57,21 @@ export class DinosaurService {
         return copy;
     }
 
-    private convertDateFromServer(res: EntityResponseType): EntityResponseType {
-        res.body.insertDt = res.body.insertDt != null ? moment(res.body.insertDt) : null;
-        res.body.modifiedDt = res.body.modifiedDt != null ? moment(res.body.modifiedDt) : null;
+    protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
+        if (res.body) {
+            res.body.insertDt = res.body.insertDt != null ? moment(res.body.insertDt) : null;
+            res.body.modifiedDt = res.body.modifiedDt != null ? moment(res.body.modifiedDt) : null;
+        }
         return res;
     }
 
-    private convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
-        res.body.forEach((dinosaur: IDinosaur) => {
-            dinosaur.insertDt = dinosaur.insertDt != null ? moment(dinosaur.insertDt) : null;
-            dinosaur.modifiedDt = dinosaur.modifiedDt != null ? moment(dinosaur.modifiedDt) : null;
-        });
+    protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+        if (res.body) {
+            res.body.forEach((dinosaur: IDinosaur) => {
+                dinosaur.insertDt = dinosaur.insertDt != null ? moment(dinosaur.insertDt) : null;
+                dinosaur.modifiedDt = dinosaur.modifiedDt != null ? moment(dinosaur.modifiedDt) : null;
+            });
+        }
         return res;
     }
 }

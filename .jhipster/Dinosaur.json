@@ -1,0 +1,78 @@
+{
+    "name": "Dinosaur",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 64
+        },
+        {
+            "fieldName": "weight",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min",
+                "max"
+            ],
+            "fieldValidateRulesMin": 0,
+            "fieldValidateRulesMax": 999
+        },
+        {
+            "fieldName": "length",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min",
+                "max"
+            ],
+            "fieldValidateRulesMin": 0,
+            "fieldValidateRulesMax": 999
+        },
+        {
+            "fieldName": "diet",
+            "fieldType": "Diet",
+            "fieldValues": "HERBIVORE,CARNIVORE,OMNIVORE"
+        },
+        {
+            "fieldName": "insertDt",
+            "fieldType": "Instant",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "modifiedDt",
+            "fieldType": "Instant",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "era",
+            "otherEntityRelationshipName": "dinosaur",
+            "relationshipName": "era",
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "clade",
+            "otherEntityRelationshipName": "dinosaur",
+            "relationshipName": "clade",
+            "otherEntityField": "description"
+        }
+    ],
+    "changelogDate": "20190321130206",
+    "entityTableName": "dinosaur",
+    "dto": "mapstruct",
+    "pagination": "infinite-scroll",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

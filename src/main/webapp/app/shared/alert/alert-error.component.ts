@@ -1,17 +1,18 @@
 import { Component, OnDestroy } from '@angular/core';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlert, JhiAlertService } from 'ng-jhipster';
 import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'jhi-alert-error',
     template: `
         <div class="alerts" role="alert">
-            <div *ngFor="let alert of alerts"  [ngClass]="{\'alert.position\': true, \'toast\': alert.toast}">
+            <div *ngFor="let alert of alerts" [ngClass]="setClasses(alert)">
                 <ngb-alert *ngIf="alert && alert.type && alert.msg" [type]="alert.type" (close)="alert.close(alerts)">
                     <pre [innerHTML]="alert.msg"></pre>
                 </ngb-alert>
             </div>
-        </div>`
+        </div>
+    `
 })
 export class JhiAlertErrorComponent implements OnDestroy {
     alerts: any[];
@@ -35,9 +36,9 @@ export class JhiAlertErrorComponent implements OnDestroy {
                     let errorHeader = null;
                     let entityKey = null;
                     arr.forEach(entry => {
-                        if (entry.endsWith('app-error')) {
+                        if (entry.toLowerCase().endsWith('app-error')) {
                             errorHeader = httpErrorResponse.headers.get(entry);
-                        } else if (entry.endsWith('app-params')) {
+                        } else if (entry.toLowerCase().endsWith('app-params')) {
                             entityKey = httpErrorResponse.headers.get(entry);
                         }
                     });
@@ -48,6 +49,9 @@ export class JhiAlertErrorComponent implements OnDestroy {
                         const fieldErrors = httpErrorResponse.error.fieldErrors;
                         for (i = 0; i < fieldErrors.length; i++) {
                             const fieldError = fieldErrors[i];
+                            if (['Min', 'Max', 'DecimalMin', 'DecimalMax'].includes(fieldError.message)) {
+                                fieldError.message = 'Size';
+                            }
                             // convert 'something[14].other[4].id' to 'something[].other[].id' so translations can be written to it
                             const convertedField = fieldError.field.replace(/\[\d*\]/g, '[]');
                             const fieldName = convertedField.charAt(0).toUpperCase() + convertedField.slice(1);
@@ -78,6 +82,13 @@ export class JhiAlertErrorComponent implements OnDestroy {
         });
     }
 
+    setClasses(alert) {
+        return {
+            toast: !!alert.toast,
+            [alert.position]: true
+        };
+    }
+
     ngOnDestroy() {
         if (this.cleanHttpErrorListener !== undefined && this.cleanHttpErrorListener !== null) {
             this.eventManager.destroy(this.cleanHttpErrorListener);
@@ -86,17 +97,14 @@ export class JhiAlertErrorComponent implements OnDestroy {
     }
 
     addErrorAlert(message, key?, data?) {
-        this.alerts.push(
-            this.alertService.addAlert(
-                {
-                    type: 'danger',
-                    msg: message,
-                    timeout: 5000,
-                    toast: this.alertService.isToast(),
-                    scoped: true
-                },
-                this.alerts
-            )
-        );
+        const newAlert: JhiAlert = {
+            type: 'danger',
+            msg: message,
+            timeout: 5000,
+            toast: this.alertService.isToast(),
+            scoped: true
+        };
+
+        this.alerts.push(this.alertService.addAlert(newAlert, this.alerts));
     }
 }

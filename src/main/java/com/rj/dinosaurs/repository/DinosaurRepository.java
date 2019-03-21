@@ -1,13 +1,12 @@
 package com.rj.dinosaurs.repository;
 
 import com.rj.dinosaurs.domain.Dinosaur;
-import org.springframework.stereotype.Repository;
-
 import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
 
 
 /**
- * Spring Data JPA repository for the Dinosaur entity.
+ * Spring Data  repository for the Dinosaur entity.
  */
 @SuppressWarnings("unused")
 @Repository

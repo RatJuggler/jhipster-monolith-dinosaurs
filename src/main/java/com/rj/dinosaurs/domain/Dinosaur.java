@@ -1,5 +1,7 @@
 package com.rj.dinosaurs.domain;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -21,7 +23,7 @@ import com.rj.dinosaurs.domain.enumeration.Diet;
 public class Dinosaur implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -54,9 +56,11 @@ public class Dinosaur implements Serializable {
     private Instant modifiedDt;
 
     @ManyToOne
+    @JsonIgnoreProperties("dinosaurs")
     private Era era;
 
     @ManyToOne
+    @JsonIgnoreProperties("dinosaurs")
     private Clade clade;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

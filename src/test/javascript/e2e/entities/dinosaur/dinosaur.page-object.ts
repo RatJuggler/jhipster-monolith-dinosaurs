@@ -1,14 +1,23 @@
-import { element, by, promise, ElementFinder } from 'protractor';
+import { element, by, ElementFinder } from 'protractor';
 
 export class DinosaurComponentsPage {
     createButton = element(by.id('jh-create-entity'));
+    deleteButtons = element.all(by.css('jhi-dinosaur div table .btn-danger'));
     title = element.all(by.css('jhi-dinosaur div h2#page-heading span')).first();
 
-    clickOnCreateButton(): promise.Promise<void> {
-        return this.createButton.click();
+    async clickOnCreateButton() {
+        await this.createButton.click();
     }
 
-    getTitle(): any {
+    async clickOnLastDeleteButton() {
+        await this.deleteButtons.last().click();
+    }
+
+    async countDeleteButtons() {
+        return this.deleteButtons.count();
+    }
+
+    async getTitle() {
         return this.title.getText();
     }
 }
@@ -26,111 +35,125 @@ export class DinosaurUpdatePage {
     eraSelect = element(by.id('field_era'));
     cladeSelect = element(by.id('field_clade'));
 
-    getPageTitle() {
+    async getPageTitle() {
         return this.pageTitle.getText();
     }
 
-    setNameInput(name): promise.Promise<void> {
-        return this.nameInput.sendKeys(name);
+    async setNameInput(name) {
+        await this.nameInput.sendKeys(name);
     }
 
-    getNameInput() {
+    async getNameInput() {
         return this.nameInput.getAttribute('value');
     }
 
-    setWeightInput(weight): promise.Promise<void> {
-        return this.weightInput.sendKeys(weight);
+    async setWeightInput(weight) {
+        await this.weightInput.sendKeys(weight);
     }
 
-    getWeightInput() {
+    async getWeightInput() {
         return this.weightInput.getAttribute('value');
     }
 
-    setLengthInput(length): promise.Promise<void> {
-        return this.lengthInput.sendKeys(length);
+    async setLengthInput(length) {
+        await this.lengthInput.sendKeys(length);
     }
 
-    getLengthInput() {
+    async getLengthInput() {
         return this.lengthInput.getAttribute('value');
     }
 
-    setDietSelect(diet): promise.Promise<void> {
-        return this.dietSelect.sendKeys(diet);
+    async setDietSelect(diet) {
+        await this.dietSelect.sendKeys(diet);
     }
 
-    getDietSelect() {
+    async getDietSelect() {
         return this.dietSelect.element(by.css('option:checked')).getText();
     }
 
-    dietSelectLastOption(): promise.Promise<void> {
-        return this.dietSelect
+    async dietSelectLastOption() {
+        await this.dietSelect
             .all(by.tagName('option'))
             .last()
             .click();
     }
-    setInsertDtInput(insertDt): promise.Promise<void> {
-        return this.insertDtInput.sendKeys(insertDt);
+
+    async setInsertDtInput(insertDt) {
+        await this.insertDtInput.sendKeys(insertDt);
     }
 
-    getInsertDtInput() {
+    async getInsertDtInput() {
         return this.insertDtInput.getAttribute('value');
     }
 
-    setModifiedDtInput(modifiedDt): promise.Promise<void> {
-        return this.modifiedDtInput.sendKeys(modifiedDt);
+    async setModifiedDtInput(modifiedDt) {
+        await this.modifiedDtInput.sendKeys(modifiedDt);
     }
 
-    getModifiedDtInput() {
+    async getModifiedDtInput() {
         return this.modifiedDtInput.getAttribute('value');
     }
 
-    eraSelectLastOption(): promise.Promise<void> {
-        return this.eraSelect
+    async eraSelectLastOption() {
+        await this.eraSelect
             .all(by.tagName('option'))
             .last()
             .click();
     }
 
-    eraSelectOption(option): promise.Promise<void> {
-        return this.eraSelect.sendKeys(option);
+    async eraSelectOption(option) {
+        await this.eraSelect.sendKeys(option);
     }
 
     getEraSelect(): ElementFinder {
         return this.eraSelect;
     }
 
-    getEraSelectedOption() {
+    async getEraSelectedOption() {
         return this.eraSelect.element(by.css('option:checked')).getText();
     }
 
-    cladeSelectLastOption(): promise.Promise<void> {
-        return this.cladeSelect
+    async cladeSelectLastOption() {
+        await this.cladeSelect
             .all(by.tagName('option'))
             .last()
             .click();
     }
 
-    cladeSelectOption(option): promise.Promise<void> {
-        return this.cladeSelect.sendKeys(option);
+    async cladeSelectOption(option) {
+        await this.cladeSelect.sendKeys(option);
     }
 
     getCladeSelect(): ElementFinder {
         return this.cladeSelect;
     }
 
-    getCladeSelectedOption() {
+    async getCladeSelectedOption() {
         return this.cladeSelect.element(by.css('option:checked')).getText();
     }
 
-    save(): promise.Promise<void> {
-        return this.saveButton.click();
+    async save() {
+        await this.saveButton.click();
     }
 
-    cancel(): promise.Promise<void> {
-        return this.cancelButton.click();
+    async cancel() {
+        await this.cancelButton.click();
     }
 
     getSaveButton(): ElementFinder {
         return this.saveButton;
+    }
+}
+
+export class DinosaurDeleteDialog {
+    private dialogTitle = element(by.id('jhi-delete-dinosaur-heading'));
+    private confirmButton = element(by.id('jhi-confirm-delete-dinosaur'));
+
+    async getDialogTitle() {
+        return this.dialogTitle.getText();
+    }
+
+    async clickOnConfirmButton() {
+        await this.confirmButton.click();
     }
 }
