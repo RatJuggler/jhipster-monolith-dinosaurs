@@ -57,6 +57,8 @@ The deployment was created and deployed using the following commands:
 
 ## Docker
 
+*JHipster has moved to using [Jib](https://github.com/GoogleContainerTools/jib) for building Docker images so the following needs updating.*
+
 Create a docker image and push to docker hub then run up a local instance:
 
     mvn dockerfile:build
