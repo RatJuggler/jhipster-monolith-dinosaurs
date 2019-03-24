@@ -37,7 +37,7 @@ The source for the dinosaurs jdl can be found in the [RatJuggler/jhipster-jdl](h
 
 ## Heroku
 
-The Heroku deployment can be found at: [https://jhipster-dinosaurs.herokuapp.com](https://jhipster-dinosaurs.herokuapp.com)
+An Heroku deployment was tested but is no longer available.
 
 The deployment was created and deployed using the following commands:
 
