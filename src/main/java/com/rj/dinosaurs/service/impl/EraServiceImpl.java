@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
- * Service Implementation for managing Era.
+ * Service Implementation for managing {@link Era}.
  */
 @Service
 @Transactional
@@ -36,8 +36,8 @@ public class EraServiceImpl implements EraService {
     /**
      * Save a era.
      *
-     * @param eraDTO the entity to save
-     * @return the persisted entity
+     * @param eraDTO the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public EraDTO save(EraDTO eraDTO) {
@@ -50,8 +50,8 @@ public class EraServiceImpl implements EraService {
     /**
      * Get all the eras.
      *
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -65,8 +65,8 @@ public class EraServiceImpl implements EraService {
     /**
      * Get one era by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
@@ -79,7 +79,7 @@ public class EraServiceImpl implements EraService {
     /**
      * Delete the era by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {

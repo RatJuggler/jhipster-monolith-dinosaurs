@@ -14,80 +14,80 @@ import { IDinosaur } from 'app/shared/model/dinosaur.model';
 
 @Injectable({ providedIn: 'root' })
 export class DinosaurResolve implements Resolve<IDinosaur> {
-    constructor(private service: DinosaurService) {}
+  constructor(private service: DinosaurService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IDinosaur> {
-        const id = route.params['id'] ? route.params['id'] : null;
-        if (id) {
-            return this.service.find(id).pipe(
-                filter((response: HttpResponse<Dinosaur>) => response.ok),
-                map((dinosaur: HttpResponse<Dinosaur>) => dinosaur.body)
-            );
-        }
-        return of(new Dinosaur());
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IDinosaur> {
+    const id = route.params['id'] ? route.params['id'] : null;
+    if (id) {
+      return this.service.find(id).pipe(
+        filter((response: HttpResponse<Dinosaur>) => response.ok),
+        map((dinosaur: HttpResponse<Dinosaur>) => dinosaur.body)
+      );
     }
+    return of(new Dinosaur());
+  }
 }
 
 export const dinosaurRoute: Routes = [
-    {
-        path: '',
-        component: DinosaurComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Dinosaurs'
-        },
-        canActivate: [UserRouteAccessService]
+  {
+    path: '',
+    component: DinosaurComponent,
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'Dinosaurs'
     },
-    {
-        path: ':id/view',
-        component: DinosaurDetailComponent,
-        resolve: {
-            dinosaur: DinosaurResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Dinosaurs'
-        },
-        canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/view',
+    component: DinosaurDetailComponent,
+    resolve: {
+      dinosaur: DinosaurResolve
     },
-    {
-        path: 'new',
-        component: DinosaurUpdateComponent,
-        resolve: {
-            dinosaur: DinosaurResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Dinosaurs'
-        },
-        canActivate: [UserRouteAccessService]
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'Dinosaurs'
     },
-    {
-        path: ':id/edit',
-        component: DinosaurUpdateComponent,
-        resolve: {
-            dinosaur: DinosaurResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Dinosaurs'
-        },
-        canActivate: [UserRouteAccessService]
-    }
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: 'new',
+    component: DinosaurUpdateComponent,
+    resolve: {
+      dinosaur: DinosaurResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'Dinosaurs'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/edit',
+    component: DinosaurUpdateComponent,
+    resolve: {
+      dinosaur: DinosaurResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'Dinosaurs'
+    },
+    canActivate: [UserRouteAccessService]
+  }
 ];
 
 export const dinosaurPopupRoute: Routes = [
-    {
-        path: ':id/delete',
-        component: DinosaurDeletePopupComponent,
-        resolve: {
-            dinosaur: DinosaurResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Dinosaurs'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    }
+  {
+    path: ':id/delete',
+    component: DinosaurDeletePopupComponent,
+    resolve: {
+      dinosaur: DinosaurResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'Dinosaurs'
+    },
+    canActivate: [UserRouteAccessService],
+    outlet: 'popup'
+  }
 ];

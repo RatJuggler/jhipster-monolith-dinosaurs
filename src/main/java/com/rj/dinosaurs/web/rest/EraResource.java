@@ -1,16 +1,21 @@
 package com.rj.dinosaurs.web.rest;
+
 import com.rj.dinosaurs.service.EraService;
 import com.rj.dinosaurs.web.rest.errors.BadRequestAlertException;
-import com.rj.dinosaurs.web.rest.util.HeaderUtil;
-import com.rj.dinosaurs.web.rest.util.PaginationUtil;
 import com.rj.dinosaurs.service.dto.EraDTO;
+
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * REST controller for managing Era.
+ * REST controller for managing {@link com.rj.dinosaurs.domain.Era}.
  */
 @RestController
 @RequestMapping("/api")
@@ -32,6 +37,9 @@ public class EraResource {
 
     private static final String ENTITY_NAME = "era";
 
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
+
     private final EraService eraService;
 
     public EraResource(EraService eraService) {
@@ -39,11 +47,11 @@ public class EraResource {
     }
 
     /**
-     * POST  /eras : Create a new era.
+     * {@code POST  /eras} : Create a new era.
      *
-     * @param eraDTO the eraDTO to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new eraDTO, or with status 400 (Bad Request) if the era has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param eraDTO the eraDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new eraDTO, or with status {@code 400 (Bad Request)} if the era has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/eras")
     public ResponseEntity<EraDTO> createEra(@Valid @RequestBody EraDTO eraDTO) throws URISyntaxException {
@@ -53,18 +61,18 @@ public class EraResource {
         }
         EraDTO result = eraService.save(eraDTO);
         return ResponseEntity.created(new URI("/api/eras/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * PUT  /eras : Updates an existing era.
+     * {@code PUT  /eras} : Updates an existing era.
      *
-     * @param eraDTO the eraDTO to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated eraDTO,
-     * or with status 400 (Bad Request) if the eraDTO is not valid,
-     * or with status 500 (Internal Server Error) if the eraDTO couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param eraDTO the eraDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated eraDTO,
+     * or with status {@code 400 (Bad Request)} if the eraDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the eraDTO couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/eras")
     public ResponseEntity<EraDTO> updateEra(@Valid @RequestBody EraDTO eraDTO) throws URISyntaxException {
@@ -74,29 +82,31 @@ public class EraResource {
         }
         EraDTO result = eraService.save(eraDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, eraDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, eraDTO.getId().toString()))
             .body(result);
     }
 
     /**
-     * GET  /eras : get all the eras.
+     * {@code GET  /eras} : get all the eras.
      *
-     * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of eras in body
+     * @param pageable the pagination information.
+     * @param queryParams a {@link MultiValueMap} query parameters.
+     * @param uriBuilder a {@link UriComponentsBuilder} URI builder.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of eras in body.
      */
     @GetMapping("/eras")
-    public ResponseEntity<List<EraDTO>> getAllEras(Pageable pageable) {
+    public ResponseEntity<List<EraDTO>> getAllEras(Pageable pageable, @RequestParam MultiValueMap<String, String> queryParams, UriComponentsBuilder uriBuilder) {
         log.debug("REST request to get a page of Eras");
         Page<EraDTO> page = eraService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/eras");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(uriBuilder.queryParams(queryParams), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
-     * GET  /eras/:id : get the "id" era.
+     * {@code GET  /eras/:id} : get the "id" era.
      *
-     * @param id the id of the eraDTO to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the eraDTO, or with status 404 (Not Found)
+     * @param id the id of the eraDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the eraDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/eras/{id}")
     public ResponseEntity<EraDTO> getEra(@PathVariable Long id) {
@@ -106,15 +116,15 @@ public class EraResource {
     }
 
     /**
-     * DELETE  /eras/:id : delete the "id" era.
+     * {@code DELETE  /eras/:id} : delete the "id" era.
      *
-     * @param id the id of the eraDTO to delete
-     * @return the ResponseEntity with status 200 (OK)
+     * @param id the id of the eraDTO to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/eras/{id}")
     public ResponseEntity<Void> deleteEra(@PathVariable Long id) {
         log.debug("REST request to delete Era : {}", id);
         eraService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 }

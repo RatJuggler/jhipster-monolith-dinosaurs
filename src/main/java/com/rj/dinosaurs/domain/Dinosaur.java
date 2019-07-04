@@ -1,6 +1,4 @@
 package com.rj.dinosaurs.domain;
-
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -10,7 +8,6 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Objects;
 
 import com.rj.dinosaurs.domain.enumeration.Diet;
 
@@ -23,7 +20,7 @@ import com.rj.dinosaurs.domain.enumeration.Diet;
 public class Dinosaur implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -182,19 +179,15 @@ public class Dinosaur implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Dinosaur)) {
             return false;
         }
-        Dinosaur dinosaur = (Dinosaur) o;
-        if (dinosaur.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), dinosaur.getId());
+        return id != null && id.equals(((Dinosaur) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

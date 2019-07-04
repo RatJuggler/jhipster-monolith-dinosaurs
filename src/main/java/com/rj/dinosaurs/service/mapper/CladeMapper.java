@@ -6,7 +6,7 @@ import com.rj.dinosaurs.service.dto.CladeDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity Clade and its DTO CladeDTO.
+ * Mapper for the entity {@link Clade} and its DTO {@link CladeDTO}.
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface CladeMapper extends EntityMapper<CladeDTO, Clade> {

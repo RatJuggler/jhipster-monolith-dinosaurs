@@ -6,7 +6,7 @@ import java.util.Objects;
 import com.rj.dinosaurs.domain.enumeration.Diet;
 
 /**
- * A DTO for the Dinosaur entity.
+ * A DTO for the {@link com.rj.dinosaurs.domain.Dinosaur} entity.
  */
 public class DinosaurDTO implements Serializable {
 

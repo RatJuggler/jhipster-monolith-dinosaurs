@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the Era entity.
+ * A DTO for the {@link com.rj.dinosaurs.domain.Era} entity.
  */
 public class EraDTO implements Serializable {
 

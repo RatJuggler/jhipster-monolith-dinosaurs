@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the Clade entity.
+ * A DTO for the {@link com.rj.dinosaurs.domain.Clade} entity.
  */
 public class CladeDTO implements Serializable {
 

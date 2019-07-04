@@ -4,27 +4,27 @@ import { RouterModule } from '@angular/router';
 import { DinosaursSharedModule } from 'app/shared';
 
 import {
-    PasswordStrengthBarComponent,
-    RegisterComponent,
-    ActivateComponent,
-    PasswordComponent,
-    PasswordResetInitComponent,
-    PasswordResetFinishComponent,
-    SettingsComponent,
-    accountState
+  PasswordStrengthBarComponent,
+  RegisterComponent,
+  ActivateComponent,
+  PasswordComponent,
+  PasswordResetInitComponent,
+  PasswordResetFinishComponent,
+  SettingsComponent,
+  accountState
 } from './';
 
 @NgModule({
-    imports: [DinosaursSharedModule, RouterModule.forChild(accountState)],
-    declarations: [
-        ActivateComponent,
-        RegisterComponent,
-        PasswordComponent,
-        PasswordStrengthBarComponent,
-        PasswordResetInitComponent,
-        PasswordResetFinishComponent,
-        SettingsComponent
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [DinosaursSharedModule, RouterModule.forChild(accountState)],
+  declarations: [
+    ActivateComponent,
+    RegisterComponent,
+    PasswordComponent,
+    PasswordStrengthBarComponent,
+    PasswordResetInitComponent,
+    PasswordResetFinishComponent,
+    SettingsComponent
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class DinosaursAccountModule {}

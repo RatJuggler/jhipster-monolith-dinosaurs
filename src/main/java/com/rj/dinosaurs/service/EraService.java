@@ -8,23 +8,23 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 /**
- * Service Interface for managing Era.
+ * Service Interface for managing {@link com.rj.dinosaurs.domain.Era}.
  */
 public interface EraService {
 
     /**
      * Save a era.
      *
-     * @param eraDTO the entity to save
-     * @return the persisted entity
+     * @param eraDTO the entity to save.
+     * @return the persisted entity.
      */
     EraDTO save(EraDTO eraDTO);
 
     /**
      * Get all the eras.
      *
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     Page<EraDTO> findAll(Pageable pageable);
 
@@ -32,15 +32,15 @@ public interface EraService {
     /**
      * Get the "id" era.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     Optional<EraDTO> findOne(Long id);
 
     /**
      * Delete the "id" era.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     void delete(Long id);
 }

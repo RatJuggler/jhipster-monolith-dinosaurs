@@ -15,84 +15,84 @@ import { IEra } from 'app/shared/model/era.model';
 
 @Injectable({ providedIn: 'root' })
 export class EraResolve implements Resolve<IEra> {
-    constructor(private service: EraService) {}
+  constructor(private service: EraService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IEra> {
-        const id = route.params['id'] ? route.params['id'] : null;
-        if (id) {
-            return this.service.find(id).pipe(
-                filter((response: HttpResponse<Era>) => response.ok),
-                map((era: HttpResponse<Era>) => era.body)
-            );
-        }
-        return of(new Era());
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IEra> {
+    const id = route.params['id'] ? route.params['id'] : null;
+    if (id) {
+      return this.service.find(id).pipe(
+        filter((response: HttpResponse<Era>) => response.ok),
+        map((era: HttpResponse<Era>) => era.body)
+      );
     }
+    return of(new Era());
+  }
 }
 
 export const eraRoute: Routes = [
-    {
-        path: '',
-        component: EraComponent,
-        resolve: {
-            pagingParams: JhiResolvePagingParams
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            defaultSort: 'id,asc',
-            pageTitle: 'Eras'
-        },
-        canActivate: [UserRouteAccessService]
+  {
+    path: '',
+    component: EraComponent,
+    resolve: {
+      pagingParams: JhiResolvePagingParams
     },
-    {
-        path: ':id/view',
-        component: EraDetailComponent,
-        resolve: {
-            era: EraResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Eras'
-        },
-        canActivate: [UserRouteAccessService]
+    data: {
+      authorities: ['ROLE_USER'],
+      defaultSort: 'id,asc',
+      pageTitle: 'Eras'
     },
-    {
-        path: 'new',
-        component: EraUpdateComponent,
-        resolve: {
-            era: EraResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Eras'
-        },
-        canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/view',
+    component: EraDetailComponent,
+    resolve: {
+      era: EraResolve
     },
-    {
-        path: ':id/edit',
-        component: EraUpdateComponent,
-        resolve: {
-            era: EraResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Eras'
-        },
-        canActivate: [UserRouteAccessService]
-    }
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'Eras'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: 'new',
+    component: EraUpdateComponent,
+    resolve: {
+      era: EraResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'Eras'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/edit',
+    component: EraUpdateComponent,
+    resolve: {
+      era: EraResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'Eras'
+    },
+    canActivate: [UserRouteAccessService]
+  }
 ];
 
 export const eraPopupRoute: Routes = [
-    {
-        path: ':id/delete',
-        component: EraDeletePopupComponent,
-        resolve: {
-            era: EraResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Eras'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    }
+  {
+    path: ':id/delete',
+    component: EraDeletePopupComponent,
+    resolve: {
+      era: EraResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'Eras'
+    },
+    canActivate: [UserRouteAccessService],
+    outlet: 'popup'
+  }
 ];

@@ -1,6 +1,4 @@
 package com.rj.dinosaurs.domain;
-
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -8,7 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A Era.
@@ -19,7 +16,7 @@ import java.util.Objects;
 public class Era implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -93,19 +90,15 @@ public class Era implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Era)) {
             return false;
         }
-        Era era = (Era) o;
-        if (era.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), era.getId());
+        return id != null && id.equals(((Era) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override
