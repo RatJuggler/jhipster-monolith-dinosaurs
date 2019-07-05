@@ -13,7 +13,7 @@ The application was generated using the following commands:
     jhipster
     jhipster import-jdl jhipster-dinosaurs.jh
 
-With these responses to the JHipster generation questions:
+With these responses to the JHipster generation questions (responses updated for version 6.1.2):
 
     ? Which *type* of application would you like to create? Monolithic application (recommended for simple projects)
     ? What is the base name of your application? dinosaurs
@@ -26,9 +26,9 @@ With these responses to the JHipster generation questions:
     ? Do you want to use the Spring cache abstraction? Yes, with the Ehcache implementation (local cache, for a single node)
     ? Do you want to use Hibernate 2nd level cache? Yes
     ? Would you like to use Maven or Gradle for building the backend? Maven
-    ? Which other technologies would you like to use?
-    ? Which *Framework* would you like to use for the client? Angular 5
-    ? Would you like to enable *SASS* support using the LibSass stylesheet preprocessor? No
+    ? Which other technologies would you like to use? (none selected)
+    ? Which *Framework* would you like to use for the client? Angular
+    ? Would you like to use a Bootswatch theme (https://bootswatch.com/)? Default JHipster
     ? Would you like to enable internationalization support? No
     ? Besides JUnit and Karma, which testing frameworks would you like to use? Gatling, Cucumber, Protractor
     ? Would you like to install other generators from the JHipster Marketplace? No
