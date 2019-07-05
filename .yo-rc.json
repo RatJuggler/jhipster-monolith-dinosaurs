@@ -3,7 +3,7 @@
     "promptValues": {
       "packageName": "com.rj.dinosaurs"
     },
-    "jhipsterVersion": "5.8.2",
+    "jhipsterVersion": "6.1.2",
     "applicationType": "monolith",
     "baseName": "dinosaurs",
     "packageName": "com.rj.dinosaurs",
@@ -23,13 +23,14 @@
     "enableSwaggerCodegen": false,
     "jwtSecretKey": "OWRhYzIwMTkwMDlmYjk2M2JiNjg4ZmVmMDhhNTk0YTczZWZmZWY2NDEyMzM2OTAzNGExODYyNTkxZWMxZTQzNmUwOWM5MjdlOGY2ZDFmYTc5MzkxYTgyMTk0NDdlNTFlNDRiZDUwZTgzMmZmNTk2NjM1ZTMwMzljMjdmODY4YWI=",
     "clientFramework": "angularX",
-    "useSass": false,
+    "useSass": true,
     "clientPackageManager": "npm",
     "testFrameworks": ["gatling", "cucumber", "protractor"],
     "jhiPrefix": "jhi",
     "entitySuffix": "",
     "dtoSuffix": "DTO",
     "otherModules": [],
-    "enableTranslation": false
+    "enableTranslation": false,
+    "clientTheme": "none"
   }
 }
