@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 /**
- * Service Implementation for managing Dinosaur.
+ * Service Implementation for managing {@link Dinosaur}.
  */
 @Service
 @Transactional
@@ -36,8 +36,8 @@ public class DinosaurServiceImpl implements DinosaurService {
     /**
      * Save a dinosaur.
      *
-     * @param dinosaurDTO the entity to save
-     * @return the persisted entity
+     * @param dinosaurDTO the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public DinosaurDTO save(DinosaurDTO dinosaurDTO) {
@@ -50,8 +50,8 @@ public class DinosaurServiceImpl implements DinosaurService {
     /**
      * Get all the dinosaurs.
      *
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -65,8 +65,8 @@ public class DinosaurServiceImpl implements DinosaurService {
     /**
      * Get one dinosaur by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
@@ -79,7 +79,7 @@ public class DinosaurServiceImpl implements DinosaurService {
     /**
      * Delete the dinosaur by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {

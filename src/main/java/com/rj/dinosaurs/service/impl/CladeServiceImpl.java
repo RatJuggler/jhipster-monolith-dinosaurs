@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 /**
- * Service Implementation for managing Clade.
+ * Service Implementation for managing {@link Clade}.
  */
 @Service
 @Transactional
@@ -36,8 +36,8 @@ public class CladeServiceImpl implements CladeService {
     /**
      * Save a clade.
      *
-     * @param cladeDTO the entity to save
-     * @return the persisted entity
+     * @param cladeDTO the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public CladeDTO save(CladeDTO cladeDTO) {
@@ -50,8 +50,8 @@ public class CladeServiceImpl implements CladeService {
     /**
      * Get all the clades.
      *
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -65,8 +65,8 @@ public class CladeServiceImpl implements CladeService {
     /**
      * Get one clade by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
@@ -79,7 +79,7 @@ public class CladeServiceImpl implements CladeService {
     /**
      * Delete the clade by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {

@@ -10,7 +10,10 @@
     </h2>
     <jhi-alert></jhi-alert>
     <br/>
-    <div class="table-responsive" *ngIf="eras">
+    <div class="alert alert-warning" *ngIf="eras?.length === 0">
+        <span>No eras found</span>
+    </div>
+    <div class="table-responsive" *ngIf="eras?.length > 0">
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
@@ -28,7 +31,7 @@
                 <td>{{era.fromMa}}</td>
                 <td>{{era.toMa}}</td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
+                    <div class="btn-group">
                         <button type="submit"
                                 [routerLink]="['/era', era.id, 'view' ]"
                                 class="btn btn-info btn-sm">
@@ -55,7 +58,7 @@
             </tbody>
         </table>
     </div>
-    <div *ngIf="eras && eras.length">
+    <div [hidden]="eras?.length === 0">
         <div class="row justify-content-center">
             <jhi-item-count [page]="page" [total]="totalItems" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
         </div>

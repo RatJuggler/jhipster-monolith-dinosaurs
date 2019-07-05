@@ -1,51 +1,77 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { IEra } from 'app/shared/model/era.model';
+import { IEra, Era } from 'app/shared/model/era.model';
 import { EraService } from './era.service';
 
 @Component({
-    selector: 'jhi-era-update',
-    templateUrl: './era-update.component.html'
+  selector: 'jhi-era-update',
+  templateUrl: './era-update.component.html'
 })
 export class EraUpdateComponent implements OnInit {
-    era: IEra;
-    isSaving: boolean;
+  isSaving: boolean;
 
-    constructor(protected eraService: EraService, protected activatedRoute: ActivatedRoute) {}
+  editForm = this.fb.group({
+    id: [],
+    name: [null, [Validators.required, Validators.maxLength(64)]],
+    fromMa: [null, [Validators.min(0), Validators.max(999)]],
+    toMa: [null, [Validators.min(0), Validators.max(999)]]
+  });
 
-    ngOnInit() {
-        this.isSaving = false;
-        this.activatedRoute.data.subscribe(({ era }) => {
-            this.era = era;
-        });
+  constructor(protected eraService: EraService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
+
+  ngOnInit() {
+    this.isSaving = false;
+    this.activatedRoute.data.subscribe(({ era }) => {
+      this.updateForm(era);
+    });
+  }
+
+  updateForm(era: IEra) {
+    this.editForm.patchValue({
+      id: era.id,
+      name: era.name,
+      fromMa: era.fromMa,
+      toMa: era.toMa
+    });
+  }
+
+  previousState() {
+    window.history.back();
+  }
+
+  save() {
+    this.isSaving = true;
+    const era = this.createFromForm();
+    if (era.id !== undefined) {
+      this.subscribeToSaveResponse(this.eraService.update(era));
+    } else {
+      this.subscribeToSaveResponse(this.eraService.create(era));
     }
+  }
 
-    previousState() {
-        window.history.back();
-    }
+  private createFromForm(): IEra {
+    return {
+      ...new Era(),
+      id: this.editForm.get(['id']).value,
+      name: this.editForm.get(['name']).value,
+      fromMa: this.editForm.get(['fromMa']).value,
+      toMa: this.editForm.get(['toMa']).value
+    };
+  }
 
-    save() {
-        this.isSaving = true;
-        if (this.era.id !== undefined) {
-            this.subscribeToSaveResponse(this.eraService.update(this.era));
-        } else {
-            this.subscribeToSaveResponse(this.eraService.create(this.era));
-        }
-    }
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IEra>>) {
+    result.subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
+  }
 
-    protected subscribeToSaveResponse(result: Observable<HttpResponse<IEra>>) {
-        result.subscribe((res: HttpResponse<IEra>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
-    }
+  protected onSaveSuccess() {
+    this.isSaving = false;
+    this.previousState();
+  }
 
-    protected onSaveSuccess() {
-        this.isSaving = false;
-        this.previousState();
-    }
-
-    protected onSaveError() {
-        this.isSaving = false;
-    }
+  protected onSaveError() {
+    this.isSaving = false;
+  }
 }

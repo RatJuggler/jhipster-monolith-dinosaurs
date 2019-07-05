@@ -3,17 +3,14 @@ import { Component } from '@angular/core';
 import { VERSION } from '../../app.constants';
 
 @Component({
-    selector: 'jhi-footer',
-    templateUrl: './footer.component.html',
-    styleUrls: [
-        'footer.css'
-    ]
+  selector: 'jhi-footer',
+  templateUrl: './footer.component.html',
+  styleUrls: ['footer.scss']
 })
 export class FooterComponent {
-    version: string;
+  version: string;
 
-    constructor() {
-        this.version = VERSION ? 'V' + VERSION : '';
-    }
-
+  constructor() {
+    this.version = VERSION ? 'V' + VERSION : '';
+  }
 }

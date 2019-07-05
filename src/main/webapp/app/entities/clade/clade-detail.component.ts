@@ -4,21 +4,21 @@ import { ActivatedRoute } from '@angular/router';
 import { IClade } from 'app/shared/model/clade.model';
 
 @Component({
-    selector: 'jhi-clade-detail',
-    templateUrl: './clade-detail.component.html'
+  selector: 'jhi-clade-detail',
+  templateUrl: './clade-detail.component.html'
 })
 export class CladeDetailComponent implements OnInit {
-    clade: IClade;
+  clade: IClade;
 
-    constructor(protected activatedRoute: ActivatedRoute) {}
+  constructor(protected activatedRoute: ActivatedRoute) {}
 
-    ngOnInit() {
-        this.activatedRoute.data.subscribe(({ clade }) => {
-            this.clade = clade;
-        });
-    }
+  ngOnInit() {
+    this.activatedRoute.data.subscribe(({ clade }) => {
+      this.clade = clade;
+    });
+  }
 
-    previousState() {
-        window.history.back();
-    }
+  previousState() {
+    window.history.back();
+  }
 }

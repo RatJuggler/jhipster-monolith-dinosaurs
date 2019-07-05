@@ -15,84 +15,84 @@ import { IClade } from 'app/shared/model/clade.model';
 
 @Injectable({ providedIn: 'root' })
 export class CladeResolve implements Resolve<IClade> {
-    constructor(private service: CladeService) {}
+  constructor(private service: CladeService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IClade> {
-        const id = route.params['id'] ? route.params['id'] : null;
-        if (id) {
-            return this.service.find(id).pipe(
-                filter((response: HttpResponse<Clade>) => response.ok),
-                map((clade: HttpResponse<Clade>) => clade.body)
-            );
-        }
-        return of(new Clade());
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IClade> {
+    const id = route.params['id'] ? route.params['id'] : null;
+    if (id) {
+      return this.service.find(id).pipe(
+        filter((response: HttpResponse<Clade>) => response.ok),
+        map((clade: HttpResponse<Clade>) => clade.body)
+      );
     }
+    return of(new Clade());
+  }
 }
 
 export const cladeRoute: Routes = [
-    {
-        path: '',
-        component: CladeComponent,
-        resolve: {
-            pagingParams: JhiResolvePagingParams
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            defaultSort: 'id,asc',
-            pageTitle: 'Clades'
-        },
-        canActivate: [UserRouteAccessService]
+  {
+    path: '',
+    component: CladeComponent,
+    resolve: {
+      pagingParams: JhiResolvePagingParams
     },
-    {
-        path: ':id/view',
-        component: CladeDetailComponent,
-        resolve: {
-            clade: CladeResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Clades'
-        },
-        canActivate: [UserRouteAccessService]
+    data: {
+      authorities: ['ROLE_USER'],
+      defaultSort: 'id,asc',
+      pageTitle: 'Clades'
     },
-    {
-        path: 'new',
-        component: CladeUpdateComponent,
-        resolve: {
-            clade: CladeResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Clades'
-        },
-        canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/view',
+    component: CladeDetailComponent,
+    resolve: {
+      clade: CladeResolve
     },
-    {
-        path: ':id/edit',
-        component: CladeUpdateComponent,
-        resolve: {
-            clade: CladeResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Clades'
-        },
-        canActivate: [UserRouteAccessService]
-    }
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'Clades'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: 'new',
+    component: CladeUpdateComponent,
+    resolve: {
+      clade: CladeResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'Clades'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/edit',
+    component: CladeUpdateComponent,
+    resolve: {
+      clade: CladeResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'Clades'
+    },
+    canActivate: [UserRouteAccessService]
+  }
 ];
 
 export const cladePopupRoute: Routes = [
-    {
-        path: ':id/delete',
-        component: CladeDeletePopupComponent,
-        resolve: {
-            clade: CladeResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Clades'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    }
+  {
+    path: ':id/delete',
+    component: CladeDeletePopupComponent,
+    resolve: {
+      clade: CladeResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'Clades'
+    },
+    canActivate: [UserRouteAccessService],
+    outlet: 'popup'
+  }
 ];
