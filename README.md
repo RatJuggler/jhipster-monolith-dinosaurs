@@ -45,24 +45,13 @@ The deployment was created and deployed using the following commands:
     mvn package -Pprod -DskipTests
     heroku deploy:jar target/dinosaurs.jar --app jhipster-dinosaurs
 
-## Pivotal (Cloud Foundry)
-
-A Cloud Foundry deployment was tested but is no longer available.
-
-The deployment was created and deployed using the following commands:
-
-    jhipster cloudfoundry  (Database: cleardb, Plan: spark; the resulting manifest was saved for future deployments)
-    mvn package -Pprod-DskipTests
-    cf push -f ./src/main/cloudfoundry/manifest.yml -t 120 -p target/dinosaurs.war
-
 ## Docker
-
-_JHipster has moved to using [Jib](https://github.com/GoogleContainerTools/jib) for building Docker images so the following needs updating._
 
 Create a docker image and push to docker hub then run up a local instance:
 
-    mvn dockerfile:build
-    mvn dockerfile:push
+    sudo ./mvnw package -Pprod -DskipTests verify jib:dockerBuild
+    sudo docker tag <image-id> johnchase/dinosaurs:latest
+    sudo docker push johnchase/dinosaurs:latest
     docker-compose -f src/main/docker/app.yml up -d
 
 ## Kubernetes (minikube)
@@ -78,6 +67,16 @@ Create a docker image and push to docker hub then run up a local instance:
     gcloud container clusters create jhipster-dinosaurs --machine-type=n1-standard-1 --scopes cloud-platform
     - This generates a kubectl context
     gcloud container clusters get-credentials jhipster-dinosaurs
+
+## Pivotal (Cloud Foundry)
+
+A Cloud Foundry deployment was tested but is no longer available.
+
+The deployment was created and deployed using the following commands:
+
+    jhipster cloudfoundry  (Database: cleardb, Plan: spark; the resulting manifest was saved for future deployments)
+    mvn package -Pprod-DskipTests
+    cf push -f ./src/main/cloudfoundry/manifest.yml -t 120 -p target/dinosaurs.war
 
 ## Attributions
 
