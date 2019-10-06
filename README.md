@@ -2,7 +2,7 @@
 
 This is just a sandbox to play around with a simple JHipter generated monolith application and deploy it to various cloud providers and containers.
 
-*The original generated README.md has been renamed as [jhipster.md](jhipster.md).*
+_The original generated README.md has been renamed as [jhipster.md](jhipster.md)._
 
 ## Generation
 
@@ -13,7 +13,7 @@ The application was generated using the following commands:
     jhipster
     jhipster import-jdl jhipster-dinosaurs.jh
 
-With these responses to the JHipster generation questions (responses updated for version 6.1.2):
+With these responses to the JHipster generation questions (responses updated for version 6.3.1):
 
     ? Which *type* of application would you like to create? Monolithic application (recommended for simple projects)
     ? What is the base name of your application? dinosaurs
@@ -37,13 +37,13 @@ The source for the dinosaurs jdl can be found in the [RatJuggler/jhipster-jdl](h
 
 ## Heroku
 
-An Heroku deployment was tested but is no longer available.
+A Heroku test deployment is currently available [here](https://jhipster-dinosaurs.herokuapp.com/).
 
 The deployment was created and deployed using the following commands:
 
     jhipster heroku
     mvn package -Pprod -DskipTests
-    heroku war:deploy target/dinosaurs.war --app jhipster-dinosaurs
+    heroku deploy:jar target/dinosaurs.jar --app jhipster-dinosaurs
 
 ## Pivotal (Cloud Foundry)
 
@@ -57,7 +57,7 @@ The deployment was created and deployed using the following commands:
 
 ## Docker
 
-*JHipster has moved to using [Jib](https://github.com/GoogleContainerTools/jib) for building Docker images so the following needs updating.*
+_JHipster has moved to using [Jib](https://github.com/GoogleContainerTools/jib) for building Docker images so the following needs updating._
 
 Create a docker image and push to docker hub then run up a local instance:
 
@@ -79,3 +79,8 @@ Create a docker image and push to docker hub then run up a local instance:
     - This generates a kubectl context
     gcloud container clusters get-credentials jhipster-dinosaurs
 
+## Attributions
+
+Sauropod icon from [Twemoji](https://twemoji.twitter.com/content/twemoji-twitter/en.html).
+
+Main image by [KoprX](https://commons.wikimedia.org/wiki/User:KoprX).
