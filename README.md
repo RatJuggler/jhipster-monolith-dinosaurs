@@ -1,6 +1,7 @@
 # jhipster-dinosaurs
 
-This is just a sandbox to play around with a simple JHipter generated monolith application and deploy it to various cloud providers and containers.
+This is just a sandbox to play around with a simple JHipter generated monolith application and deploy it to various
+cloud providers and containers.
 
 _The original generated README.md has been renamed as [jhipster.md](jhipster.md)._
 
@@ -33,7 +34,8 @@ With these responses to the JHipster generation questions (responses updated for
     ? Besides JUnit and Karma, which testing frameworks would you like to use? Gatling, Cucumber, Protractor
     ? Would you like to install other generators from the JHipster Marketplace? No
 
-The source for the dinosaurs jdl can be found in the [RatJuggler/jhipster-jdl](https://github.com/RatJuggler/jhipster-jdl) repository.
+The source for the dinosaurs jdl can be found in the [RatJuggler/jhipster-jdl](https://github.com/RatJuggler/jhipster-jdl)
+repository.
 
 ## Heroku
 
@@ -41,8 +43,7 @@ A Heroku test deployment is currently available [here](https://jhipster-dinosaur
 
 The deployment was created and deployed using the following commands:
 
-    jhipster heroku
-    mvn package -Pprod -DskipTests
+    ./mvnw package -Pprod -DskipTests
     heroku deploy:jar target/dinosaurs.jar --app jhipster-dinosaurs
 
 ## Docker
@@ -54,11 +55,12 @@ Create a docker image and push to docker hub then run up a local instance:
     sudo docker push johnchase/dinosaurs:latest
     docker-compose -f src/main/docker/app.yml up -d
 
-## Kubernetes (minikube)
+# **_ The following deployments are in the process of being re-tested with the latest release _**
 
-    md dinosaurs
-    cd dinosaurs
-    jhipster kubernetes
+## Kubernetes
+
+Requires a docker image, as per the previous section, as well as kubectl and minikube:
+
     kubectl apply -f ./dinosaurs
 
 ## Google Cloud
@@ -68,17 +70,17 @@ Create a docker image and push to docker hub then run up a local instance:
     - This generates a kubectl context
     gcloud container clusters get-credentials jhipster-dinosaurs
 
-## Pivotal (Cloud Foundry)
+## Cloud Foundry (Pivotal)
 
 A Cloud Foundry deployment was tested but is no longer available.
 
 The deployment was created and deployed using the following commands:
 
     jhipster cloudfoundry  (Database: cleardb, Plan: spark; the resulting manifest was saved for future deployments)
-    mvn package -Pprod-DskipTests
+    ./mvnw package -Pprod -DskipTests
     cf push -f ./src/main/cloudfoundry/manifest.yml -t 120 -p target/dinosaurs.war
 
-## Attributions
+# Attributions
 
 Sauropod icon from [Twemoji](https://twemoji.twitter.com/content/twemoji-twitter/en.html).
 
