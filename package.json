@@ -1,9 +1,9 @@
 {
   "name": "dinosaurs",
-  "version": "0.0.1-SNAPSHOT",
+  "version": "0.0.6-SNAPSHOT",
   "description": "Description for dinosaurs",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "cacheDirectories": [
     "node_modules"
   ],
