@@ -3,7 +3,7 @@
     "promptValues": {
       "packageName": "com.rj.dinosaurs"
     },
-    "jhipsterVersion": "6.1.2",
+    "jhipsterVersion": "6.3.1",
     "applicationType": "monolith",
     "baseName": "dinosaurs",
     "packageName": "com.rj.dinosaurs",
@@ -21,16 +21,19 @@
     "serviceDiscoveryType": false,
     "buildTool": "maven",
     "enableSwaggerCodegen": false,
-    "jwtSecretKey": "OWRhYzIwMTkwMDlmYjk2M2JiNjg4ZmVmMDhhNTk0YTczZWZmZWY2NDEyMzM2OTAzNGExODYyNTkxZWMxZTQzNmUwOWM5MjdlOGY2ZDFmYTc5MzkxYTgyMTk0NDdlNTFlNDRiZDUwZTgzMmZmNTk2NjM1ZTMwMzljMjdmODY4YWI=",
-    "clientFramework": "angularX",
+    "jwtSecretKey": "NzEwM2IwOTM2ODliZjY1MjUxM2E1MjViMTdlY2MyYTFmMmEwMjhjNjA4NmNlMjFkYTY3Y2FhNzE3YmNmMmMwY2U4ODQwYzNiZGViOTQ2NWZmYWVjNmJiNzA4Zjc2YjcwZDQ5Yzg4ZDI5N2UzZGU0OGRmOTkyMGZkNWYxOTJmYWY=",
+    "embeddableLaunchScript": false,
     "useSass": true,
     "clientPackageManager": "npm",
+    "clientFramework": "angularX",
+    "clientTheme": "none",
+    "clientThemeVariant": "",
     "testFrameworks": ["gatling", "cucumber", "protractor"],
     "jhiPrefix": "jhi",
     "entitySuffix": "",
     "dtoSuffix": "DTO",
     "otherModules": [],
     "enableTranslation": false,
-    "clientTheme": "none"
+    "blueprints": []
   }
 }

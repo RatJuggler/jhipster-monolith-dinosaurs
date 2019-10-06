@@ -6,7 +6,7 @@
     <!--
         Added the constraints for entity Dinosaur.
     -->
-    <changeSet id="20180309191221-2" author="jhipster">
+    <changeSet id="20191004184340-2" author="jhipster">
         
         <addForeignKeyConstraint baseColumnNames="era_id"
                                  baseTableName="dinosaur"

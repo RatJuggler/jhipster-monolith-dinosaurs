@@ -4,7 +4,7 @@
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-dinosaur" [routerLink]="['/dinosaur/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span >
-            Create new Dinosaur
+            Create a new Dinosaur
             </span>
         </button>
     </h2>
@@ -14,7 +14,7 @@
         <span>No dinosaurs found</span>
     </div>
     <div class="table-responsive" *ngIf="dinosaurs?.length > 0">
-        <table class="table table-striped">
+        <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
             <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
@@ -40,12 +40,12 @@
                 <td>{{dinosaur.modifiedDt | date:'medium'}}</td>
                 <td>
                     <div *ngIf="dinosaur.eraId">
-                        <a [routerLink]="['../era', dinosaur.eraId , 'view' ]" >{{dinosaur.eraName}}</a>
+                        <a [routerLink]="['/era', dinosaur.eraId , 'view' ]" >{{dinosaur.eraName}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="dinosaur.cladeId">
-                        <a [routerLink]="['../clade', dinosaur.cladeId , 'view' ]" >{{dinosaur.cladeDescription}}</a>
+                        <a [routerLink]="['/clade', dinosaur.cladeId , 'view' ]" >{{dinosaur.cladeDescription}}</a>
                     </div>
                 </td>
                 <td class="text-right">
@@ -63,7 +63,7 @@
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', 'dinosaur', { outlets: { popup: dinosaur.id + '/delete'} }]"
+                                [routerLink]="['/dinosaur', { outlets: { popup: dinosaur.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">

@@ -3,7 +3,9 @@ import { Router } from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import { VERSION } from 'app/app.constants';
-import { AccountService, LoginModalService, LoginService } from 'app/core';
+import { AccountService } from 'app/core/auth/account.service';
+import { LoginModalService } from 'app/core/login/login-modal.service';
+import { LoginService } from 'app/core/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 
 @Component({
@@ -26,7 +28,7 @@ export class NavbarComponent implements OnInit {
     private profileService: ProfileService,
     private router: Router
   ) {
-    this.version = VERSION ? 'v' + VERSION : '';
+    this.version = VERSION ? (VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION) : '';
     this.isNavbarCollapsed = true;
   }
 

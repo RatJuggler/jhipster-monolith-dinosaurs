@@ -12,7 +12,7 @@
         }
     ],
     "relationships": [],
-    "changelogDate": "20190321130205",
+    "changelogDate": "20191004184339",
     "entityTableName": "clade",
     "dto": "mapstruct",
     "pagination": "pagination",

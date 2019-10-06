@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Integration tests for the {@Link EraResource} REST controller.
+ * Integration tests for the {@link EraResource} REST controller.
  */
 @SpringBootTest(classes = DinosaursApp.class)
 public class EraResourceIT {
@@ -41,9 +41,11 @@ public class EraResourceIT {
 
     private static final Integer DEFAULT_FROM_MA = 0;
     private static final Integer UPDATED_FROM_MA = 1;
+    private static final Integer SMALLER_FROM_MA = 0 - 1;
 
     private static final Integer DEFAULT_TO_MA = 0;
     private static final Integer UPDATED_TO_MA = 1;
+    private static final Integer SMALLER_TO_MA = 0 - 1;
 
     @Autowired
     private EraRepository eraRepository;

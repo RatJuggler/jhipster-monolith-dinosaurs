@@ -16,8 +16,8 @@
 logging:
   level:
     ROOT: INFO
-    com.rj.dinosaurs: INFO
     io.github.jhipster: INFO
+    com.rj.dinosaurs: INFO
 
 management:
   metrics:
@@ -113,12 +113,11 @@ jhipster:
         # - In the JHipster Registry (which includes a Spring Cloud Config server)
         # - In a separate `application-prod.yml` file, in the same folder as your executable JAR file
         # - In the `JHIPSTER_SECURITY_AUTHENTICATION_JWT_BASE64_SECRET` environment variable
-        base64-secret: OWRhYzIwMTkwMDlmYjk2M2JiNjg4ZmVmMDhhNTk0YTczZWZmZWY2NDEyMzM2OTAzNGExODYyNTkxZWMxZTQzNmUwOWM5MjdlOGY2ZDFmYTc5MzkxYTgyMTk0NDdlNTFlNDRiZDUwZTgzMmZmNTk2NjM1ZTMwMzljMjdmODY4YWI=
+        base64-secret: NzEwM2IwOTM2ODliZjY1MjUxM2E1MjViMTdlY2MyYTFmMmEwMjhjNjA4NmNlMjFkYTY3Y2FhNzE3YmNmMmMwY2U4ODQwYzNiZGViOTQ2NWZmYWVjNmJiNzA4Zjc2YjcwZDQ5Yzg4ZDI5N2UzZGU0OGRmOTkyMGZkNWYxOTJmYWY=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000
   mail: # specific JHipster mail property, for standard properties see MailProperties
-    from: dinosaurs@localhost
     base-url: http://my-server-url-to-change # Modify according to your server's URL
   metrics:
     logs: # Reports metrics in the logs
@@ -131,6 +130,9 @@ jhipster:
       host: localhost
       port: 5000
       queue-size: 512
+  audit-events:
+    retention-period: 30 # Number of days before audit events are deleted.
+
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class

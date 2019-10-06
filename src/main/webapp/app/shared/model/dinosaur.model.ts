@@ -1,10 +1,5 @@
 import { Moment } from 'moment';
-
-export const enum Diet {
-  HERBIVORE = 'HERBIVORE',
-  CARNIVORE = 'CARNIVORE',
-  OMNIVORE = 'OMNIVORE'
-}
+import { Diet } from 'app/shared/model/enumerations/diet.model';
 
 export interface IDinosaur {
   id?: number;

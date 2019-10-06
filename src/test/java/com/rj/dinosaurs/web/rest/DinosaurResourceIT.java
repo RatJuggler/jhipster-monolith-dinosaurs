@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.rj.dinosaurs.domain.enumeration.Diet;
 /**
- * Integration tests for the {@Link DinosaurResource} REST controller.
+ * Integration tests for the {@link DinosaurResource} REST controller.
  */
 @SpringBootTest(classes = DinosaursApp.class)
 public class DinosaurResourceIT {
@@ -44,18 +44,22 @@ public class DinosaurResourceIT {
 
     private static final Integer DEFAULT_WEIGHT = 0;
     private static final Integer UPDATED_WEIGHT = 1;
+    private static final Integer SMALLER_WEIGHT = 0 - 1;
 
     private static final Integer DEFAULT_LENGTH = 0;
     private static final Integer UPDATED_LENGTH = 1;
+    private static final Integer SMALLER_LENGTH = 0 - 1;
 
     private static final Diet DEFAULT_DIET = Diet.HERBIVORE;
     private static final Diet UPDATED_DIET = Diet.CARNIVORE;
 
     private static final Instant DEFAULT_INSERT_DT = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_INSERT_DT = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final Instant SMALLER_INSERT_DT = Instant.ofEpochMilli(-1L);
 
     private static final Instant DEFAULT_MODIFIED_DT = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_MODIFIED_DT = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final Instant SMALLER_MODIFIED_DT = Instant.ofEpochMilli(-1L);
 
     @Autowired
     private DinosaurRepository dinosaurRepository;

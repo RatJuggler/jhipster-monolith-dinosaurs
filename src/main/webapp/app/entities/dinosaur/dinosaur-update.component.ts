@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -10,9 +12,9 @@ import { JhiAlertService } from 'ng-jhipster';
 import { IDinosaur, Dinosaur } from 'app/shared/model/dinosaur.model';
 import { DinosaurService } from './dinosaur.service';
 import { IEra } from 'app/shared/model/era.model';
-import { EraService } from 'app/entities/era';
+import { EraService } from 'app/entities/era/era.service';
 import { IClade } from 'app/shared/model/clade.model';
-import { CladeService } from 'app/entities/clade';
+import { CladeService } from 'app/entities/clade/clade.service';
 
 @Component({
   selector: 'jhi-dinosaur-update',

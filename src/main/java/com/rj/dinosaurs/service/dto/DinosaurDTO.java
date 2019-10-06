@@ -1,5 +1,4 @@
 package com.rj.dinosaurs.service.dto;
-
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -32,6 +31,7 @@ public class DinosaurDTO implements Serializable {
 
     @NotNull
     private Instant modifiedDt;
+
 
     private Long eraId;
 

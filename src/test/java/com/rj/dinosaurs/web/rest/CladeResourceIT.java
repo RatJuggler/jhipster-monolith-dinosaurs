@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Integration tests for the {@Link CladeResource} REST controller.
+ * Integration tests for the {@link CladeResource} REST controller.
  */
 @SpringBootTest(classes = DinosaursApp.class)
 public class CladeResourceIT {

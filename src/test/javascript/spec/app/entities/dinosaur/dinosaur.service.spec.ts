@@ -1,13 +1,11 @@
-/* tslint:disable max-line-length */
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { of } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { DinosaurService } from 'app/entities/dinosaur/dinosaur.service';
-import { IDinosaur, Dinosaur, Diet } from 'app/shared/model/dinosaur.model';
+import { IDinosaur, Dinosaur } from 'app/shared/model/dinosaur.model';
+import { Diet } from 'app/shared/model/enumerations/diet.model';
 
 describe('Service Tests', () => {
   describe('Dinosaur Service', () => {
@@ -31,7 +29,7 @@ describe('Service Tests', () => {
     });
 
     describe('Service methods', () => {
-      it('should find an element', async () => {
+      it('should find an element', () => {
         const returnedFromService = Object.assign(
           {
             insertDt: currentDate.format(DATE_TIME_FORMAT),
@@ -49,7 +47,7 @@ describe('Service Tests', () => {
         expect(expectedResult).toMatchObject({ body: elemDefault });
       });
 
-      it('should create a Dinosaur', async () => {
+      it('should create a Dinosaur', () => {
         const returnedFromService = Object.assign(
           {
             id: 0,
@@ -74,7 +72,7 @@ describe('Service Tests', () => {
         expect(expectedResult).toMatchObject({ body: expected });
       });
 
-      it('should update a Dinosaur', async () => {
+      it('should update a Dinosaur', () => {
         const returnedFromService = Object.assign(
           {
             name: 'BBBBBB',
@@ -103,7 +101,7 @@ describe('Service Tests', () => {
         expect(expectedResult).toMatchObject({ body: expected });
       });
 
-      it('should return a list of Dinosaur', async () => {
+      it('should return a list of Dinosaur', () => {
         const returnedFromService = Object.assign(
           {
             name: 'BBBBBB',
@@ -135,8 +133,8 @@ describe('Service Tests', () => {
         expect(expectedResult).toContainEqual(expected);
       });
 
-      it('should delete a Dinosaur', async () => {
-        const rxPromise = service.delete(123).subscribe(resp => (expectedResult = resp.ok));
+      it('should delete a Dinosaur', () => {
+        service.delete(123).subscribe(resp => (expectedResult = resp.ok));
 
         const req = httpMock.expectOne({ method: 'DELETE' });
         req.flush({ status: 200 });

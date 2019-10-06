@@ -32,7 +32,7 @@
         }
     ],
     "relationships": [],
-    "changelogDate": "20190321130204",
+    "changelogDate": "20191004184338",
     "entityTableName": "era",
     "dto": "mapstruct",
     "pagination": "pagination",

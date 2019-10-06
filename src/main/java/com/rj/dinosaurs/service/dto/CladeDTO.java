@@ -1,6 +1,4 @@
 package com.rj.dinosaurs.service.dto;
-
-
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -15,6 +13,7 @@ public class CladeDTO implements Serializable {
     @NotNull
     @Size(max = 64)
     private String description;
+
 
     public Long getId() {
         return id;
@@ -42,7 +41,7 @@ public class CladeDTO implements Serializable {
         }
 
         CladeDTO cladeDTO = (CladeDTO) o;
-        if(cladeDTO.getId() == null || getId() == null) {
+        if (cladeDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), cladeDTO.getId());

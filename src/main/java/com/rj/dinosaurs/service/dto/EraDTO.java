@@ -1,6 +1,4 @@
 package com.rj.dinosaurs.service.dto;
-
-
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -23,6 +21,7 @@ public class EraDTO implements Serializable {
     @Min(value = 0)
     @Max(value = 999)
     private Integer toMa;
+
 
     public Long getId() {
         return id;
@@ -66,7 +65,7 @@ public class EraDTO implements Serializable {
         }
 
         EraDTO eraDTO = (EraDTO) o;
-        if(eraDTO.getId() == null || getId() == null) {
+        if (eraDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), eraDTO.getId());

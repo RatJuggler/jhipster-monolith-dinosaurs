@@ -1,4 +1,4 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
@@ -6,22 +6,18 @@ import { RouterModule } from '@angular/router';
     RouterModule.forChild([
       {
         path: 'era',
-        loadChildren: './era/era.module#DinosaursEraModule'
+        loadChildren: () => import('./era/era.module').then(m => m.DinosaursEraModule)
       },
       {
         path: 'clade',
-        loadChildren: './clade/clade.module#DinosaursCladeModule'
+        loadChildren: () => import('./clade/clade.module').then(m => m.DinosaursCladeModule)
       },
       {
         path: 'dinosaur',
-        loadChildren: './dinosaur/dinosaur.module#DinosaursDinosaurModule'
+        loadChildren: () => import('./dinosaur/dinosaur.module').then(m => m.DinosaursDinosaurModule)
       }
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ])
-  ],
-  declarations: [],
-  entryComponents: [],
-  providers: [],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  ]
 })
 export class DinosaursEntityModule {}

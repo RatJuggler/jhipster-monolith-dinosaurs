@@ -1,5 +1,4 @@
 package com.rj.dinosaurs.repository;
-
 import com.rj.dinosaurs.domain.Dinosaur;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
