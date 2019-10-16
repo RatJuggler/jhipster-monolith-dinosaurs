@@ -44,22 +44,18 @@ public class DinosaurResourceIT {
 
     private static final Integer DEFAULT_WEIGHT = 0;
     private static final Integer UPDATED_WEIGHT = 1;
-    private static final Integer SMALLER_WEIGHT = 0 - 1;
 
     private static final Integer DEFAULT_LENGTH = 0;
     private static final Integer UPDATED_LENGTH = 1;
-    private static final Integer SMALLER_LENGTH = 0 - 1;
 
     private static final Diet DEFAULT_DIET = Diet.HERBIVORE;
     private static final Diet UPDATED_DIET = Diet.CARNIVORE;
 
     private static final Instant DEFAULT_INSERT_DT = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_INSERT_DT = Instant.now().truncatedTo(ChronoUnit.MILLIS);
-    private static final Instant SMALLER_INSERT_DT = Instant.ofEpochMilli(-1L);
 
     private static final Instant DEFAULT_MODIFIED_DT = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_MODIFIED_DT = Instant.now().truncatedTo(ChronoUnit.MILLIS);
-    private static final Instant SMALLER_MODIFIED_DT = Instant.ofEpochMilli(-1L);
 
     @Autowired
     private DinosaurRepository dinosaurRepository;
@@ -252,7 +248,7 @@ public class DinosaurResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(dinosaur.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT)))
             .andExpect(jsonPath("$.[*].length").value(hasItem(DEFAULT_LENGTH)))
             .andExpect(jsonPath("$.[*].diet").value(hasItem(DEFAULT_DIET.toString())))
@@ -271,7 +267,7 @@ public class DinosaurResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(dinosaur.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.weight").value(DEFAULT_WEIGHT))
             .andExpect(jsonPath("$.length").value(DEFAULT_LENGTH))
             .andExpect(jsonPath("$.diet").value(DEFAULT_DIET.toString()))

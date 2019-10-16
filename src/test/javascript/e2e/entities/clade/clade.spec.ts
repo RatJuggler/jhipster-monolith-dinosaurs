@@ -10,8 +10,8 @@ const expect = chai.expect;
 describe('Clade e2e test', () => {
   let navBarPage: NavBarPage;
   let signInPage: SignInPage;
-  let cladeUpdatePage: CladeUpdatePage;
   let cladeComponentsPage: CladeComponentsPage;
+  let cladeUpdatePage: CladeUpdatePage;
   let cladeDeleteDialog: CladeDeleteDialog;
 
   before(async () => {

@@ -10,8 +10,8 @@ const expect = chai.expect;
 describe('Dinosaur e2e test', () => {
   let navBarPage: NavBarPage;
   let signInPage: SignInPage;
-  let dinosaurUpdatePage: DinosaurUpdatePage;
   let dinosaurComponentsPage: DinosaurComponentsPage;
+  let dinosaurUpdatePage: DinosaurUpdatePage;
   let dinosaurDeleteDialog: DinosaurDeleteDialog;
 
   before(async () => {
