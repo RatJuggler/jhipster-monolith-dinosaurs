@@ -1,6 +1,5 @@
 package com.rj.dinosaurs.service.mapper;
 
-
 import com.rj.dinosaurs.DinosaursApp;
 import com.rj.dinosaurs.domain.User;
 import com.rj.dinosaurs.service.dto.UserDTO;

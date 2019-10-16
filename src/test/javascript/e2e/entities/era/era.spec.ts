@@ -10,8 +10,8 @@ const expect = chai.expect;
 describe('Era e2e test', () => {
   let navBarPage: NavBarPage;
   let signInPage: SignInPage;
-  let eraUpdatePage: EraUpdatePage;
   let eraComponentsPage: EraComponentsPage;
+  let eraUpdatePage: EraUpdatePage;
   let eraDeleteDialog: EraDeleteDialog;
 
   before(async () => {

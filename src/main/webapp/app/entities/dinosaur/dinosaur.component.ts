@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { filter, map } from 'rxjs/operators';
-import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiParseLinks } from 'ng-jhipster';
 
 import { IDinosaur } from 'app/shared/model/dinosaur.model';
 import { AccountService } from 'app/core/auth/account.service';
@@ -28,7 +28,6 @@ export class DinosaurComponent implements OnInit, OnDestroy {
 
   constructor(
     protected dinosaurService: DinosaurService,
-    protected jhiAlertService: JhiAlertService,
     protected eventManager: JhiEventManager,
     protected parseLinks: JhiParseLinks,
     protected accountService: AccountService
@@ -50,10 +49,7 @@ export class DinosaurComponent implements OnInit, OnDestroy {
         size: this.itemsPerPage,
         sort: this.sort()
       })
-      .subscribe(
-        (res: HttpResponse<IDinosaur[]>) => this.paginateDinosaurs(res.body, res.headers),
-        (res: HttpErrorResponse) => this.onError(res.message)
-      );
+      .subscribe((res: HttpResponse<IDinosaur[]>) => this.paginateDinosaurs(res.body, res.headers));
   }
 
   reset() {
@@ -69,7 +65,7 @@ export class DinosaurComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadAll();
-    this.accountService.identity().then(account => {
+    this.accountService.identity().subscribe(account => {
       this.currentAccount = account;
     });
     this.registerChangeInDinosaurs();
@@ -101,9 +97,5 @@ export class DinosaurComponent implements OnInit, OnDestroy {
     for (let i = 0; i < data.length; i++) {
       this.dinosaurs.push(data[i]);
     }
-  }
-
-  protected onError(errorMessage: string) {
-    this.jhiAlertService.error(errorMessage, null, null);
   }
 }

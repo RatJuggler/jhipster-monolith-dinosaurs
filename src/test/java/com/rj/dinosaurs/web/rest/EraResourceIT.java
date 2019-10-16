@@ -41,11 +41,9 @@ public class EraResourceIT {
 
     private static final Integer DEFAULT_FROM_MA = 0;
     private static final Integer UPDATED_FROM_MA = 1;
-    private static final Integer SMALLER_FROM_MA = 0 - 1;
 
     private static final Integer DEFAULT_TO_MA = 0;
     private static final Integer UPDATED_TO_MA = 1;
-    private static final Integer SMALLER_TO_MA = 0 - 1;
 
     @Autowired
     private EraRepository eraRepository;
@@ -191,7 +189,7 @@ public class EraResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(era.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].fromMa").value(hasItem(DEFAULT_FROM_MA)))
             .andExpect(jsonPath("$.[*].toMa").value(hasItem(DEFAULT_TO_MA)));
     }
@@ -207,7 +205,7 @@ public class EraResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(era.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.fromMa").value(DEFAULT_FROM_MA))
             .andExpect(jsonPath("$.toMa").value(DEFAULT_TO_MA));
     }
