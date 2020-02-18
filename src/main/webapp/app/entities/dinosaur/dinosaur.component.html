@@ -1,79 +1,82 @@
 <div>
     <h2 id="page-heading">
         <span>Dinosaurs</span>
+
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-dinosaur" [routerLink]="['/dinosaur/new']">
-            <fa-icon [icon]="'plus'"></fa-icon>
-            <span >
+            <fa-icon icon="plus"></fa-icon>
+            <span>
             Create a new Dinosaur
             </span>
         </button>
     </h2>
+
     <jhi-alert-error></jhi-alert-error>
+
     <jhi-alert></jhi-alert>
-    <br/>
-    <div class="alert alert-warning" *ngIf="dinosaurs?.length === 0">
+
+    <div class="alert alert-warning" id="no-result" *ngIf="dinosaurs?.length === 0">
         <span>No dinosaurs found</span>
     </div>
-    <div class="table-responsive" *ngIf="dinosaurs?.length > 0">
+
+    <div class="table-responsive" id="entities" *ngIf="dinosaurs?.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
-            <th scope="col"  jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="name"><span>Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="weight"><span>Weight</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="length"><span>Length</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="diet"><span>Diet</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="insertDt"><span>Insert Dt</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="modifiedDt"><span>Modified Dt</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="eraName"><span>Era</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="cladeDescription"><span>Clade</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"></th>
-            </tr>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="name"><span>Name</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="weight"><span>Weight</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="length"><span>Length</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="diet"><span>Diet</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="insertDt"><span>Insert Dt</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="modifiedDt"><span>Modified Dt</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="eraName"><span>Era</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="cladeDescription"><span>Clade</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
-            <tr *ngFor="let dinosaur of dinosaurs ;trackBy: trackId">
-                <td><a [routerLink]="['/dinosaur', dinosaur.id, 'view' ]">{{dinosaur.id}}</a></td>
-                <td>{{dinosaur.name}}</td>
-                <td>{{dinosaur.weight}}</td>
-                <td>{{dinosaur.length}}</td>
-                <td>{{dinosaur.diet}}</td>
-                <td>{{dinosaur.insertDt | date:'medium'}}</td>
-                <td>{{dinosaur.modifiedDt | date:'medium'}}</td>
-                <td>
-                    <div *ngIf="dinosaur.eraId">
-                        <a [routerLink]="['/era', dinosaur.eraId , 'view' ]" >{{dinosaur.eraName}}</a>
-                    </div>
-                </td>
-                <td>
-                    <div *ngIf="dinosaur.cladeId">
-                        <a [routerLink]="['/clade', dinosaur.cladeId , 'view' ]" >{{dinosaur.cladeDescription}}</a>
-                    </div>
-                </td>
-                <td class="text-right">
-                    <div class="btn-group">
-                        <button type="submit"
-                                [routerLink]="['/dinosaur', dinosaur.id, 'view' ]"
-                                class="btn btn-info btn-sm">
-                            <fa-icon [icon]="'eye'"></fa-icon>
-                            <span class="d-none d-md-inline">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/dinosaur', dinosaur.id, 'edit']"
-                                class="btn btn-primary btn-sm">
-                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
-                            <span class="d-none d-md-inline">Edit</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/dinosaur', { outlets: { popup: dinosaur.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <fa-icon [icon]="'times'"></fa-icon>
-                            <span class="d-none d-md-inline">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+                <tr *ngFor="let dinosaur of dinosaurs ;trackBy: trackId">
+                    <td><a [routerLink]="['/dinosaur', dinosaur.id, 'view']">{{ dinosaur.id }}</a></td>
+                    <td>{{ dinosaur.name }}</td>
+                    <td>{{ dinosaur.weight }}</td>
+                    <td>{{ dinosaur.length }}</td>
+                    <td>{{ dinosaur.diet }}</td>
+                    <td>{{ dinosaur.insertDt | date:'medium' }}</td>
+                    <td>{{ dinosaur.modifiedDt | date:'medium' }}</td>
+                    <td>
+                        <div *ngIf="dinosaur.eraId">
+                            <a [routerLink]="['/era', dinosaur.eraId , 'view']" >{{ dinosaur.eraName }}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div *ngIf="dinosaur.cladeId">
+                            <a [routerLink]="['/clade', dinosaur.cladeId , 'view']" >{{ dinosaur.cladeDescription }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/dinosaur', dinosaur.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/dinosaur', dinosaur.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(dinosaur)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

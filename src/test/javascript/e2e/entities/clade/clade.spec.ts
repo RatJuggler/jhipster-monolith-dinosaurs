@@ -1,8 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { browser, ExpectedConditions as ec, promise } from 'protractor';
 import { NavBarPage, SignInPage } from '../../page-objects/jhi-page-objects';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { CladeComponentsPage, CladeDeleteDialog, CladeUpdatePage } from './clade.page-object';
 
 const expect = chai.expect;
@@ -27,6 +25,7 @@ describe('Clade e2e test', () => {
     cladeComponentsPage = new CladeComponentsPage();
     await browser.wait(ec.visibilityOf(cladeComponentsPage.title), 5000);
     expect(await cladeComponentsPage.getTitle()).to.eq('Clades');
+    await browser.wait(ec.or(ec.visibilityOf(cladeComponentsPage.entities), ec.visibilityOf(cladeComponentsPage.noResult)), 1000);
   });
 
   it('should load create Clade page', async () => {
@@ -40,8 +39,11 @@ describe('Clade e2e test', () => {
     const nbButtonsBeforeCreate = await cladeComponentsPage.countDeleteButtons();
 
     await cladeComponentsPage.clickOnCreateButton();
+
     await promise.all([cladeUpdatePage.setDescriptionInput('description')]);
+
     expect(await cladeUpdatePage.getDescriptionInput()).to.eq('description', 'Expected Description value to be equals to description');
+
     await cladeUpdatePage.save();
     expect(await cladeUpdatePage.getSaveButton().isPresent(), 'Expected save button disappear').to.be.false;
 

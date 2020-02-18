@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import * as moment from 'moment';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { DATE_FORMAT } from 'app/shared/constants/input.constants';
 import { map } from 'rxjs/operators';
+import * as moment from 'moment';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared/util/request-util';
@@ -46,22 +44,22 @@ export class DinosaurService {
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
-  delete(id: number): Observable<HttpResponse<any>> {
-    return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  delete(id: number): Observable<HttpResponse<{}>> {
+    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
   protected convertDateFromClient(dinosaur: IDinosaur): IDinosaur {
     const copy: IDinosaur = Object.assign({}, dinosaur, {
-      insertDt: dinosaur.insertDt != null && dinosaur.insertDt.isValid() ? dinosaur.insertDt.toJSON() : null,
-      modifiedDt: dinosaur.modifiedDt != null && dinosaur.modifiedDt.isValid() ? dinosaur.modifiedDt.toJSON() : null
+      insertDt: dinosaur.insertDt && dinosaur.insertDt.isValid() ? dinosaur.insertDt.toJSON() : undefined,
+      modifiedDt: dinosaur.modifiedDt && dinosaur.modifiedDt.isValid() ? dinosaur.modifiedDt.toJSON() : undefined
     });
     return copy;
   }
 
   protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
     if (res.body) {
-      res.body.insertDt = res.body.insertDt != null ? moment(res.body.insertDt) : null;
-      res.body.modifiedDt = res.body.modifiedDt != null ? moment(res.body.modifiedDt) : null;
+      res.body.insertDt = res.body.insertDt ? moment(res.body.insertDt) : undefined;
+      res.body.modifiedDt = res.body.modifiedDt ? moment(res.body.modifiedDt) : undefined;
     }
     return res;
   }
@@ -69,8 +67,8 @@ export class DinosaurService {
   protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
     if (res.body) {
       res.body.forEach((dinosaur: IDinosaur) => {
-        dinosaur.insertDt = dinosaur.insertDt != null ? moment(dinosaur.insertDt) : null;
-        dinosaur.modifiedDt = dinosaur.modifiedDt != null ? moment(dinosaur.modifiedDt) : null;
+        dinosaur.insertDt = dinosaur.insertDt ? moment(dinosaur.insertDt) : undefined;
+        dinosaur.modifiedDt = dinosaur.modifiedDt ? moment(dinosaur.modifiedDt) : undefined;
       });
     }
     return res;

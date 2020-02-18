@@ -5,7 +5,8 @@ import com.rj.dinosaurs.config.Constants;
 import com.rj.dinosaurs.domain.User;
 import com.rj.dinosaurs.repository.UserRepository;
 import com.rj.dinosaurs.service.dto.UserDTO;
-import com.rj.dinosaurs.service.util.RandomUtil;
+
+import io.github.jhipster.security.RandomUtil;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;

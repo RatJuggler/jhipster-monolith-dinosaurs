@@ -143,7 +143,7 @@ public class DinosaurResourceIT {
         // Create the Dinosaur
         DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
         restDinosaurMockMvc.perform(post("/api/dinosaurs")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
             .andExpect(status().isCreated());
 
@@ -170,7 +170,7 @@ public class DinosaurResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restDinosaurMockMvc.perform(post("/api/dinosaurs")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
             .andExpect(status().isBadRequest());
 
@@ -191,7 +191,7 @@ public class DinosaurResourceIT {
         DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
 
         restDinosaurMockMvc.perform(post("/api/dinosaurs")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
             .andExpect(status().isBadRequest());
 
@@ -210,7 +210,7 @@ public class DinosaurResourceIT {
         DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
 
         restDinosaurMockMvc.perform(post("/api/dinosaurs")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
             .andExpect(status().isBadRequest());
 
@@ -229,7 +229,7 @@ public class DinosaurResourceIT {
         DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
 
         restDinosaurMockMvc.perform(post("/api/dinosaurs")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
             .andExpect(status().isBadRequest());
 
@@ -246,7 +246,7 @@ public class DinosaurResourceIT {
         // Get all the dinosaurList
         restDinosaurMockMvc.perform(get("/api/dinosaurs?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(dinosaur.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT)))
@@ -265,7 +265,7 @@ public class DinosaurResourceIT {
         // Get the dinosaur
         restDinosaurMockMvc.perform(get("/api/dinosaurs/{id}", dinosaur.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(dinosaur.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.weight").value(DEFAULT_WEIGHT))
@@ -305,7 +305,7 @@ public class DinosaurResourceIT {
         DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(updatedDinosaur);
 
         restDinosaurMockMvc.perform(put("/api/dinosaurs")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
             .andExpect(status().isOk());
 
@@ -331,7 +331,7 @@ public class DinosaurResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restDinosaurMockMvc.perform(put("/api/dinosaurs")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
             .andExpect(status().isBadRequest());
 
@@ -350,49 +350,11 @@ public class DinosaurResourceIT {
 
         // Delete the dinosaur
         restDinosaurMockMvc.perform(delete("/api/dinosaurs/{id}", dinosaur.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
         List<Dinosaur> dinosaurList = dinosaurRepository.findAll();
         assertThat(dinosaurList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Dinosaur.class);
-        Dinosaur dinosaur1 = new Dinosaur();
-        dinosaur1.setId(1L);
-        Dinosaur dinosaur2 = new Dinosaur();
-        dinosaur2.setId(dinosaur1.getId());
-        assertThat(dinosaur1).isEqualTo(dinosaur2);
-        dinosaur2.setId(2L);
-        assertThat(dinosaur1).isNotEqualTo(dinosaur2);
-        dinosaur1.setId(null);
-        assertThat(dinosaur1).isNotEqualTo(dinosaur2);
-    }
-
-    @Test
-    @Transactional
-    public void dtoEqualsVerifier() throws Exception {
-        TestUtil.equalsVerifier(DinosaurDTO.class);
-        DinosaurDTO dinosaurDTO1 = new DinosaurDTO();
-        dinosaurDTO1.setId(1L);
-        DinosaurDTO dinosaurDTO2 = new DinosaurDTO();
-        assertThat(dinosaurDTO1).isNotEqualTo(dinosaurDTO2);
-        dinosaurDTO2.setId(dinosaurDTO1.getId());
-        assertThat(dinosaurDTO1).isEqualTo(dinosaurDTO2);
-        dinosaurDTO2.setId(2L);
-        assertThat(dinosaurDTO1).isNotEqualTo(dinosaurDTO2);
-        dinosaurDTO1.setId(null);
-        assertThat(dinosaurDTO1).isNotEqualTo(dinosaurDTO2);
-    }
-
-    @Test
-    @Transactional
-    public void testEntityFromId() {
-        assertThat(dinosaurMapper.fromId(42L).getId()).isEqualTo(42);
-        assertThat(dinosaurMapper.fromId(null)).isNull();
     }
 }

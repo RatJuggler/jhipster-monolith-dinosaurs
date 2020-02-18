@@ -115,7 +115,7 @@ public class CladeResourceIT {
         // Create the Clade
         CladeDTO cladeDTO = cladeMapper.toDto(clade);
         restCladeMockMvc.perform(post("/api/clades")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(cladeDTO)))
             .andExpect(status().isCreated());
 
@@ -137,7 +137,7 @@ public class CladeResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCladeMockMvc.perform(post("/api/clades")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(cladeDTO)))
             .andExpect(status().isBadRequest());
 
@@ -158,7 +158,7 @@ public class CladeResourceIT {
         CladeDTO cladeDTO = cladeMapper.toDto(clade);
 
         restCladeMockMvc.perform(post("/api/clades")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(cladeDTO)))
             .andExpect(status().isBadRequest());
 
@@ -175,7 +175,7 @@ public class CladeResourceIT {
         // Get all the cladeList
         restCladeMockMvc.perform(get("/api/clades?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(clade.getId().intValue())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
     }
@@ -189,7 +189,7 @@ public class CladeResourceIT {
         // Get the clade
         restCladeMockMvc.perform(get("/api/clades/{id}", clade.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(clade.getId().intValue()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION));
     }
@@ -219,7 +219,7 @@ public class CladeResourceIT {
         CladeDTO cladeDTO = cladeMapper.toDto(updatedClade);
 
         restCladeMockMvc.perform(put("/api/clades")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(cladeDTO)))
             .andExpect(status().isOk());
 
@@ -240,7 +240,7 @@ public class CladeResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restCladeMockMvc.perform(put("/api/clades")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(cladeDTO)))
             .andExpect(status().isBadRequest());
 
@@ -259,49 +259,11 @@ public class CladeResourceIT {
 
         // Delete the clade
         restCladeMockMvc.perform(delete("/api/clades/{id}", clade.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
         List<Clade> cladeList = cladeRepository.findAll();
         assertThat(cladeList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Clade.class);
-        Clade clade1 = new Clade();
-        clade1.setId(1L);
-        Clade clade2 = new Clade();
-        clade2.setId(clade1.getId());
-        assertThat(clade1).isEqualTo(clade2);
-        clade2.setId(2L);
-        assertThat(clade1).isNotEqualTo(clade2);
-        clade1.setId(null);
-        assertThat(clade1).isNotEqualTo(clade2);
-    }
-
-    @Test
-    @Transactional
-    public void dtoEqualsVerifier() throws Exception {
-        TestUtil.equalsVerifier(CladeDTO.class);
-        CladeDTO cladeDTO1 = new CladeDTO();
-        cladeDTO1.setId(1L);
-        CladeDTO cladeDTO2 = new CladeDTO();
-        assertThat(cladeDTO1).isNotEqualTo(cladeDTO2);
-        cladeDTO2.setId(cladeDTO1.getId());
-        assertThat(cladeDTO1).isEqualTo(cladeDTO2);
-        cladeDTO2.setId(2L);
-        assertThat(cladeDTO1).isNotEqualTo(cladeDTO2);
-        cladeDTO1.setId(null);
-        assertThat(cladeDTO1).isNotEqualTo(cladeDTO2);
-    }
-
-    @Test
-    @Transactional
-    public void testEntityFromId() {
-        assertThat(cladeMapper.fromId(42L).getId()).isEqualTo(42);
-        assertThat(cladeMapper.fromId(null)).isNull();
     }
 }

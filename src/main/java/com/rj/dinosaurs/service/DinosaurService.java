@@ -28,7 +28,6 @@ public interface DinosaurService {
      */
     Page<DinosaurDTO> findAll(Pageable pageable);
 
-
     /**
      * Get the "id" dinosaur.
      *

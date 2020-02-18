@@ -8,17 +8,15 @@ import { IEra } from 'app/shared/model/era.model';
   templateUrl: './era-detail.component.html'
 })
 export class EraDetailComponent implements OnInit {
-  era: IEra;
+  era: IEra | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
-    this.activatedRoute.data.subscribe(({ era }) => {
-      this.era = era;
-    });
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ era }) => (this.era = era));
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 }

@@ -1,4 +1,5 @@
 package com.rj.dinosaurs.domain;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 

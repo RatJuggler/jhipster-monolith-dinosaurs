@@ -24,4 +24,4 @@ import { accountState } from './account.route';
     SettingsComponent
   ]
 })
-export class DinosaursAccountModule {}
+export class AccountModule {}

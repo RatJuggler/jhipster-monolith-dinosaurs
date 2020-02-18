@@ -1,8 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { browser, ExpectedConditions as ec, protractor, promise } from 'protractor';
 import { NavBarPage, SignInPage } from '../../page-objects/jhi-page-objects';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { DinosaurComponentsPage, DinosaurDeleteDialog, DinosaurUpdatePage } from './dinosaur.page-object';
 
 const expect = chai.expect;
@@ -27,6 +25,7 @@ describe('Dinosaur e2e test', () => {
     dinosaurComponentsPage = new DinosaurComponentsPage();
     await browser.wait(ec.visibilityOf(dinosaurComponentsPage.title), 5000);
     expect(await dinosaurComponentsPage.getTitle()).to.eq('Dinosaurs');
+    await browser.wait(ec.or(ec.visibilityOf(dinosaurComponentsPage.entities), ec.visibilityOf(dinosaurComponentsPage.noResult)), 1000);
   });
 
   it('should load create Dinosaur page', async () => {
@@ -40,6 +39,7 @@ describe('Dinosaur e2e test', () => {
     const nbButtonsBeforeCreate = await dinosaurComponentsPage.countDeleteButtons();
 
     await dinosaurComponentsPage.clickOnCreateButton();
+
     await promise.all([
       dinosaurUpdatePage.setNameInput('name'),
       dinosaurUpdatePage.setWeightInput('5'),
@@ -50,6 +50,7 @@ describe('Dinosaur e2e test', () => {
       dinosaurUpdatePage.eraSelectLastOption(),
       dinosaurUpdatePage.cladeSelectLastOption()
     ]);
+
     expect(await dinosaurUpdatePage.getNameInput()).to.eq('name', 'Expected Name value to be equals to name');
     expect(await dinosaurUpdatePage.getWeightInput()).to.eq('5', 'Expected weight value to be equals to 5');
     expect(await dinosaurUpdatePage.getLengthInput()).to.eq('5', 'Expected length value to be equals to 5');
@@ -61,6 +62,7 @@ describe('Dinosaur e2e test', () => {
       '2001-01-01T02:30',
       'Expected modifiedDt value to be equals to 2000-12-31'
     );
+
     await dinosaurUpdatePage.save();
     expect(await dinosaurUpdatePage.getSaveButton().isPresent(), 'Expected save button disappear').to.be.false;
 

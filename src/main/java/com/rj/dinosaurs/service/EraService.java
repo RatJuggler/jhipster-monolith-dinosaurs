@@ -28,7 +28,6 @@ public interface EraService {
      */
     Page<EraDTO> findAll(Pageable pageable);
 
-
     /**
      * Get the "id" era.
      *

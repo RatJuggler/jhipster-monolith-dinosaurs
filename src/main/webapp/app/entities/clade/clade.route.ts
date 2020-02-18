@@ -1,28 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
 import { JhiResolvePagingParams } from 'ng-jhipster';
+import { Observable, of, EMPTY } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
+
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { Observable, of } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { Clade } from 'app/shared/model/clade.model';
+import { IClade, Clade } from 'app/shared/model/clade.model';
 import { CladeService } from './clade.service';
 import { CladeComponent } from './clade.component';
 import { CladeDetailComponent } from './clade-detail.component';
 import { CladeUpdateComponent } from './clade-update.component';
-import { CladeDeletePopupComponent } from './clade-delete-dialog.component';
-import { IClade } from 'app/shared/model/clade.model';
 
 @Injectable({ providedIn: 'root' })
 export class CladeResolve implements Resolve<IClade> {
-  constructor(private service: CladeService) {}
+  constructor(private service: CladeService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IClade> {
+  resolve(route: ActivatedRouteSnapshot): Observable<IClade> | Observable<never> {
     const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
-        filter((response: HttpResponse<Clade>) => response.ok),
-        map((clade: HttpResponse<Clade>) => clade.body)
+        flatMap((clade: HttpResponse<Clade>) => {
+          if (clade.body) {
+            return of(clade.body);
+          } else {
+            this.router.navigate(['404']);
+            return EMPTY;
+          }
+        })
       );
     }
     return of(new Clade());
@@ -78,21 +83,5 @@ export const cladeRoute: Routes = [
       pageTitle: 'Clades'
     },
     canActivate: [UserRouteAccessService]
-  }
-];
-
-export const cladePopupRoute: Routes = [
-  {
-    path: ':id/delete',
-    component: CladeDeletePopupComponent,
-    resolve: {
-      clade: CladeResolve
-    },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'Clades'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
   }
 ];

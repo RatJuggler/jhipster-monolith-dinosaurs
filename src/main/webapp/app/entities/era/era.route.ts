@@ -1,28 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
 import { JhiResolvePagingParams } from 'ng-jhipster';
+import { Observable, of, EMPTY } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
+
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { Observable, of } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { Era } from 'app/shared/model/era.model';
+import { IEra, Era } from 'app/shared/model/era.model';
 import { EraService } from './era.service';
 import { EraComponent } from './era.component';
 import { EraDetailComponent } from './era-detail.component';
 import { EraUpdateComponent } from './era-update.component';
-import { EraDeletePopupComponent } from './era-delete-dialog.component';
-import { IEra } from 'app/shared/model/era.model';
 
 @Injectable({ providedIn: 'root' })
 export class EraResolve implements Resolve<IEra> {
-  constructor(private service: EraService) {}
+  constructor(private service: EraService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IEra> {
+  resolve(route: ActivatedRouteSnapshot): Observable<IEra> | Observable<never> {
     const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
-        filter((response: HttpResponse<Era>) => response.ok),
-        map((era: HttpResponse<Era>) => era.body)
+        flatMap((era: HttpResponse<Era>) => {
+          if (era.body) {
+            return of(era.body);
+          } else {
+            this.router.navigate(['404']);
+            return EMPTY;
+          }
+        })
       );
     }
     return of(new Era());
@@ -78,21 +83,5 @@ export const eraRoute: Routes = [
       pageTitle: 'Eras'
     },
     canActivate: [UserRouteAccessService]
-  }
-];
-
-export const eraPopupRoute: Routes = [
-  {
-    path: ':id/delete',
-    component: EraDeletePopupComponent,
-    resolve: {
-      era: EraResolve
-    },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'Eras'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
   }
 ];
