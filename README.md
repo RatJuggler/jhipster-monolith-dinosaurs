@@ -11,14 +11,15 @@ Currently using JHipster 6.7.1, you can find documentation and help at [https://
 
 The application was generated using the following commands:
 
-    md jhipster-dinosaurs
+    mkdir jhipster-dinosaurs
     cd jhipster-dinosaurs
     jhipster
     jhipster import-jdl jhipster-dinosaurs.jh
 
-With these responses to the JHipster generation questions (responses updated for version 6.3.1):
+With these responses to the JHipster generation questions (responses updated for version 6.7.1):
 
     ? Which *type* of application would you like to create? Monolithic application (recommended for simple projects)
+    ? [Alpha] Do you want to make it reactive with Spring WebFlux? No
     ? What is the base name of your application? dinosaurs
     ? What is your default Java package name? com.rj.dinosaurs
     ? Do you want to use the JHipster Registry to configure, monitor and scale your application? No
