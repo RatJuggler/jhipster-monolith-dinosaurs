@@ -1,0 +1,131 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-dinosaur-heading">Create or edit a Dinosaur</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!editForm.get('id').value">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_name">Name</label>
+                    <input type="text" class="form-control" name="name" id="field_name"
+                           formControlName="name"/>
+                    <div *ngIf="editForm.get('name').invalid && (editForm.get('name').dirty || editForm.get('name').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('name').errors.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('name').errors.maxlength">
+                        This field cannot be longer than 64 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_weight">Weight</label>
+                    <input type="number" class="form-control" name="weight" id="field_weight"
+                           formControlName="weight"/>
+                    <div *ngIf="editForm.get('weight').invalid && (editForm.get('weight').dirty || editForm.get('weight').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('weight').errors.min">
+                            This field should be at least 0.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('weight').errors.max">
+                            This field cannot be more than 999.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('weight')?.errors?.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_length">Length</label>
+                    <input type="number" class="form-control" name="length" id="field_length"
+                           formControlName="length"/>
+                    <div *ngIf="editForm.get('length').invalid && (editForm.get('length').dirty || editForm.get('length').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('length').errors.min">
+                            This field should be at least 0.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('length').errors.max">
+                            This field cannot be more than 999.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('length')?.errors?.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_diet">Diet</label>
+                    <select class="form-control" name="diet" formControlName="diet" id="field_diet">
+                        <option value="HERBIVORE">HERBIVORE</option>
+                        <option value="CARNIVORE">CARNIVORE</option>
+                        <option value="OMNIVORE">OMNIVORE</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_insertDt">Insert Dt</label>
+                    <div class="d-flex">
+                        <input id="field_insertDt" type="datetime-local" class="form-control" name="insertDt" formControlName="insertDt" placeholder="YYYY-MM-DD HH:mm"/>
+                    </div>
+                    <div *ngIf="editForm.get('insertDt').invalid && (editForm.get('insertDt').dirty || editForm.get('insertDt').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('insertDt').errors.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('insertDt').errors?.ZonedDateTimelocal">
+                            This field should be a date and time.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_modifiedDt">Modified Dt</label>
+                    <div class="d-flex">
+                        <input id="field_modifiedDt" type="datetime-local" class="form-control" name="modifiedDt" formControlName="modifiedDt" placeholder="YYYY-MM-DD HH:mm"/>
+                    </div>
+                    <div *ngIf="editForm.get('modifiedDt').invalid && (editForm.get('modifiedDt').dirty || editForm.get('modifiedDt').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('modifiedDt').errors.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('modifiedDt').errors?.ZonedDateTimelocal">
+                            This field should be a date and time.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_era">Era</label>
+                    <select class="form-control" id="field_era" name="era" formControlName="eraId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="eraOption.id" *ngFor="let eraOption of eras; trackBy: trackEraById">{{eraOption.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_clade">Clade</label>
+                    <select class="form-control" id="field_clade" name="clade" formControlName="cladeId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="cladeOption.id" *ngFor="let cladeOption of clades; trackBy: trackCladeById">{{cladeOption.description}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
