@@ -8,17 +8,15 @@ import { IClade } from 'app/shared/model/clade.model';
   templateUrl: './clade-detail.component.html'
 })
 export class CladeDetailComponent implements OnInit {
-  clade: IClade;
+  clade: IClade | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
-    this.activatedRoute.data.subscribe(({ clade }) => {
-      this.clade = clade;
-    });
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ clade }) => (this.clade = clade));
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 }

@@ -1,27 +1,32 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
+import { Observable, of, EMPTY } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
+
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { Observable, of } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { Dinosaur } from 'app/shared/model/dinosaur.model';
+import { IDinosaur, Dinosaur } from 'app/shared/model/dinosaur.model';
 import { DinosaurService } from './dinosaur.service';
 import { DinosaurComponent } from './dinosaur.component';
 import { DinosaurDetailComponent } from './dinosaur-detail.component';
 import { DinosaurUpdateComponent } from './dinosaur-update.component';
-import { DinosaurDeletePopupComponent } from './dinosaur-delete-dialog.component';
-import { IDinosaur } from 'app/shared/model/dinosaur.model';
 
 @Injectable({ providedIn: 'root' })
 export class DinosaurResolve implements Resolve<IDinosaur> {
-  constructor(private service: DinosaurService) {}
+  constructor(private service: DinosaurService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IDinosaur> {
+  resolve(route: ActivatedRouteSnapshot): Observable<IDinosaur> | Observable<never> {
     const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
-        filter((response: HttpResponse<Dinosaur>) => response.ok),
-        map((dinosaur: HttpResponse<Dinosaur>) => dinosaur.body)
+        flatMap((dinosaur: HttpResponse<Dinosaur>) => {
+          if (dinosaur.body) {
+            return of(dinosaur.body);
+          } else {
+            this.router.navigate(['404']);
+            return EMPTY;
+          }
+        })
       );
     }
     return of(new Dinosaur());
@@ -73,21 +78,5 @@ export const dinosaurRoute: Routes = [
       pageTitle: 'Dinosaurs'
     },
     canActivate: [UserRouteAccessService]
-  }
-];
-
-export const dinosaurPopupRoute: Routes = [
-  {
-    path: ':id/delete',
-    component: DinosaurDeletePopupComponent,
-    resolve: {
-      dinosaur: DinosaurResolve
-    },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'Dinosaurs'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
   }
 ];

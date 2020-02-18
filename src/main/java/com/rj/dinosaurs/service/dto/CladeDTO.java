@@ -1,4 +1,5 @@
 package com.rj.dinosaurs.service.dto;
+
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;

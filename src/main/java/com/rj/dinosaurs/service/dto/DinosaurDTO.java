@@ -1,4 +1,5 @@
 package com.rj.dinosaurs.service.dto;
+
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -160,10 +161,10 @@ public class DinosaurDTO implements Serializable {
             ", diet='" + getDiet() + "'" +
             ", insertDt='" + getInsertDt() + "'" +
             ", modifiedDt='" + getModifiedDt() + "'" +
-            ", era=" + getEraId() +
-            ", era='" + getEraName() + "'" +
-            ", clade=" + getCladeId() +
-            ", clade='" + getCladeDescription() + "'" +
+            ", eraId=" + getEraId() +
+            ", eraName='" + getEraName() + "'" +
+            ", cladeId=" + getCladeId() +
+            ", cladeDescription='" + getCladeDescription() + "'" +
             "}";
     }
 }

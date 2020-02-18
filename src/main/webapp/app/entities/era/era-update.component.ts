@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+
 import { IEra, Era } from 'app/shared/model/era.model';
 import { EraService } from './era.service';
 
@@ -13,7 +13,7 @@ import { EraService } from './era.service';
   templateUrl: './era-update.component.html'
 })
 export class EraUpdateComponent implements OnInit {
-  isSaving: boolean;
+  isSaving = false;
 
   editForm = this.fb.group({
     id: [],
@@ -24,14 +24,13 @@ export class EraUpdateComponent implements OnInit {
 
   constructor(protected eraService: EraService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
 
-  ngOnInit() {
-    this.isSaving = false;
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ era }) => {
       this.updateForm(era);
     });
   }
 
-  updateForm(era: IEra) {
+  updateForm(era: IEra): void {
     this.editForm.patchValue({
       id: era.id,
       name: era.name,
@@ -40,11 +39,11 @@ export class EraUpdateComponent implements OnInit {
     });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 
-  save() {
+  save(): void {
     this.isSaving = true;
     const era = this.createFromForm();
     if (era.id !== undefined) {
@@ -57,23 +56,26 @@ export class EraUpdateComponent implements OnInit {
   private createFromForm(): IEra {
     return {
       ...new Era(),
-      id: this.editForm.get(['id']).value,
-      name: this.editForm.get(['name']).value,
-      fromMa: this.editForm.get(['fromMa']).value,
-      toMa: this.editForm.get(['toMa']).value
+      id: this.editForm.get(['id'])!.value,
+      name: this.editForm.get(['name'])!.value,
+      fromMa: this.editForm.get(['fromMa'])!.value,
+      toMa: this.editForm.get(['toMa'])!.value
     };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IEra>>) {
-    result.subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IEra>>): void {
+    result.subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
   }
 
-  protected onSaveSuccess() {
+  protected onSaveSuccess(): void {
     this.isSaving = false;
     this.previousState();
   }
 
-  protected onSaveError() {
+  protected onSaveError(): void {
     this.isSaving = false;
   }
 }

@@ -8,17 +8,15 @@ import { IDinosaur } from 'app/shared/model/dinosaur.model';
   templateUrl: './dinosaur-detail.component.html'
 })
 export class DinosaurDetailComponent implements OnInit {
-  dinosaur: IDinosaur;
+  dinosaur: IDinosaur | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
-    this.activatedRoute.data.subscribe(({ dinosaur }) => {
-      this.dinosaur = dinosaur;
-    });
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ dinosaur }) => (this.dinosaur = dinosaur));
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 }

@@ -3,7 +3,7 @@
     "promptValues": {
       "packageName": "com.rj.dinosaurs"
     },
-    "jhipsterVersion": "6.4.1",
+    "jhipsterVersion": "6.7.1",
     "applicationType": "monolith",
     "baseName": "dinosaurs",
     "packageName": "com.rj.dinosaurs",
@@ -36,6 +36,7 @@
     "enableTranslation": false,
     "blueprints": [],
     "herokuAppName": "jhipster-dinosaurs",
-    "herokuDeployType": "jar"
+    "herokuDeployType": "jar",
+    "creationTimestamp": 1582022723876
   }
 }

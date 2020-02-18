@@ -61,7 +61,6 @@ public class CladeServiceImpl implements CladeService {
             .map(cladeMapper::toDto);
     }
 
-
     /**
      * Get one clade by id.
      *

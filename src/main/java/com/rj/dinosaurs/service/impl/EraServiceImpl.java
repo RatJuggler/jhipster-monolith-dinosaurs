@@ -61,7 +61,6 @@ public class EraServiceImpl implements EraService {
             .map(eraMapper::toDto);
     }
 
-
     /**
      * Get one era by id.
      *

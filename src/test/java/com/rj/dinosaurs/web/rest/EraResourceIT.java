@@ -125,7 +125,7 @@ public class EraResourceIT {
         // Create the Era
         EraDTO eraDTO = eraMapper.toDto(era);
         restEraMockMvc.perform(post("/api/eras")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(eraDTO)))
             .andExpect(status().isCreated());
 
@@ -149,7 +149,7 @@ public class EraResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restEraMockMvc.perform(post("/api/eras")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(eraDTO)))
             .andExpect(status().isBadRequest());
 
@@ -170,7 +170,7 @@ public class EraResourceIT {
         EraDTO eraDTO = eraMapper.toDto(era);
 
         restEraMockMvc.perform(post("/api/eras")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(eraDTO)))
             .andExpect(status().isBadRequest());
 
@@ -187,7 +187,7 @@ public class EraResourceIT {
         // Get all the eraList
         restEraMockMvc.perform(get("/api/eras?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(era.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].fromMa").value(hasItem(DEFAULT_FROM_MA)))
@@ -203,7 +203,7 @@ public class EraResourceIT {
         // Get the era
         restEraMockMvc.perform(get("/api/eras/{id}", era.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(era.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.fromMa").value(DEFAULT_FROM_MA))
@@ -237,7 +237,7 @@ public class EraResourceIT {
         EraDTO eraDTO = eraMapper.toDto(updatedEra);
 
         restEraMockMvc.perform(put("/api/eras")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(eraDTO)))
             .andExpect(status().isOk());
 
@@ -260,7 +260,7 @@ public class EraResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restEraMockMvc.perform(put("/api/eras")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(eraDTO)))
             .andExpect(status().isBadRequest());
 
@@ -279,49 +279,11 @@ public class EraResourceIT {
 
         // Delete the era
         restEraMockMvc.perform(delete("/api/eras/{id}", era.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
         List<Era> eraList = eraRepository.findAll();
         assertThat(eraList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Era.class);
-        Era era1 = new Era();
-        era1.setId(1L);
-        Era era2 = new Era();
-        era2.setId(era1.getId());
-        assertThat(era1).isEqualTo(era2);
-        era2.setId(2L);
-        assertThat(era1).isNotEqualTo(era2);
-        era1.setId(null);
-        assertThat(era1).isNotEqualTo(era2);
-    }
-
-    @Test
-    @Transactional
-    public void dtoEqualsVerifier() throws Exception {
-        TestUtil.equalsVerifier(EraDTO.class);
-        EraDTO eraDTO1 = new EraDTO();
-        eraDTO1.setId(1L);
-        EraDTO eraDTO2 = new EraDTO();
-        assertThat(eraDTO1).isNotEqualTo(eraDTO2);
-        eraDTO2.setId(eraDTO1.getId());
-        assertThat(eraDTO1).isEqualTo(eraDTO2);
-        eraDTO2.setId(2L);
-        assertThat(eraDTO1).isNotEqualTo(eraDTO2);
-        eraDTO1.setId(null);
-        assertThat(eraDTO1).isNotEqualTo(eraDTO2);
-    }
-
-    @Test
-    @Transactional
-    public void testEntityFromId() {
-        assertThat(eraMapper.fromId(42L).getId()).isEqualTo(42);
-        assertThat(eraMapper.fromId(null)).isNull();
     }
 }

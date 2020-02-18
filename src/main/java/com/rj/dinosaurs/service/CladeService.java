@@ -28,7 +28,6 @@ public interface CladeService {
      */
     Page<CladeDTO> findAll(Pageable pageable);
 
-
     /**
      * Get the "id" clade.
      *

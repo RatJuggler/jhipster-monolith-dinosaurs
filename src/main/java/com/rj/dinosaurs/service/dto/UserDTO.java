@@ -5,9 +5,6 @@ import com.rj.dinosaurs.config.Constants;
 import com.rj.dinosaurs.domain.Authority;
 import com.rj.dinosaurs.domain.User;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-
 import javax.validation.constraints.*;
 import java.time.Instant;
 import java.util.Set;
