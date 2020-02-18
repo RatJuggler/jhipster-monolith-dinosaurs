@@ -5,6 +5,8 @@ cloud providers and containers.
 
 _The original generated README.md has been renamed as [jhipster.md](jhipster.md)._
 
+Currently using JHipster 6.7.1, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.7.1](https://www.jhipster.tech/documentation-archive/v6.7.1).
+
 ## Generation
 
 The application was generated using the following commands:
