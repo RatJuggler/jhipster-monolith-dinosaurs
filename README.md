@@ -1,41 +1,22 @@
 # jhipster-dinosaurs
 
-This is just a sandbox to play around with a simple JHipter generated monolith application and deploy it to various
+This is just a sandbox to play around with a simple JHipster generated monolith application and deploy it to various
 cloud providers and containers.
 
 _The original generated README.md has been renamed as [jhipster.md](jhipster.md)._
 
-Currently using JHipster 6.7.1, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.7.1](https://www.jhipster.tech/documentation-archive/v6.7.1).
+Currently using JHipster [6.7.1](https://www.jhipster.tech/documentation-archive/v6.7.1).
 
 ## Generation
 
-The application was generated using the following commands:
+The application was originally generated using the JHipster (4.14.1) command line question/response [process](https://www.jhipster.tech/creating-an-app/)
+and then a few simple customisations made to the home page and footer. It has been updated on a semi-regular basis to the latest
+version. The setup has been consolidated into a [jdl](https://www.jhipster.tech/jdl/) file and you can now reproduce the generation
+(minus customisations) using the following commands:
 
     mkdir jhipster-dinosaurs
     cd jhipster-dinosaurs
-    jhipster
     jhipster import-jdl jhipster-dinosaurs.jh
-
-With these responses to the JHipster generation questions (responses updated for version 6.7.1):
-
-    ? Which *type* of application would you like to create? Monolithic application (recommended for simple projects)
-    ? [Alpha] Do you want to make it reactive with Spring WebFlux? No
-    ? What is the base name of your application? dinosaurs
-    ? What is your default Java package name? com.rj.dinosaurs
-    ? Do you want to use the JHipster Registry to configure, monitor and scale your application? No
-    ? Which *type* of authentication would you like to use? JWT authentication (stateless, with a token)
-    ? Which *type* of database would you like to use? SQL (H2, MySQL, MariaDB, PostgreSQL, Oracle, MSSQL)
-    ? Which *production* database would you like to use? MySQL
-    ? Which *development* database would you like to use? H2 with disk-based persistence
-    ? Do you want to use the Spring cache abstraction? Yes, with the Ehcache implementation (local cache, for a single node)
-    ? Do you want to use Hibernate 2nd level cache? Yes
-    ? Would you like to use Maven or Gradle for building the backend? Maven
-    ? Which other technologies would you like to use? (none selected)
-    ? Which *Framework* would you like to use for the client? Angular
-    ? Would you like to use a Bootswatch theme (https://bootswatch.com/)? Default JHipster
-    ? Would you like to enable internationalization support? No
-    ? Besides JUnit and Karma, which testing frameworks would you like to use? Gatling, Cucumber, Protractor
-    ? Would you like to install other generators from the JHipster Marketplace? No
 
 The source for the dinosaurs jdl can be found in the [RatJuggler/jhipster-jdl](https://github.com/RatJuggler/jhipster-jdl)
 repository.
