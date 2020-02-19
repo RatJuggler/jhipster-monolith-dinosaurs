@@ -1,7 +1,7 @@
 {
   "name": "dinosaurs",
-  "version": "0.0.6-SNAPSHOT",
-  "description": "Description for dinosaurs",
+  "version": "0.0.8-SNAPSHOT",
+  "description": "A simple JHipster generated monolith application to catalogue your dinosaurs.",
   "private": true,
   "license": "MIT",
   "cacheDirectories": [
