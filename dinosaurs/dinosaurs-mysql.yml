@@ -1,38 +1,48 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: dinosaurs-mysql
   namespace: default
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: dinosaurs-mysql
   template:
     metadata:
       labels:
         app: dinosaurs-mysql
     spec:
       volumes:
-      - name: data
-        emptyDir: {}
-      containers:
-      - name: mysql
-        image: mysql:5.7.20
-        args:
-        - --lower-case-table-names=1
-        - --skip-ssl
-        - --character-set-server=utf8
-        - --explicit-defaults-for-timestamp
-        env:
-        - name: MYSQL_USER
-          value: root
-        - name: MYSQL_ALLOW_EMPTY_PASSWORD
-          value: 'yes'
-        - name: MYSQL_DATABASE
-          value: dinosaurs
-        ports:
-        - containerPort: 3306
-        volumeMounts:
         - name: data
-          mountPath: /var/lib/mysql/
+          emptyDir: {}
+      containers:
+        - name: mysql
+          image: mysql:8.0.19
+          env:
+            - name: MYSQL_USER
+              value: root
+            - name: MYSQL_ALLOW_EMPTY_PASSWORD
+              value: 'yes'
+            - name: MYSQL_DATABASE
+              value: dinosaurs
+          args:
+            - --lower_case_table_names=1
+            - --skip-ssl
+            - --character_set_server=utf8mb4
+            - --explicit_defaults_for_timestamp
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/mysql/
+          resources:
+            requests:
+              memory: '512Mi'
+              cpu: '500m'
+            limits:
+              memory: '1Gi'
+              cpu: '1'
 ---
 apiVersion: v1
 kind: Service
@@ -43,4 +53,4 @@ spec:
   selector:
     app: dinosaurs-mysql
   ports:
-  - port: 3306
+    - port: 3306

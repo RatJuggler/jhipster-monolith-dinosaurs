@@ -37,6 +37,16 @@
     "blueprints": [],
     "herokuAppName": "jhipster-dinosaurs",
     "herokuDeployType": "jar",
-    "creationTimestamp": 1582022723876
+    "creationTimestamp": 1582022723876,
+    "appsFolders": ["jhipster-dinosaurs"],
+    "directoryPath": "../",
+    "dockerRepositoryName": "johnchase",
+    "dockerPushCommand": "docker push",
+    "kubernetesNamespace": "default",
+    "kubernetesServiceType": "LoadBalancer",
+    "kubernetesUseDynamicStorage": false,
+    "ingressDomain": "",
+    "monitoring": "no",
+    "istio": false
   }
 }
