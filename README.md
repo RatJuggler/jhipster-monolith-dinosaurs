@@ -29,19 +29,26 @@ The following deployments have been tested for this version of the application.
 
 A Heroku test deployment is currently available [here](https://jhipster-dinosaurs.herokuapp.com/).
 
-The deployment was created and deployed using the following commands:
+The deployment was created and deployed by following [these](https://www.jhipster.tech/heroku/) guidelines and running:
 
     ./mvnw package -Pprod -DskipTests
     heroku deploy:jar target/dinosaurs.jar --app jhipster-dinosaurs
 
 ### Docker
 
-Create a docker image and push to docker hub then run up a local instance:
+Following [these](https://www.jhipster.tech/docker-compose/) guidelines first create a docker image and push it to docker hub:
 
     ./mvnw package -Pprod -DskipTests verify jib:dockerBuild
     docker tag <image-id> johnchase/dinosaurs:latest
     docker push johnchase/dinosaurs:latest
+
+You can then run up local instances of the application and database with:
+
     docker-compose -f src/main/docker/app.yml up -d
+
+To stop and remove the containers use the following (**warning this will also delete all saved data**):
+
+    docker-compose -f src/main/docker/app.yml down
 
 ## Attributions
 
