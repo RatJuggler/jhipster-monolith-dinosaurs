@@ -43,7 +43,7 @@
     "dockerRepositoryName": "johnchase",
     "dockerPushCommand": "docker push",
     "kubernetesNamespace": "default",
-    "kubernetesServiceType": "LoadBalancer",
+    "kubernetesServiceType": "NodePort",
     "kubernetesUseDynamicStorage": false,
     "ingressDomain": "",
     "monitoring": "no",
