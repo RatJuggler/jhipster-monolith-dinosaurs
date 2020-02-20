@@ -61,8 +61,8 @@ spec:
             httpGet:
               path: /management/health
               port: http
-            initialDelaySeconds: 20
-            periodSeconds: 15
+            initialDelaySeconds: 120
+            periodSeconds: 30
             failureThreshold: 6
           livenessProbe:
             httpGet:
