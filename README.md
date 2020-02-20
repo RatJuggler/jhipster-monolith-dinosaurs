@@ -1,4 +1,4 @@
-# jhipster-dinosaurs
+# jhipster-monolith-dinosaurs
 
 This is just a sandbox to play around with a simple JHipster generated monolith application and deploy it to various
 cloud providers and containers.
@@ -16,10 +16,9 @@ version. The setup has been consolidated into a [jdl](https://www.jhipster.tech/
 
     mkdir jhipster-dinosaurs
     cd jhipster-dinosaurs
-    jhipster import-jdl jhipster-dinosaurs.jh
+    jhipster import-jdl jhipster-monolith-dinosaurs.jh
 
-The source for the dinosaurs jdl can be found in the [RatJuggler/jhipster-jdl](https://github.com/RatJuggler/jhipster-jdl)
-repository.
+The source for the monolith dinosaurs jdl can be found [here](https://github.com/RatJuggler/jhipster-jdl/blob/master/jhipster-monolith-dinosaurs.jh).
 
 ## Deployments
 
