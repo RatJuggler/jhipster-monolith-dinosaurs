@@ -28,14 +28,14 @@ The following deployments have been tested for this version of the application.
 
 A Heroku test deployment is currently available [here](https://jhipster-dinosaurs.herokuapp.com/).
 
-The deployment was created and deployed by following [these](https://www.jhipster.tech/heroku/) guidelines and running:
+The deployment was created and deployed by following [these](https://www.jhipster.tech/heroku/) instructions and running:
 
     ./mvnw package -Pprod -DskipTests
     heroku deploy:jar target/dinosaurs.jar --app jhipster-dinosaurs
 
 ### Docker
 
-Following [these](https://www.jhipster.tech/docker-compose/) guidelines first create a docker image and push it to docker hub:
+Following [these](https://www.jhipster.tech/docker-compose/) instructions, first create a docker image and push it to docker hub:
 
     ./mvnw package -Pprod -DskipTests verify jib:dockerBuild
     docker tag <image-id> johnchase/dinosaurs:latest
@@ -48,6 +48,14 @@ You can then run up local instances of the application and database with:
 To stop and remove the containers use the following (**warning this will also delete all saved data**):
 
     docker-compose -f src/main/docker/app.yml down
+
+### Kubernetes
+
+The deployment files for kubernetes can be found in the [dinosaurs](https://github.com/RatJuggler/jhipster-monolith-dinosaurs/tree/master/dinosaurs)
+folder.
+
+I was eventually able to deploy to a local Minikube instance but getting everything configured and working is much harder than
+other deployments I tried even after carefully following the [instructions](https://www.jhipster.tech/kubernetes/).
 
 ## Attributions
 

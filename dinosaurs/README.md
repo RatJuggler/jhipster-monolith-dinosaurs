@@ -3,7 +3,6 @@
 ## Preparation
 
 You will need to push your image to a registry. If you have not done so, use the following commands to tag and push the images:
-
 ```
 $ docker image tag dinosaurs johnchase/dinosaurs
 $ docker push johnchase/dinosaurs
@@ -13,33 +12,32 @@ $ docker push johnchase/dinosaurs
 
 You can deploy all your apps by running the following command:
 ```
-kubectl apply -f .
+$ kubectl apply -f .
 ```
-Or you can configure your system to run the below bash command to deploy all your apps:
+Or you can configure your system to run the below bash command to do the deploy:
 ```
-./kubectl-apply.sh
+$ ./kubectl-apply.sh
 ```
 
 ## Exploring your services
 
-Use these commands to find your application's IP addresses:
-
+Try one of these commands to find your application's IP addresses:
 ```
+$ minikube service --url dinosaurs
+
 $ kubectl get svc dinosaurs
 ```
 
 ## Scaling your deployments
 
-You can scale your apps using
-
+You can scale your apps using:
 ```
 $ kubectl scale deployment <app-name> --replicas <replica-count>
 ```
 
 ## zero-downtime deployments
 
-The default way to update a running app in kubernetes, is to deploy a new image tag to your docker registry and then deploy it using
-
+The default way to update a running app in kubernetes, is to deploy a new image tag to your docker registry and then deploy it using:
 ```
 $ kubectl set image deployment/<app-name>-app <app-name>=<new-image>
 ```
