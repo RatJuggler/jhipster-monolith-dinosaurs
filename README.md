@@ -14,8 +14,8 @@ and then a few simple customisations made to the home page and footer. It has be
 version. The setup has been consolidated into a [jdl](https://www.jhipster.tech/jdl/) file and you can now reproduce the generation
 (minus customisations) using the following commands:
 
-    mkdir jhipster-dinosaurs
-    cd jhipster-dinosaurs
+    mkdir jhipster-monolith-dinosaurs
+    cd jhipster-monolith-dinosaurs
     jhipster import-jdl jhipster-monolith-dinosaurs.jh
 
 The source for the monolith dinosaurs jdl can be found [here](https://github.com/RatJuggler/jhipster-jdl/blob/master/jhipster-monolith-dinosaurs.jh).
