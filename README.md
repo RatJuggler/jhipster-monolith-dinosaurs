@@ -72,11 +72,12 @@ The monitoring can then be accessed via the [JHipster Console](http://localhost:
 
 ### Kubernetes
 
-The deployment files for kubernetes can be found in the [dinosaurs](https://github.com/RatJuggler/jhipster-monolith-dinosaurs/tree/master/dinosaurs)
+The deployment files for kubernetes can be found in the [kubernetes](https://github.com/RatJuggler/jhipster-monolith-dinosaurs/tree/master/kubernetes)
 folder.
 
 I was eventually able to deploy to a local Minikube instance but getting everything configured and working is much harder than
-other deployments I tried even after carefully following the [instructions](https://www.jhipster.tech/kubernetes/).
+other deployments I tried, even when carefully following the [instructions](https://www.jhipster.tech/kubernetes/). Also note that
+this deployment does not include the monitoring option described in the Docker section above.
 
 ## Attributions
 
