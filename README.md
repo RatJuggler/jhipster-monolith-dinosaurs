@@ -1,7 +1,7 @@
 # jhipster-monolith-dinosaurs
 
-This is just a sandbox to play around with a simple [JHipster](https://www.jhipster.tech/) generated monolith application and deploy it to various
-cloud providers and containers.
+This is just a sandbox to play around with a simple [JHipster](https://www.jhipster.tech/) generated monolith application and
+deploy it to various cloud providers and containers.
 
 _The original generated README.md has been renamed as [jhipster.md](jhipster.md)._
 
@@ -37,7 +37,7 @@ The deployment was created and deployed by following [these](https://www.jhipste
 
 Following [these](https://www.jhipster.tech/docker-compose/) instructions, first create a docker image and push it to docker hub:
 
-    ./mvnw package -Pprod -DskipTests verify jib:dockerBuild
+    ./mvnw -Pprod -DskipTests verify jib:dockerBuild
     docker tag <image-id> johnchase/dinosaurs:latest
     docker push johnchase/dinosaurs:latest
 
@@ -45,9 +45,30 @@ You can then run up local instances of the application and database with:
 
     docker-compose -f src/main/docker/app.yml up -d
 
-To stop and remove the containers use the following (**warning this will also delete all saved data**):
+You can stop or stop and remove the containers with the following (**Warning: using down will also delete the container and any
+saved data**):
+
+    docker-compose -f src/main/docker/app.yml stop
 
     docker-compose -f src/main/docker/app.yml down
+
+For more advanced production requirements you can also configure your application to run with external [monitoring](https://www.jhipster.tech/monitoring/):
+
+    mkdir docker-compose
+    cd docker-compose
+    jhipster docker-compose
+
+Answer the questions and add ELK as a monitoring solution to generate a global Docker Compose configuration (_Note: when I first
+did this the new files/folders were generated in the project root so I moved them to the docker-compose folder_). You can then
+control all the services using commands as previously:
+
+    docker-compose -f docker-compose/docker-compose.yml up -d
+
+    docker-compose -f docker-compose/docker-compose.yml stop
+
+    docker-compose -f docker-compose/docker-compose.yml down
+
+The monitoring can then be accessed via the [JHipster Console](http://localhost:5601).
 
 ### Kubernetes
 

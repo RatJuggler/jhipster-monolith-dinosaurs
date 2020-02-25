@@ -38,7 +38,7 @@
     "herokuAppName": "jhipster-dinosaurs",
     "herokuDeployType": "jar",
     "creationTimestamp": 1582022723876,
-    "appsFolders": ["jhipster-dinosaurs"],
+    "appsFolders": ["jhipster-monolith-dinosaurs"],
     "directoryPath": "../",
     "dockerRepositoryName": "johnchase",
     "dockerPushCommand": "docker push",
@@ -46,7 +46,8 @@
     "kubernetesServiceType": "NodePort",
     "kubernetesUseDynamicStorage": false,
     "ingressDomain": "",
-    "monitoring": "no",
-    "istio": false
+    "monitoring": "elk",
+    "istio": false,
+    "consoleOptions": ["curator"]
   }
 }
