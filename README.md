@@ -1,6 +1,6 @@
 # jhipster-monolith-dinosaurs
 
-This is just a sandbox to play around with a simple JHipster generated monolith application and deploy it to various
+This is just a sandbox to play around with a simple [JHipster](https://www.jhipster.tech/) generated monolith application and deploy it to various
 cloud providers and containers.
 
 _The original generated README.md has been renamed as [jhipster.md](jhipster.md)._
