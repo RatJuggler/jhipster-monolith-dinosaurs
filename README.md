@@ -52,23 +52,10 @@ saved data**):
 
     docker-compose -f src/main/docker/app.yml down
 
-For more advanced production requirements you can also configure your application to run with external [monitoring](https://www.jhipster.tech/monitoring/):
+For more advanced production usage see the [docker-compose](https://github.com/RatJuggler/jhipster-monolith-dinosaurs/tree/master/docker-compose)
+sub-folder.
 
-    mkdir docker-compose
-    cd docker-compose
-    jhipster docker-compose
-
-Answer the questions and add ELK as a monitoring solution to generate a global Docker Compose configuration (_Note: when I first
-did this the new files/folders were generated in the project root so I moved them to the docker-compose folder_). You can then
-control all the services using commands as previously:
-
-    docker-compose -f docker-compose/docker-compose.yml up -d
-
-    docker-compose -f docker-compose/docker-compose.yml stop
-
-    docker-compose -f docker-compose/docker-compose.yml down
-
-The monitoring can then be accessed via the [JHipster Console](http://localhost:5601).
+Using an environment file (.env) can remove the need to keep specifying file and project options.
 
 ### Kubernetes
 
