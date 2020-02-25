@@ -9,6 +9,6 @@ logSummary() {
     echo "#####################################################"
 }
 
-kubectl apply -f dinosaurs/
+kubectl apply -f kubernetes/
 
 logSummary
