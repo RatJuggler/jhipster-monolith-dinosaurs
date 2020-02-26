@@ -43,10 +43,8 @@ You can then run up local instances of the application and database with:
 
     docker-compose -f src/main/docker/app.yml up -d
 
-You can stop or stop and remove the containers with the following (**Warning: using down will also delete the container and any
+You can stop and remove the containers with the following (**Warning: using down will also delete the container and any
 saved data**):
-
-    docker-compose -f src/main/docker/app.yml stop
 
     docker-compose -f src/main/docker/app.yml down
 
