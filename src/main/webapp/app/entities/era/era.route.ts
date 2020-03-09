@@ -5,6 +5,7 @@ import { JhiResolvePagingParams } from 'ng-jhipster';
 import { Observable, of, EMPTY } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
+import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 import { IEra, Era } from 'app/shared/model/era.model';
 import { EraService } from './era.service';
@@ -42,7 +43,7 @@ export const eraRoute: Routes = [
       pagingParams: JhiResolvePagingParams
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: [Authority.USER],
       defaultSort: 'id,asc',
       pageTitle: 'Eras'
     },
@@ -55,7 +56,7 @@ export const eraRoute: Routes = [
       era: EraResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: [Authority.USER],
       pageTitle: 'Eras'
     },
     canActivate: [UserRouteAccessService]
@@ -67,7 +68,7 @@ export const eraRoute: Routes = [
       era: EraResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: [Authority.USER],
       pageTitle: 'Eras'
     },
     canActivate: [UserRouteAccessService]
@@ -79,7 +80,7 @@ export const eraRoute: Routes = [
       era: EraResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: [Authority.USER],
       pageTitle: 'Eras'
     },
     canActivate: [UserRouteAccessService]

@@ -6,27 +6,21 @@ import com.rj.dinosaurs.repository.DinosaurRepository;
 import com.rj.dinosaurs.service.DinosaurService;
 import com.rj.dinosaurs.service.dto.DinosaurDTO;
 import com.rj.dinosaurs.service.mapper.DinosaurMapper;
-import com.rj.dinosaurs.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Validator;
-
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import static com.rj.dinosaurs.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -37,6 +31,9 @@ import com.rj.dinosaurs.domain.enumeration.Diet;
  * Integration tests for the {@link DinosaurResource} REST controller.
  */
 @SpringBootTest(classes = DinosaursApp.class)
+
+@AutoConfigureMockMvc
+@WithMockUser
 public class DinosaurResourceIT {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
@@ -67,35 +64,12 @@ public class DinosaurResourceIT {
     private DinosaurService dinosaurService;
 
     @Autowired
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
-    @Autowired
-    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
-
-    @Autowired
-    private ExceptionTranslator exceptionTranslator;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
-    private Validator validator;
-
     private MockMvc restDinosaurMockMvc;
 
     private Dinosaur dinosaur;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final DinosaurResource dinosaurResource = new DinosaurResource(dinosaurService);
-        this.restDinosaurMockMvc = MockMvcBuilders.standaloneSetup(dinosaurResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
-    }
 
     /**
      * Create an entity for this test.
@@ -143,7 +117,7 @@ public class DinosaurResourceIT {
         // Create the Dinosaur
         DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
         restDinosaurMockMvc.perform(post("/api/dinosaurs")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
             .andExpect(status().isCreated());
 
@@ -170,7 +144,7 @@ public class DinosaurResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restDinosaurMockMvc.perform(post("/api/dinosaurs")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
             .andExpect(status().isBadRequest());
 
@@ -191,7 +165,7 @@ public class DinosaurResourceIT {
         DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
 
         restDinosaurMockMvc.perform(post("/api/dinosaurs")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
             .andExpect(status().isBadRequest());
 
@@ -210,7 +184,7 @@ public class DinosaurResourceIT {
         DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
 
         restDinosaurMockMvc.perform(post("/api/dinosaurs")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
             .andExpect(status().isBadRequest());
 
@@ -229,7 +203,7 @@ public class DinosaurResourceIT {
         DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
 
         restDinosaurMockMvc.perform(post("/api/dinosaurs")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
             .andExpect(status().isBadRequest());
 
@@ -305,7 +279,7 @@ public class DinosaurResourceIT {
         DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(updatedDinosaur);
 
         restDinosaurMockMvc.perform(put("/api/dinosaurs")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
             .andExpect(status().isOk());
 
@@ -331,7 +305,7 @@ public class DinosaurResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restDinosaurMockMvc.perform(put("/api/dinosaurs")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
             .andExpect(status().isBadRequest());
 
@@ -350,7 +324,7 @@ public class DinosaurResourceIT {
 
         // Delete the dinosaur
         restDinosaurMockMvc.perform(delete("/api/dinosaurs/{id}", dinosaur.getId())
-            .accept(TestUtil.APPLICATION_JSON))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
