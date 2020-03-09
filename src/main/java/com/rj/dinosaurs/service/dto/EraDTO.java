@@ -8,7 +8,7 @@ import java.util.Objects;
  * A DTO for the {@link com.rj.dinosaurs.domain.Era} entity.
  */
 public class EraDTO implements Serializable {
-
+    
     private Long id;
 
     @NotNull
@@ -23,7 +23,7 @@ public class EraDTO implements Serializable {
     @Max(value = 999)
     private Integer toMa;
 
-
+    
     public Long getId() {
         return id;
     }

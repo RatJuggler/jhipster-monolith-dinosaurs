@@ -10,7 +10,7 @@ import com.rj.dinosaurs.domain.enumeration.Diet;
  * A DTO for the {@link com.rj.dinosaurs.domain.Dinosaur} entity.
  */
 public class DinosaurDTO implements Serializable {
-
+    
     private Long id;
 
     @NotNull
@@ -41,7 +41,7 @@ public class DinosaurDTO implements Serializable {
     private Long cladeId;
 
     private String cladeDescription;
-
+    
     public Long getId() {
         return id;
     }

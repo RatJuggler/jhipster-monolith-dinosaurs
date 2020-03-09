@@ -4,6 +4,7 @@ import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router
 import { Observable, of, EMPTY } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
+import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 import { IDinosaur, Dinosaur } from 'app/shared/model/dinosaur.model';
 import { DinosaurService } from './dinosaur.service';
@@ -38,7 +39,7 @@ export const dinosaurRoute: Routes = [
     path: '',
     component: DinosaurComponent,
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: [Authority.USER],
       pageTitle: 'Dinosaurs'
     },
     canActivate: [UserRouteAccessService]
@@ -50,7 +51,7 @@ export const dinosaurRoute: Routes = [
       dinosaur: DinosaurResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: [Authority.USER],
       pageTitle: 'Dinosaurs'
     },
     canActivate: [UserRouteAccessService]
@@ -62,7 +63,7 @@ export const dinosaurRoute: Routes = [
       dinosaur: DinosaurResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: [Authority.USER],
       pageTitle: 'Dinosaurs'
     },
     canActivate: [UserRouteAccessService]
@@ -74,7 +75,7 @@ export const dinosaurRoute: Routes = [
       dinosaur: DinosaurResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: [Authority.USER],
       pageTitle: 'Dinosaurs'
     },
     canActivate: [UserRouteAccessService]

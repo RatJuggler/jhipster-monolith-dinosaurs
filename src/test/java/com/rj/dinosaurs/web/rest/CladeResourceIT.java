@@ -6,25 +6,19 @@ import com.rj.dinosaurs.repository.CladeRepository;
 import com.rj.dinosaurs.service.CladeService;
 import com.rj.dinosaurs.service.dto.CladeDTO;
 import com.rj.dinosaurs.service.mapper.CladeMapper;
-import com.rj.dinosaurs.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Validator;
-
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static com.rj.dinosaurs.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -34,6 +28,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link CladeResource} REST controller.
  */
 @SpringBootTest(classes = DinosaursApp.class)
+
+@AutoConfigureMockMvc
+@WithMockUser
 public class CladeResourceIT {
 
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
@@ -49,35 +46,12 @@ public class CladeResourceIT {
     private CladeService cladeService;
 
     @Autowired
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
-    @Autowired
-    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
-
-    @Autowired
-    private ExceptionTranslator exceptionTranslator;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
-    private Validator validator;
-
     private MockMvc restCladeMockMvc;
 
     private Clade clade;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final CladeResource cladeResource = new CladeResource(cladeService);
-        this.restCladeMockMvc = MockMvcBuilders.standaloneSetup(cladeResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
-    }
 
     /**
      * Create an entity for this test.
@@ -115,7 +89,7 @@ public class CladeResourceIT {
         // Create the Clade
         CladeDTO cladeDTO = cladeMapper.toDto(clade);
         restCladeMockMvc.perform(post("/api/clades")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(cladeDTO)))
             .andExpect(status().isCreated());
 
@@ -137,7 +111,7 @@ public class CladeResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCladeMockMvc.perform(post("/api/clades")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(cladeDTO)))
             .andExpect(status().isBadRequest());
 
@@ -158,7 +132,7 @@ public class CladeResourceIT {
         CladeDTO cladeDTO = cladeMapper.toDto(clade);
 
         restCladeMockMvc.perform(post("/api/clades")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(cladeDTO)))
             .andExpect(status().isBadRequest());
 
@@ -219,7 +193,7 @@ public class CladeResourceIT {
         CladeDTO cladeDTO = cladeMapper.toDto(updatedClade);
 
         restCladeMockMvc.perform(put("/api/clades")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(cladeDTO)))
             .andExpect(status().isOk());
 
@@ -240,7 +214,7 @@ public class CladeResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restCladeMockMvc.perform(put("/api/clades")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(cladeDTO)))
             .andExpect(status().isBadRequest());
 
@@ -259,7 +233,7 @@ public class CladeResourceIT {
 
         // Delete the clade
         restCladeMockMvc.perform(delete("/api/clades/{id}", clade.getId())
-            .accept(TestUtil.APPLICATION_JSON))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

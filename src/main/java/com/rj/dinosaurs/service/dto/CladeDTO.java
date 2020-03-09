@@ -8,14 +8,14 @@ import java.util.Objects;
  * A DTO for the {@link com.rj.dinosaurs.domain.Clade} entity.
  */
 public class CladeDTO implements Serializable {
-
+    
     private Long id;
 
     @NotNull
     @Size(max = 64)
     private String description;
 
-
+    
     public Long getId() {
         return id;
     }
