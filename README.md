@@ -5,7 +5,7 @@ deploy it to various cloud providers and containers.
 
 _The original generated README.md has been renamed as [jhipster.md](jhipster.md)._
 
-Currently using JHipster [6.8.0](https://www.jhipster.tech/documentation-archive/v6.8.0).
+Currently regenerated using JHipster [6.10.5](https://www.jhipster.tech/documentation-archive/v6.10.5).
 
 ## Generation
 
@@ -26,7 +26,7 @@ The following deployments have been tested for this version of the application.
 
 A Heroku test deployment is currently available [here](https://jhipster-dinosaurs.herokuapp.com/).
 
-The deployment was created and deployed by following [these](https://www.jhipster.tech/heroku/) instructions and running:
+The deployment was created and deployed by following [these](https://www.jhipster.tech/heroku/) instructions and updated using:
 
     ./mvnw package -Pprod -DskipTests
     heroku deploy:jar target/dinosaurs.jar --app jhipster-dinosaurs
@@ -35,7 +35,7 @@ The deployment was created and deployed by following [these](https://www.jhipste
 
 Following [these](https://www.jhipster.tech/docker-compose/) instructions, first create a docker image and push it to docker hub:
 
-    ./mvnw -Pprod -DskipTests verify jib:dockerBuild
+    ./mvnw package -Pprod -DskipTests verify jib:dockerBuild
     docker tag <image-id> johnchase/dinosaurs:latest
     docker push johnchase/dinosaurs:latest
 
