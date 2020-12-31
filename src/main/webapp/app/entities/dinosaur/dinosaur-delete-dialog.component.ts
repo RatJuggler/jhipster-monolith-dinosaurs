@@ -6,7 +6,7 @@ import { IDinosaur } from 'app/shared/model/dinosaur.model';
 import { DinosaurService } from './dinosaur.service';
 
 @Component({
-  templateUrl: './dinosaur-delete-dialog.component.html'
+  templateUrl: './dinosaur-delete-dialog.component.html',
 })
 export class DinosaurDeleteDialogComponent {
   dinosaur?: IDinosaur;

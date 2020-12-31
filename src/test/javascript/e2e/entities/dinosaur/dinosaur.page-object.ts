@@ -76,10 +76,7 @@ export class DinosaurUpdatePage {
   }
 
   async dietSelectLastOption(): Promise<void> {
-    await this.dietSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.dietSelect.all(by.tagName('option')).last().click();
   }
 
   async setInsertDtInput(insertDt: string): Promise<void> {
@@ -99,10 +96,7 @@ export class DinosaurUpdatePage {
   }
 
   async eraSelectLastOption(): Promise<void> {
-    await this.eraSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.eraSelect.all(by.tagName('option')).last().click();
   }
 
   async eraSelectOption(option: string): Promise<void> {
@@ -118,10 +112,7 @@ export class DinosaurUpdatePage {
   }
 
   async cladeSelectLastOption(): Promise<void> {
-    await this.cladeSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.cladeSelect.all(by.tagName('option')).last().click();
   }
 
   async cladeSelectOption(option: string): Promise<void> {

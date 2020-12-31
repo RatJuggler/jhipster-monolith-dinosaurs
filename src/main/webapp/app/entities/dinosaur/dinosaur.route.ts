@@ -40,44 +40,44 @@ export const dinosaurRoute: Routes = [
     component: DinosaurComponent,
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'Dinosaurs'
+      pageTitle: 'Dinosaurs',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
     component: DinosaurDetailComponent,
     resolve: {
-      dinosaur: DinosaurResolve
+      dinosaur: DinosaurResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'Dinosaurs'
+      pageTitle: 'Dinosaurs',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',
     component: DinosaurUpdateComponent,
     resolve: {
-      dinosaur: DinosaurResolve
+      dinosaur: DinosaurResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'Dinosaurs'
+      pageTitle: 'Dinosaurs',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/edit',
     component: DinosaurUpdateComponent,
     resolve: {
-      dinosaur: DinosaurResolve
+      dinosaur: DinosaurResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'Dinosaurs'
+      pageTitle: 'Dinosaurs',
     },
-    canActivate: [UserRouteAccessService]
-  }
+    canActivate: [UserRouteAccessService],
+  },
 ];

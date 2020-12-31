@@ -10,14 +10,14 @@ import { CladeService } from './clade.service';
 
 @Component({
   selector: 'jhi-clade-update',
-  templateUrl: './clade-update.component.html'
+  templateUrl: './clade-update.component.html',
 })
 export class CladeUpdateComponent implements OnInit {
   isSaving = false;
 
   editForm = this.fb.group({
     id: [],
-    description: [null, [Validators.required, Validators.maxLength(64)]]
+    description: [null, [Validators.required, Validators.maxLength(64)]],
   });
 
   constructor(protected cladeService: CladeService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
@@ -31,7 +31,7 @@ export class CladeUpdateComponent implements OnInit {
   updateForm(clade: IClade): void {
     this.editForm.patchValue({
       id: clade.id,
-      description: clade.description
+      description: clade.description,
     });
   }
 
@@ -53,7 +53,7 @@ export class CladeUpdateComponent implements OnInit {
     return {
       ...new Clade(),
       id: this.editForm.get(['id'])!.value,
-      description: this.editForm.get(['description'])!.value
+      description: this.editForm.get(['description'])!.value,
     };
   }
 

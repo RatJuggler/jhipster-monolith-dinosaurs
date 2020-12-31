@@ -11,6 +11,6 @@ import { cladeRoute } from './clade.route';
 @NgModule({
   imports: [DinosaursSharedModule, RouterModule.forChild(cladeRoute)],
   declarations: [CladeComponent, CladeDetailComponent, CladeUpdateComponent, CladeDeleteDialogComponent],
-  entryComponents: [CladeDeleteDialogComponent]
+  entryComponents: [CladeDeleteDialogComponent],
 })
 export class DinosaursCladeModule {}

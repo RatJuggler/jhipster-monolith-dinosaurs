@@ -51,7 +51,7 @@ export class DinosaurService {
   protected convertDateFromClient(dinosaur: IDinosaur): IDinosaur {
     const copy: IDinosaur = Object.assign({}, dinosaur, {
       insertDt: dinosaur.insertDt && dinosaur.insertDt.isValid() ? dinosaur.insertDt.toJSON() : undefined,
-      modifiedDt: dinosaur.modifiedDt && dinosaur.modifiedDt.isValid() ? dinosaur.modifiedDt.toJSON() : undefined
+      modifiedDt: dinosaur.modifiedDt && dinosaur.modifiedDt.isValid() ? dinosaur.modifiedDt.toJSON() : undefined,
     });
     return copy;
   }

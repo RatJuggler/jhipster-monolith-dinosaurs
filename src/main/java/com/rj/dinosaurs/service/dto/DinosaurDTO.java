@@ -3,7 +3,6 @@ package com.rj.dinosaurs.service.dto;
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.Objects;
 import com.rj.dinosaurs.domain.enumeration.Diet;
 
 /**
@@ -135,22 +134,19 @@ public class DinosaurDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof DinosaurDTO)) {
             return false;
         }
 
-        DinosaurDTO dinosaurDTO = (DinosaurDTO) o;
-        if (dinosaurDTO.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), dinosaurDTO.getId());
+        return id != null && id.equals(((DinosaurDTO) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "DinosaurDTO{" +

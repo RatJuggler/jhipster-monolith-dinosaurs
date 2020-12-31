@@ -6,7 +6,7 @@ import { IEra } from 'app/shared/model/era.model';
 import { EraService } from './era.service';
 
 @Component({
-  templateUrl: './era-delete-dialog.component.html'
+  templateUrl: './era-delete-dialog.component.html',
 })
 export class EraDeleteDialogComponent {
   era?: IEra;

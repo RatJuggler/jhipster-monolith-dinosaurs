@@ -6,7 +6,7 @@ import { IClade } from 'app/shared/model/clade.model';
 import { CladeService } from './clade.service';
 
 @Component({
-  templateUrl: './clade-delete-dialog.component.html'
+  templateUrl: './clade-delete-dialog.component.html',
 })
 export class CladeDeleteDialogComponent {
   clade?: IClade;

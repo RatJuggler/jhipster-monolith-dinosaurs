@@ -12,7 +12,7 @@ import { DinosaurDeleteDialogComponent } from './dinosaur-delete-dialog.componen
 
 @Component({
   selector: 'jhi-dinosaur',
-  templateUrl: './dinosaur.component.html'
+  templateUrl: './dinosaur.component.html',
 })
 export class DinosaurComponent implements OnInit, OnDestroy {
   dinosaurs: IDinosaur[];
@@ -33,7 +33,7 @@ export class DinosaurComponent implements OnInit, OnDestroy {
     this.itemsPerPage = ITEMS_PER_PAGE;
     this.page = 0;
     this.links = {
-      last: 0
+      last: 0,
     };
     this.predicate = 'id';
     this.ascending = true;
@@ -44,7 +44,7 @@ export class DinosaurComponent implements OnInit, OnDestroy {
       .query({
         page: this.page,
         size: this.itemsPerPage,
-        sort: this.sort()
+        sort: this.sort(),
       })
       .subscribe((res: HttpResponse<IDinosaur[]>) => this.paginateDinosaurs(res.body, res.headers));
   }

@@ -2,7 +2,6 @@ package com.rj.dinosaurs.service.dto;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A DTO for the {@link com.rj.dinosaurs.domain.Era} entity.
@@ -61,22 +60,19 @@ public class EraDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof EraDTO)) {
             return false;
         }
 
-        EraDTO eraDTO = (EraDTO) o;
-        if (eraDTO.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), eraDTO.getId());
+        return id != null && id.equals(((EraDTO) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "EraDTO{" +

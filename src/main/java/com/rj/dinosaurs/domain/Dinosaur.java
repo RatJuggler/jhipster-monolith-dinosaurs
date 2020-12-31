@@ -8,7 +8,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.util.Objects;
 import java.time.Instant;
 
 import com.rj.dinosaurs.domain.enumeration.Diet;
@@ -18,7 +17,7 @@ import com.rj.dinosaurs.domain.enumeration.Diet;
  */
 @Entity
 @Table(name = "dinosaur")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Dinosaur implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -55,14 +54,14 @@ public class Dinosaur implements Serializable {
     private Instant modifiedDt;
 
     @ManyToOne
-    @JsonIgnoreProperties("dinosaurs")
+    @JsonIgnoreProperties(value = "dinosaurs", allowSetters = true)
     private Era era;
 
     @ManyToOne
-    @JsonIgnoreProperties("dinosaurs")
+    @JsonIgnoreProperties(value = "dinosaurs", allowSetters = true)
     private Clade clade;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -174,7 +173,7 @@ public class Dinosaur implements Serializable {
     public void setClade(Clade clade) {
         this.clade = clade;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -192,6 +191,7 @@ public class Dinosaur implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "Dinosaur{" +

@@ -18,7 +18,7 @@ type SelectableEntity = IEra | IClade;
 
 @Component({
   selector: 'jhi-dinosaur-update',
-  templateUrl: './dinosaur-update.component.html'
+  templateUrl: './dinosaur-update.component.html',
 })
 export class DinosaurUpdateComponent implements OnInit {
   isSaving = false;
@@ -34,7 +34,7 @@ export class DinosaurUpdateComponent implements OnInit {
     insertDt: [null, [Validators.required]],
     modifiedDt: [null, [Validators.required]],
     eraId: [],
-    cladeId: []
+    cladeId: [],
   });
 
   constructor(
@@ -71,7 +71,7 @@ export class DinosaurUpdateComponent implements OnInit {
       insertDt: dinosaur.insertDt ? dinosaur.insertDt.format(DATE_TIME_FORMAT) : null,
       modifiedDt: dinosaur.modifiedDt ? dinosaur.modifiedDt.format(DATE_TIME_FORMAT) : null,
       eraId: dinosaur.eraId,
-      cladeId: dinosaur.cladeId
+      cladeId: dinosaur.cladeId,
     });
   }
 
@@ -100,7 +100,7 @@ export class DinosaurUpdateComponent implements OnInit {
       insertDt: this.editForm.get(['insertDt'])!.value ? moment(this.editForm.get(['insertDt'])!.value, DATE_TIME_FORMAT) : undefined,
       modifiedDt: this.editForm.get(['modifiedDt'])!.value ? moment(this.editForm.get(['modifiedDt'])!.value, DATE_TIME_FORMAT) : undefined,
       eraId: this.editForm.get(['eraId'])!.value,
-      cladeId: this.editForm.get(['cladeId'])!.value
+      cladeId: this.editForm.get(['cladeId'])!.value,
     };
   }
 

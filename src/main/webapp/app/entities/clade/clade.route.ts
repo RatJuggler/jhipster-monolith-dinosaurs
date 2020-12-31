@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
-import { JhiResolvePagingParams } from 'ng-jhipster';
 import { Observable, of, EMPTY } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
@@ -39,50 +38,47 @@ export const cladeRoute: Routes = [
   {
     path: '',
     component: CladeComponent,
-    resolve: {
-      pagingParams: JhiResolvePagingParams
-    },
     data: {
       authorities: [Authority.USER],
       defaultSort: 'id,asc',
-      pageTitle: 'Clades'
+      pageTitle: 'Clades',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
     component: CladeDetailComponent,
     resolve: {
-      clade: CladeResolve
+      clade: CladeResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'Clades'
+      pageTitle: 'Clades',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',
     component: CladeUpdateComponent,
     resolve: {
-      clade: CladeResolve
+      clade: CladeResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'Clades'
+      pageTitle: 'Clades',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/edit',
     component: CladeUpdateComponent,
     resolve: {
-      clade: CladeResolve
+      clade: CladeResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'Clades'
+      pageTitle: 'Clades',
     },
-    canActivate: [UserRouteAccessService]
-  }
+    canActivate: [UserRouteAccessService],
+  },
 ];

@@ -5,7 +5,7 @@ import { IDinosaur } from 'app/shared/model/dinosaur.model';
 
 @Component({
   selector: 'jhi-dinosaur-detail',
-  templateUrl: './dinosaur-detail.component.html'
+  templateUrl: './dinosaur-detail.component.html',
 })
 export class DinosaurDetailComponent implements OnInit {
   dinosaur: IDinosaur | null = null;

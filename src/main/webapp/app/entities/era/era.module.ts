@@ -11,6 +11,6 @@ import { eraRoute } from './era.route';
 @NgModule({
   imports: [DinosaursSharedModule, RouterModule.forChild(eraRoute)],
   declarations: [EraComponent, EraDetailComponent, EraUpdateComponent, EraDeleteDialogComponent],
-  entryComponents: [EraDeleteDialogComponent]
+  entryComponents: [EraDeleteDialogComponent],
 })
 export class DinosaursEraModule {}

@@ -18,7 +18,7 @@ describe('Component Tests', () => {
       TestBed.configureTestingModule({
         imports: [DinosaursTestModule],
         declarations: [DinosaurUpdateComponent],
-        providers: [FormBuilder]
+        providers: [FormBuilder],
       })
         .overrideTemplate(DinosaurUpdateComponent, '')
         .compileComponents();

@@ -7,14 +7,13 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A Era.
  */
 @Entity
 @Table(name = "era")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Era implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -38,7 +37,7 @@ public class Era implements Serializable {
     @Column(name = "to_ma")
     private Integer toMa;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -85,7 +84,7 @@ public class Era implements Serializable {
     public void setToMa(Integer toMa) {
         this.toMa = toMa;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -103,6 +102,7 @@ public class Era implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "Era{" +

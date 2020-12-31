@@ -28,7 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link EraResource} REST controller.
  */
 @SpringBootTest(classes = DinosaursApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class EraResourceIT {
@@ -95,7 +94,6 @@ public class EraResourceIT {
     @Transactional
     public void createEra() throws Exception {
         int databaseSizeBeforeCreate = eraRepository.findAll().size();
-
         // Create the Era
         EraDTO eraDTO = eraMapper.toDto(era);
         restEraMockMvc.perform(post("/api/eras")
@@ -143,6 +141,7 @@ public class EraResourceIT {
         // Create the Era, which fails.
         EraDTO eraDTO = eraMapper.toDto(era);
 
+
         restEraMockMvc.perform(post("/api/eras")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(eraDTO)))
@@ -183,7 +182,6 @@ public class EraResourceIT {
             .andExpect(jsonPath("$.fromMa").value(DEFAULT_FROM_MA))
             .andExpect(jsonPath("$.toMa").value(DEFAULT_TO_MA));
     }
-
     @Test
     @Transactional
     public void getNonExistingEra() throws Exception {

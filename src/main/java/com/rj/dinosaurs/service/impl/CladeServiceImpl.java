@@ -33,12 +33,6 @@ public class CladeServiceImpl implements CladeService {
         this.cladeMapper = cladeMapper;
     }
 
-    /**
-     * Save a clade.
-     *
-     * @param cladeDTO the entity to save.
-     * @return the persisted entity.
-     */
     @Override
     public CladeDTO save(CladeDTO cladeDTO) {
         log.debug("Request to save Clade : {}", cladeDTO);
@@ -47,12 +41,6 @@ public class CladeServiceImpl implements CladeService {
         return cladeMapper.toDto(clade);
     }
 
-    /**
-     * Get all the clades.
-     *
-     * @param pageable the pagination information.
-     * @return the list of entities.
-     */
     @Override
     @Transactional(readOnly = true)
     public Page<CladeDTO> findAll(Pageable pageable) {
@@ -61,12 +49,7 @@ public class CladeServiceImpl implements CladeService {
             .map(cladeMapper::toDto);
     }
 
-    /**
-     * Get one clade by id.
-     *
-     * @param id the id of the entity.
-     * @return the entity.
-     */
+
     @Override
     @Transactional(readOnly = true)
     public Optional<CladeDTO> findOne(Long id) {
@@ -75,11 +58,6 @@ public class CladeServiceImpl implements CladeService {
             .map(cladeMapper::toDto);
     }
 
-    /**
-     * Delete the clade by id.
-     *
-     * @param id the id of the entity.
-     */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Clade : {}", id);

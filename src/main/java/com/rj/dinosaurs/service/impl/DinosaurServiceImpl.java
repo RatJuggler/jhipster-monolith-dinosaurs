@@ -33,12 +33,6 @@ public class DinosaurServiceImpl implements DinosaurService {
         this.dinosaurMapper = dinosaurMapper;
     }
 
-    /**
-     * Save a dinosaur.
-     *
-     * @param dinosaurDTO the entity to save.
-     * @return the persisted entity.
-     */
     @Override
     public DinosaurDTO save(DinosaurDTO dinosaurDTO) {
         log.debug("Request to save Dinosaur : {}", dinosaurDTO);
@@ -47,12 +41,6 @@ public class DinosaurServiceImpl implements DinosaurService {
         return dinosaurMapper.toDto(dinosaur);
     }
 
-    /**
-     * Get all the dinosaurs.
-     *
-     * @param pageable the pagination information.
-     * @return the list of entities.
-     */
     @Override
     @Transactional(readOnly = true)
     public Page<DinosaurDTO> findAll(Pageable pageable) {
@@ -61,12 +49,7 @@ public class DinosaurServiceImpl implements DinosaurService {
             .map(dinosaurMapper::toDto);
     }
 
-    /**
-     * Get one dinosaur by id.
-     *
-     * @param id the id of the entity.
-     * @return the entity.
-     */
+
     @Override
     @Transactional(readOnly = true)
     public Optional<DinosaurDTO> findOne(Long id) {
@@ -75,11 +58,6 @@ public class DinosaurServiceImpl implements DinosaurService {
             .map(dinosaurMapper::toDto);
     }
 
-    /**
-     * Delete the dinosaur by id.
-     *
-     * @param id the id of the entity.
-     */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Dinosaur : {}", id);

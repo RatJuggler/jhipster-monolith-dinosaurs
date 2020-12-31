@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
-import { JhiResolvePagingParams } from 'ng-jhipster';
 import { Observable, of, EMPTY } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
@@ -39,50 +38,47 @@ export const eraRoute: Routes = [
   {
     path: '',
     component: EraComponent,
-    resolve: {
-      pagingParams: JhiResolvePagingParams
-    },
     data: {
       authorities: [Authority.USER],
       defaultSort: 'id,asc',
-      pageTitle: 'Eras'
+      pageTitle: 'Eras',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
     component: EraDetailComponent,
     resolve: {
-      era: EraResolve
+      era: EraResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'Eras'
+      pageTitle: 'Eras',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',
     component: EraUpdateComponent,
     resolve: {
-      era: EraResolve
+      era: EraResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'Eras'
+      pageTitle: 'Eras',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/edit',
     component: EraUpdateComponent,
     resolve: {
-      era: EraResolve
+      era: EraResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'Eras'
+      pageTitle: 'Eras',
     },
-    canActivate: [UserRouteAccessService]
-  }
+    canActivate: [UserRouteAccessService],
+  },
 ];

@@ -5,7 +5,7 @@ import { IClade } from 'app/shared/model/clade.model';
 
 @Component({
   selector: 'jhi-clade-detail',
-  templateUrl: './clade-detail.component.html'
+  templateUrl: './clade-detail.component.html',
 })
 export class CladeDetailComponent implements OnInit {
   clade: IClade | null = null;

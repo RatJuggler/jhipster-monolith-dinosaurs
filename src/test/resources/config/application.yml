@@ -14,6 +14,9 @@
 # ===================================================================
 
 spring:
+  profiles:
+    # Uncomment the following line to enable tests against production database type rather than H2, using Testcontainers
+    #active: testcontainers
   application:
     name: dinosaurs
   datasource:
@@ -52,9 +55,6 @@ spring:
     allow-bean-definition-overriding: true
   messages:
     basename: i18n/messages
-  mvc:
-    favicon:
-      enabled: false
   task:
     execution:
       thread-name-prefix: dinosaurs-task-
@@ -84,7 +84,7 @@ jhipster:
     name: 'dinosaursApp'
   logging:
     # To test json console appender
-    use-json-format: true # By default, logs are in Json format
+    use-json-format: false
     logstash:
       enabled: false
       host: localhost
@@ -97,7 +97,7 @@ jhipster:
     authentication:
       jwt:
         # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
-        base64-secret: NzEwM2IwOTM2ODliZjY1MjUxM2E1MjViMTdlY2MyYTFmMmEwMjhjNjA4NmNlMjFkYTY3Y2FhNzE3YmNmMmMwY2U4ODQwYzNiZGViOTQ2NWZmYWVjNmJiNzA4Zjc2YjcwZDQ5Yzg4ZDI5N2UzZGU0OGRmOTkyMGZkNWYxOTJmYWY=
+        base64-secret: Yzk0MmNkZmI0ZGZjZjYyYzc5MjQzMjhjYTZjMjQ2ZDYzYTI1ZGZjNTdlNGNmZGViNjI3MGM1MWU5NmJjNDhiZmEwMTVjYjBmNTNkZGY5NmFhY2Y4MGQ3NjYyNWEzMWRiZGEwMWU3ZDU0Yjk2ZTA2ODFjZmQ4NGRlMWNhYzkyYTU=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
   metrics:

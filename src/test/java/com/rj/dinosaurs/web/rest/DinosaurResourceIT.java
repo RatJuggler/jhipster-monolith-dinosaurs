@@ -31,7 +31,6 @@ import com.rj.dinosaurs.domain.enumeration.Diet;
  * Integration tests for the {@link DinosaurResource} REST controller.
  */
 @SpringBootTest(classes = DinosaursApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class DinosaurResourceIT {
@@ -113,7 +112,6 @@ public class DinosaurResourceIT {
     @Transactional
     public void createDinosaur() throws Exception {
         int databaseSizeBeforeCreate = dinosaurRepository.findAll().size();
-
         // Create the Dinosaur
         DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
         restDinosaurMockMvc.perform(post("/api/dinosaurs")
@@ -164,6 +162,7 @@ public class DinosaurResourceIT {
         // Create the Dinosaur, which fails.
         DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
 
+
         restDinosaurMockMvc.perform(post("/api/dinosaurs")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
@@ -183,6 +182,7 @@ public class DinosaurResourceIT {
         // Create the Dinosaur, which fails.
         DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
 
+
         restDinosaurMockMvc.perform(post("/api/dinosaurs")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
@@ -201,6 +201,7 @@ public class DinosaurResourceIT {
 
         // Create the Dinosaur, which fails.
         DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
+
 
         restDinosaurMockMvc.perform(post("/api/dinosaurs")
             .contentType(MediaType.APPLICATION_JSON)
@@ -248,7 +249,6 @@ public class DinosaurResourceIT {
             .andExpect(jsonPath("$.insertDt").value(DEFAULT_INSERT_DT.toString()))
             .andExpect(jsonPath("$.modifiedDt").value(DEFAULT_MODIFIED_DT.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingDinosaur() throws Exception {

@@ -48,7 +48,7 @@ describe('Dinosaur e2e test', () => {
       dinosaurUpdatePage.setInsertDtInput('01/01/2001' + protractor.Key.TAB + '02:30AM'),
       dinosaurUpdatePage.setModifiedDtInput('01/01/2001' + protractor.Key.TAB + '02:30AM'),
       dinosaurUpdatePage.eraSelectLastOption(),
-      dinosaurUpdatePage.cladeSelectLastOption()
+      dinosaurUpdatePage.cladeSelectLastOption(),
     ]);
 
     expect(await dinosaurUpdatePage.getNameInput()).to.eq('name', 'Expected Name value to be equals to name');

@@ -7,14 +7,13 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A Clade.
  */
 @Entity
 @Table(name = "clade")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Clade implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -28,7 +27,7 @@ public class Clade implements Serializable {
     @Column(name = "description", length = 64, nullable = false)
     private String description;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -49,7 +48,7 @@ public class Clade implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -67,6 +66,7 @@ public class Clade implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "Clade{" +

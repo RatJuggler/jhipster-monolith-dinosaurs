@@ -5,7 +5,7 @@ import { IEra } from 'app/shared/model/era.model';
 
 @Component({
   selector: 'jhi-era-detail',
-  templateUrl: './era-detail.component.html'
+  templateUrl: './era-detail.component.html',
 })
 export class EraDetailComponent implements OnInit {
   era: IEra | null = null;

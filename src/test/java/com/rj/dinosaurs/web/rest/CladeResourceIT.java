@@ -28,7 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link CladeResource} REST controller.
  */
 @SpringBootTest(classes = DinosaursApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class CladeResourceIT {
@@ -85,7 +84,6 @@ public class CladeResourceIT {
     @Transactional
     public void createClade() throws Exception {
         int databaseSizeBeforeCreate = cladeRepository.findAll().size();
-
         // Create the Clade
         CladeDTO cladeDTO = cladeMapper.toDto(clade);
         restCladeMockMvc.perform(post("/api/clades")
@@ -131,6 +129,7 @@ public class CladeResourceIT {
         // Create the Clade, which fails.
         CladeDTO cladeDTO = cladeMapper.toDto(clade);
 
+
         restCladeMockMvc.perform(post("/api/clades")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(cladeDTO)))
@@ -167,7 +166,6 @@ public class CladeResourceIT {
             .andExpect(jsonPath("$.id").value(clade.getId().intValue()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION));
     }
-
     @Test
     @Transactional
     public void getNonExistingClade() throws Exception {

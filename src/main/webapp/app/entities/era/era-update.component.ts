@@ -10,7 +10,7 @@ import { EraService } from './era.service';
 
 @Component({
   selector: 'jhi-era-update',
-  templateUrl: './era-update.component.html'
+  templateUrl: './era-update.component.html',
 })
 export class EraUpdateComponent implements OnInit {
   isSaving = false;
@@ -19,7 +19,7 @@ export class EraUpdateComponent implements OnInit {
     id: [],
     name: [null, [Validators.required, Validators.maxLength(64)]],
     fromMa: [null, [Validators.min(0), Validators.max(999)]],
-    toMa: [null, [Validators.min(0), Validators.max(999)]]
+    toMa: [null, [Validators.min(0), Validators.max(999)]],
   });
 
   constructor(protected eraService: EraService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
@@ -35,7 +35,7 @@ export class EraUpdateComponent implements OnInit {
       id: era.id,
       name: era.name,
       fromMa: era.fromMa,
-      toMa: era.toMa
+      toMa: era.toMa,
     });
   }
 
@@ -59,7 +59,7 @@ export class EraUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       name: this.editForm.get(['name'])!.value,
       fromMa: this.editForm.get(['fromMa'])!.value,
-      toMa: this.editForm.get(['toMa'])!.value
+      toMa: this.editForm.get(['toMa'])!.value,
     };
   }
 
