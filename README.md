@@ -11,7 +11,7 @@ Currently regenerated using JHipster [6.10.5](https://www.jhipster.tech/document
 
 The application was originally generated using the JHipster (4.14.1) command line question/response [process](https://www.jhipster.tech/creating-an-app/)
 and then a few simple customisations made to the home page and footer. It has been updated on a semi-regular basis to the latest
-version. The setup has been consolidated into a [jdl](https://www.jhipster.tech/jdl/) [file](https://github.com/RatJuggler/jhipster-jdl/blob/master/jhipster-monolith-dinosaurs.jh)
+version. The setup has been consolidated into a [jdl](https://www.jhipster.tech/jdl/) [file](https://github.com/RatJuggler/jhipster-jdl/blob/master/jhipster-monolith-dinosaurs.jdl)
 and you can now reproduce the generation (minus customisations) using the following commands:
 
     mkdir jhipster-monolith-dinosaurs
