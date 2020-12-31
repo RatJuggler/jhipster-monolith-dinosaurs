@@ -37,7 +37,11 @@
     "embeddableLaunchScript": false,
     "entitySuffix": "",
     "otherModules": [],
-    "blueprints": []
+    "blueprints": [],
+    "appsFolders": ["jhipster-monolith-dinosaurs"],
+    "directoryPath": "../",
+    "monitoring": "elk",
+    "consoleOptions": ["curator"]
   },
   "entities": ["Era", "Clade", "Dinosaur"]
 }
