@@ -13,17 +13,13 @@ Answer the questions and add ELK as a monitoring solution to generate the config
  
     ? Which *type* of application would you like to deploy? 
     Monolithic application
-    ? Enter the root directory where your applications are located ../
+    ? Enter the root directory where your applications are located ../..
     1 applications found at /home/john/IdeaProjects/
     ? Which applications do you want to include in your configuration? 
     jhipster-monolith-dinosaurs
     ? Do you want to setup monitoring for your applications ? 
-    Yes, for logs and metrics with the JHipster Console (based on ELK)
-    ? You have selected the JHipster Console which is based on the ELK stack and additional technologies, which one do you want to use ? 
-    Curator, to help you curate and manage your Elasticsearch indices
+    Yes, for metrics only with Prometheus
  
-(_Note: when I first did this the new files/folders were generated in the project root so I moved them to the docker-compose folder_).
-
 You can then control all the services using commands as previously:
 
     docker-compose up -d
@@ -32,7 +28,7 @@ You can then control all the services using commands as previously:
 
     docker-compose start
 
-In addition using an environment file (.env) can remove the need to keep specifying file and project options.
+In addition, using an environment file (.env) can remove the need to keep specifying file and project options.
 
 ## Configured Docker services
 
@@ -43,4 +39,6 @@ In addition using an environment file (.env) can remove the need to keep specify
 
 ### Additional Services:
 
-- [JHipster Console](http://localhost:5601)
+- [Prometheus server](http://localhost:9090)
+- [Prometheus Alertmanager](http://localhost:9093)
+- [Grafana](http://localhost:3000)

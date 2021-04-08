@@ -42,6 +42,7 @@
     "pages": [],
     "creationTimestamp": 1617789700604,
     "jwtSecretKey": "Y2FhYjQzOTI5YjYxNDA2ZmJhMzU2Y2I0ZDgzNzZhZDc3OGVhNGYyZjQ0MWQ3ZWI3MzY3NzQ0NTc1NWEyMGM5NmIzZDQzYzZkMTlkOWY1MWU3MTU3NTBlOGRlYTNhMjJkNjZhMGMxMTc5MjdiMjQ1YjZjZTMyYWZhMDQ1YTJkZmU=",
-    "lastLiquibaseTimestamp": 1617789880000
+    "lastLiquibaseTimestamp": 1617789880000,
+    "appFolder": "jhipster-monolith-dinosaurs"
   }
 }

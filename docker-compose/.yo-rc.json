@@ -1,0 +1,9 @@
+{
+  "generator-jhipster": {
+    "appsFolders": ["jhipster-monolith-dinosaurs"],
+    "directoryPath": "../../",
+    "monitoring": "prometheus",
+    "serviceDiscoveryType": false,
+    "jwtSecretKey": "MGJmNTQzM2RhZmFhYmUxN2Q2YTEyNDQ4MTc5OTNkZDgwMDgwZTM2N2FlODgxNzEzODljMzRiNGE4ZmVkODZhZWNkYjBlMjVhY2NkYzYzZTdiYmZjZDgwMzZiMTc3YWFkNjNkOQ=="
+  }
+}
