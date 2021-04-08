@@ -23,7 +23,6 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20201231110952",
   "entityTableName": "era",
   "dto": "mapstruct",
   "pagination": "pagination",
@@ -32,6 +31,6 @@
   "fluentMethods": true,
   "readOnly": false,
   "embedded": false,
-  "clientRootFolder": "",
-  "applications": ["dinosaurs"]
+  "applications": ["dinosaurs"],
+  "changelogDate": "20210407100240"
 }

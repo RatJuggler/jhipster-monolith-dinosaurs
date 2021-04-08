@@ -1,16 +1,12 @@
 package com.rj.dinosaurs.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import com.rj.dinosaurs.domain.enumeration.Diet;
 import java.io.Serializable;
 import java.time.Instant;
-
-import com.rj.dinosaurs.domain.enumeration.Diet;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Dinosaur.
@@ -54,11 +50,9 @@ public class Dinosaur implements Serializable {
     private Instant modifiedDt;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "dinosaurs", allowSetters = true)
     private Era era;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "dinosaurs", allowSetters = true)
     private Clade clade;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -70,8 +64,13 @@ public class Dinosaur implements Serializable {
         this.id = id;
     }
 
+    public Dinosaur id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public Dinosaur name(String name) {
@@ -84,7 +83,7 @@ public class Dinosaur implements Serializable {
     }
 
     public Integer getWeight() {
-        return weight;
+        return this.weight;
     }
 
     public Dinosaur weight(Integer weight) {
@@ -97,7 +96,7 @@ public class Dinosaur implements Serializable {
     }
 
     public Integer getLength() {
-        return length;
+        return this.length;
     }
 
     public Dinosaur length(Integer length) {
@@ -110,7 +109,7 @@ public class Dinosaur implements Serializable {
     }
 
     public Diet getDiet() {
-        return diet;
+        return this.diet;
     }
 
     public Dinosaur diet(Diet diet) {
@@ -123,7 +122,7 @@ public class Dinosaur implements Serializable {
     }
 
     public Instant getInsertDt() {
-        return insertDt;
+        return this.insertDt;
     }
 
     public Dinosaur insertDt(Instant insertDt) {
@@ -136,7 +135,7 @@ public class Dinosaur implements Serializable {
     }
 
     public Instant getModifiedDt() {
-        return modifiedDt;
+        return this.modifiedDt;
     }
 
     public Dinosaur modifiedDt(Instant modifiedDt) {
@@ -149,11 +148,11 @@ public class Dinosaur implements Serializable {
     }
 
     public Era getEra() {
-        return era;
+        return this.era;
     }
 
     public Dinosaur era(Era era) {
-        this.era = era;
+        this.setEra(era);
         return this;
     }
 
@@ -162,17 +161,18 @@ public class Dinosaur implements Serializable {
     }
 
     public Clade getClade() {
-        return clade;
+        return this.clade;
     }
 
     public Dinosaur clade(Clade clade) {
-        this.clade = clade;
+        this.setClade(clade);
         return this;
     }
 
     public void setClade(Clade clade) {
         this.clade = clade;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -188,7 +188,8 @@ public class Dinosaur implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

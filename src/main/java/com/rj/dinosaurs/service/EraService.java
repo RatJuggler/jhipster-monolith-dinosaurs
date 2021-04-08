@@ -1,17 +1,14 @@
 package com.rj.dinosaurs.service;
 
 import com.rj.dinosaurs.service.dto.EraDTO;
-
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import java.util.Optional;
 
 /**
  * Service Interface for managing {@link com.rj.dinosaurs.domain.Era}.
  */
 public interface EraService {
-
     /**
      * Save a era.
      *
@@ -21,13 +18,20 @@ public interface EraService {
     EraDTO save(EraDTO eraDTO);
 
     /**
+     * Partially updates a era.
+     *
+     * @param eraDTO the entity to update partially.
+     * @return the persisted entity.
+     */
+    Optional<EraDTO> partialUpdate(EraDTO eraDTO);
+
+    /**
      * Get all the eras.
      *
      * @param pageable the pagination information.
      * @return the list of entities.
      */
     Page<EraDTO> findAll(Pageable pageable);
-
 
     /**
      * Get the "id" era.

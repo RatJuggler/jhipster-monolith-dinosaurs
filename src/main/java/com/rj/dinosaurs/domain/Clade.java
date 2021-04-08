@@ -1,12 +1,10 @@
 package com.rj.dinosaurs.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
+import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.*;
-
-import java.io.Serializable;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Clade.
@@ -36,8 +34,13 @@ public class Clade implements Serializable {
         this.id = id;
     }
 
+    public Clade id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public Clade description(String description) {
@@ -48,6 +51,7 @@ public class Clade implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -63,7 +67,8 @@ public class Clade implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

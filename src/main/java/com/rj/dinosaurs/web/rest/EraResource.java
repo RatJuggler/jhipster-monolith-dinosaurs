@@ -1,12 +1,16 @@
 package com.rj.dinosaurs.web.rest;
 
+import com.rj.dinosaurs.repository.EraRepository;
 import com.rj.dinosaurs.service.EraService;
-import com.rj.dinosaurs.web.rest.errors.BadRequestAlertException;
 import com.rj.dinosaurs.service.dto.EraDTO;
-
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import com.rj.dinosaurs.web.rest.errors.BadRequestAlertException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,15 +18,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link com.rj.dinosaurs.domain.Era}.
@@ -40,8 +41,11 @@ public class EraResource {
 
     private final EraService eraService;
 
-    public EraResource(EraService eraService) {
+    private final EraRepository eraRepository;
+
+    public EraResource(EraService eraService, EraRepository eraRepository) {
         this.eraService = eraService;
+        this.eraRepository = eraRepository;
     }
 
     /**
@@ -58,30 +62,78 @@ public class EraResource {
             throw new BadRequestAlertException("A new era cannot already have an ID", ENTITY_NAME, "idexists");
         }
         EraDTO result = eraService.save(eraDTO);
-        return ResponseEntity.created(new URI("/api/eras/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/eras/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /eras} : Updates an existing era.
+     * {@code PUT  /eras/:id} : Updates an existing era.
      *
+     * @param id the id of the eraDTO to save.
      * @param eraDTO the eraDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated eraDTO,
      * or with status {@code 400 (Bad Request)} if the eraDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the eraDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/eras")
-    public ResponseEntity<EraDTO> updateEra(@Valid @RequestBody EraDTO eraDTO) throws URISyntaxException {
-        log.debug("REST request to update Era : {}", eraDTO);
+    @PutMapping("/eras/{id}")
+    public ResponseEntity<EraDTO> updateEra(@PathVariable(value = "id", required = false) final Long id, @Valid @RequestBody EraDTO eraDTO)
+        throws URISyntaxException {
+        log.debug("REST request to update Era : {}, {}", id, eraDTO);
         if (eraDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        if (!Objects.equals(id, eraDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!eraRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
         EraDTO result = eraService.save(eraDTO);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, eraDTO.getId().toString()))
             .body(result);
+    }
+
+    /**
+     * {@code PATCH  /eras/:id} : Partial updates given fields of an existing era, field will ignore if it is null
+     *
+     * @param id the id of the eraDTO to save.
+     * @param eraDTO the eraDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated eraDTO,
+     * or with status {@code 400 (Bad Request)} if the eraDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the eraDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the eraDTO couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PatchMapping(value = "/eras/{id}", consumes = "application/merge-patch+json")
+    public ResponseEntity<EraDTO> partialUpdateEra(
+        @PathVariable(value = "id", required = false) final Long id,
+        @NotNull @RequestBody EraDTO eraDTO
+    ) throws URISyntaxException {
+        log.debug("REST request to partial update Era partially : {}, {}", id, eraDTO);
+        if (eraDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, eraDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!eraRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
+        Optional<EraDTO> result = eraService.partialUpdate(eraDTO);
+
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, eraDTO.getId().toString())
+        );
     }
 
     /**
@@ -121,6 +173,9 @@ public class EraResource {
     public ResponseEntity<Void> deleteEra(@PathVariable Long id) {
         log.debug("REST request to delete Era : {}", id);
         eraService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

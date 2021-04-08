@@ -1,19 +1,17 @@
 package com.rj.dinosaurs.service.impl;
 
-import com.rj.dinosaurs.service.CladeService;
 import com.rj.dinosaurs.domain.Clade;
 import com.rj.dinosaurs.repository.CladeRepository;
+import com.rj.dinosaurs.service.CladeService;
 import com.rj.dinosaurs.service.dto.CladeDTO;
 import com.rj.dinosaurs.service.mapper.CladeMapper;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 /**
  * Service Implementation for managing {@link Clade}.
@@ -42,20 +40,33 @@ public class CladeServiceImpl implements CladeService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Page<CladeDTO> findAll(Pageable pageable) {
-        log.debug("Request to get all Clades");
-        return cladeRepository.findAll(pageable)
+    public Optional<CladeDTO> partialUpdate(CladeDTO cladeDTO) {
+        log.debug("Request to partially update Clade : {}", cladeDTO);
+
+        return cladeRepository
+            .findById(cladeDTO.getId())
+            .map(
+                existingClade -> {
+                    cladeMapper.partialUpdate(existingClade, cladeDTO);
+                    return existingClade;
+                }
+            )
+            .map(cladeRepository::save)
             .map(cladeMapper::toDto);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Page<CladeDTO> findAll(Pageable pageable) {
+        log.debug("Request to get all Clades");
+        return cladeRepository.findAll(pageable).map(cladeMapper::toDto);
+    }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<CladeDTO> findOne(Long id) {
         log.debug("Request to get Clade : {}", id);
-        return cladeRepository.findById(id)
-            .map(cladeMapper::toDto);
+        return cladeRepository.findById(id).map(cladeMapper::toDto);
     }
 
     @Override

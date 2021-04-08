@@ -1,12 +1,16 @@
 package com.rj.dinosaurs.web.rest;
 
+import com.rj.dinosaurs.repository.DinosaurRepository;
 import com.rj.dinosaurs.service.DinosaurService;
-import com.rj.dinosaurs.web.rest.errors.BadRequestAlertException;
 import com.rj.dinosaurs.service.dto.DinosaurDTO;
-
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import com.rj.dinosaurs.web.rest.errors.BadRequestAlertException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,15 +18,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link com.rj.dinosaurs.domain.Dinosaur}.
@@ -40,8 +41,11 @@ public class DinosaurResource {
 
     private final DinosaurService dinosaurService;
 
-    public DinosaurResource(DinosaurService dinosaurService) {
+    private final DinosaurRepository dinosaurRepository;
+
+    public DinosaurResource(DinosaurService dinosaurService, DinosaurRepository dinosaurRepository) {
         this.dinosaurService = dinosaurService;
+        this.dinosaurRepository = dinosaurRepository;
     }
 
     /**
@@ -58,30 +62,80 @@ public class DinosaurResource {
             throw new BadRequestAlertException("A new dinosaur cannot already have an ID", ENTITY_NAME, "idexists");
         }
         DinosaurDTO result = dinosaurService.save(dinosaurDTO);
-        return ResponseEntity.created(new URI("/api/dinosaurs/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/dinosaurs/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /dinosaurs} : Updates an existing dinosaur.
+     * {@code PUT  /dinosaurs/:id} : Updates an existing dinosaur.
      *
+     * @param id the id of the dinosaurDTO to save.
      * @param dinosaurDTO the dinosaurDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated dinosaurDTO,
      * or with status {@code 400 (Bad Request)} if the dinosaurDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the dinosaurDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/dinosaurs")
-    public ResponseEntity<DinosaurDTO> updateDinosaur(@Valid @RequestBody DinosaurDTO dinosaurDTO) throws URISyntaxException {
-        log.debug("REST request to update Dinosaur : {}", dinosaurDTO);
+    @PutMapping("/dinosaurs/{id}")
+    public ResponseEntity<DinosaurDTO> updateDinosaur(
+        @PathVariable(value = "id", required = false) final Long id,
+        @Valid @RequestBody DinosaurDTO dinosaurDTO
+    ) throws URISyntaxException {
+        log.debug("REST request to update Dinosaur : {}, {}", id, dinosaurDTO);
         if (dinosaurDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        if (!Objects.equals(id, dinosaurDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!dinosaurRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
         DinosaurDTO result = dinosaurService.save(dinosaurDTO);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, dinosaurDTO.getId().toString()))
             .body(result);
+    }
+
+    /**
+     * {@code PATCH  /dinosaurs/:id} : Partial updates given fields of an existing dinosaur, field will ignore if it is null
+     *
+     * @param id the id of the dinosaurDTO to save.
+     * @param dinosaurDTO the dinosaurDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated dinosaurDTO,
+     * or with status {@code 400 (Bad Request)} if the dinosaurDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the dinosaurDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the dinosaurDTO couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PatchMapping(value = "/dinosaurs/{id}", consumes = "application/merge-patch+json")
+    public ResponseEntity<DinosaurDTO> partialUpdateDinosaur(
+        @PathVariable(value = "id", required = false) final Long id,
+        @NotNull @RequestBody DinosaurDTO dinosaurDTO
+    ) throws URISyntaxException {
+        log.debug("REST request to partial update Dinosaur partially : {}, {}", id, dinosaurDTO);
+        if (dinosaurDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, dinosaurDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!dinosaurRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
+        Optional<DinosaurDTO> result = dinosaurService.partialUpdate(dinosaurDTO);
+
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, dinosaurDTO.getId().toString())
+        );
     }
 
     /**
@@ -121,6 +175,9 @@ public class DinosaurResource {
     public ResponseEntity<Void> deleteDinosaur(@PathVariable Long id) {
         log.debug("REST request to delete Dinosaur : {}", id);
         dinosaurService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

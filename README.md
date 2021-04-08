@@ -5,7 +5,7 @@ deploy it to various cloud providers and containers.
 
 _The original generated README.md has been renamed as [jhipster.md](jhipster.md)._
 
-Currently regenerated using JHipster [6.10.5](https://www.jhipster.tech/documentation-archive/v6.10.5).
+Currently being regenerated using JHipster [7.0.1](https://www.jhipster.tech/documentation-archive/v7.0.1).
 
 ## Generation
 

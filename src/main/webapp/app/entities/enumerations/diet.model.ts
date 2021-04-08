@@ -1,0 +1,7 @@
+export enum Diet {
+  HERBIVORE = 'HERBIVORE',
+
+  CARNIVORE = 'CARNIVORE',
+
+  OMNIVORE = 'OMNIVORE',
+}

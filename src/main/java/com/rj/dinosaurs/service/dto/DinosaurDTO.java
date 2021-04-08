@@ -1,15 +1,16 @@
 package com.rj.dinosaurs.service.dto;
 
-import java.time.Instant;
-import javax.validation.constraints.*;
-import java.io.Serializable;
 import com.rj.dinosaurs.domain.enumeration.Diet;
+import java.io.Serializable;
+import java.time.Instant;
+import java.util.Objects;
+import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link com.rj.dinosaurs.domain.Dinosaur} entity.
  */
 public class DinosaurDTO implements Serializable {
-    
+
     private Long id;
 
     @NotNull
@@ -32,15 +33,10 @@ public class DinosaurDTO implements Serializable {
     @NotNull
     private Instant modifiedDt;
 
+    private EraDTO era;
 
-    private Long eraId;
+    private CladeDTO clade;
 
-    private String eraName;
-
-    private Long cladeId;
-
-    private String cladeDescription;
-    
     public Long getId() {
         return id;
     }
@@ -97,36 +93,20 @@ public class DinosaurDTO implements Serializable {
         this.modifiedDt = modifiedDt;
     }
 
-    public Long getEraId() {
-        return eraId;
+    public EraDTO getEra() {
+        return era;
     }
 
-    public void setEraId(Long eraId) {
-        this.eraId = eraId;
+    public void setEra(EraDTO era) {
+        this.era = era;
     }
 
-    public String getEraName() {
-        return eraName;
+    public CladeDTO getClade() {
+        return clade;
     }
 
-    public void setEraName(String eraName) {
-        this.eraName = eraName;
-    }
-
-    public Long getCladeId() {
-        return cladeId;
-    }
-
-    public void setCladeId(Long cladeId) {
-        this.cladeId = cladeId;
-    }
-
-    public String getCladeDescription() {
-        return cladeDescription;
-    }
-
-    public void setCladeDescription(String cladeDescription) {
-        this.cladeDescription = cladeDescription;
+    public void setClade(CladeDTO clade) {
+        this.clade = clade;
     }
 
     @Override
@@ -138,12 +118,16 @@ public class DinosaurDTO implements Serializable {
             return false;
         }
 
-        return id != null && id.equals(((DinosaurDTO) o).id);
+        DinosaurDTO dinosaurDTO = (DinosaurDTO) o;
+        if (this.id == null) {
+            return false;
+        }
+        return Objects.equals(this.id, dinosaurDTO.id);
     }
 
     @Override
     public int hashCode() {
-        return 31;
+        return Objects.hash(this.id);
     }
 
     // prettier-ignore
@@ -157,10 +141,8 @@ public class DinosaurDTO implements Serializable {
             ", diet='" + getDiet() + "'" +
             ", insertDt='" + getInsertDt() + "'" +
             ", modifiedDt='" + getModifiedDt() + "'" +
-            ", eraId=" + getEraId() +
-            ", eraName='" + getEraName() + "'" +
-            ", cladeId=" + getCladeId() +
-            ", cladeDescription='" + getCladeDescription() + "'" +
+            ", era=" + getEra() +
+            ", clade=" + getClade() +
             "}";
     }
 }

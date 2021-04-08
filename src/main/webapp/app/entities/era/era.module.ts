@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
-import { DinosaursSharedModule } from 'app/shared/shared.module';
-import { EraComponent } from './era.component';
-import { EraDetailComponent } from './era-detail.component';
-import { EraUpdateComponent } from './era-update.component';
-import { EraDeleteDialogComponent } from './era-delete-dialog.component';
-import { eraRoute } from './era.route';
+import { SharedModule } from 'app/shared/shared.module';
+import { EraComponent } from './list/era.component';
+import { EraDetailComponent } from './detail/era-detail.component';
+import { EraUpdateComponent } from './update/era-update.component';
+import { EraDeleteDialogComponent } from './delete/era-delete-dialog.component';
+import { EraRoutingModule } from './route/era-routing.module';
 
 @NgModule({
-  imports: [DinosaursSharedModule, RouterModule.forChild(eraRoute)],
+  imports: [SharedModule, EraRoutingModule],
   declarations: [EraComponent, EraDetailComponent, EraUpdateComponent, EraDeleteDialogComponent],
   entryComponents: [EraDeleteDialogComponent],
 })
-export class DinosaursEraModule {}
+export class EraModule {}

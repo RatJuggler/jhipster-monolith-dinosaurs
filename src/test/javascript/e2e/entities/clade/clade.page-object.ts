@@ -29,10 +29,19 @@ export class CladeUpdatePage {
   saveButton = element(by.id('save-entity'));
   cancelButton = element(by.id('cancel-save'));
 
+  idInput = element(by.id('field_id'));
   descriptionInput = element(by.id('field_description'));
 
   async getPageTitle(): Promise<string> {
     return this.pageTitle.getText();
+  }
+
+  async setIdInput(id: string): Promise<void> {
+    await this.idInput.sendKeys(id);
+  }
+
+  async getIdInput(): Promise<string> {
+    return await this.idInput.getAttribute('value');
   }
 
   async setDescriptionInput(description: string): Promise<void> {

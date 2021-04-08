@@ -1,39 +1,38 @@
 package com.rj.dinosaurs.web.rest;
 
-import com.rj.dinosaurs.DinosaursApp;
-import com.rj.dinosaurs.domain.Dinosaur;
-import com.rj.dinosaurs.repository.DinosaurRepository;
-import com.rj.dinosaurs.service.DinosaurService;
-import com.rj.dinosaurs.service.dto.DinosaurDTO;
-import com.rj.dinosaurs.service.mapper.DinosaurMapper;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.rj.dinosaurs.IntegrationTest;
+import com.rj.dinosaurs.domain.Dinosaur;
 import com.rj.dinosaurs.domain.enumeration.Diet;
+import com.rj.dinosaurs.repository.DinosaurRepository;
+import com.rj.dinosaurs.service.dto.DinosaurDTO;
+import com.rj.dinosaurs.service.mapper.DinosaurMapper;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
+import javax.persistence.EntityManager;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * Integration tests for the {@link DinosaurResource} REST controller.
  */
-@SpringBootTest(classes = DinosaursApp.class)
+@IntegrationTest
 @AutoConfigureMockMvc
 @WithMockUser
-public class DinosaurResourceIT {
+class DinosaurResourceIT {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
@@ -53,14 +52,17 @@ public class DinosaurResourceIT {
     private static final Instant DEFAULT_MODIFIED_DT = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_MODIFIED_DT = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
+    private static final String ENTITY_API_URL = "/api/dinosaurs";
+    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
+
+    private static Random random = new Random();
+    private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
+
     @Autowired
     private DinosaurRepository dinosaurRepository;
 
     @Autowired
     private DinosaurMapper dinosaurMapper;
-
-    @Autowired
-    private DinosaurService dinosaurService;
 
     @Autowired
     private EntityManager em;
@@ -86,6 +88,7 @@ public class DinosaurResourceIT {
             .modifiedDt(DEFAULT_MODIFIED_DT);
         return dinosaur;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -110,13 +113,12 @@ public class DinosaurResourceIT {
 
     @Test
     @Transactional
-    public void createDinosaur() throws Exception {
+    void createDinosaur() throws Exception {
         int databaseSizeBeforeCreate = dinosaurRepository.findAll().size();
         // Create the Dinosaur
         DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
-        restDinosaurMockMvc.perform(post("/api/dinosaurs")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
+        restDinosaurMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Dinosaur in the database
@@ -133,17 +135,16 @@ public class DinosaurResourceIT {
 
     @Test
     @Transactional
-    public void createDinosaurWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = dinosaurRepository.findAll().size();
-
+    void createDinosaurWithExistingId() throws Exception {
         // Create the Dinosaur with an existing ID
         dinosaur.setId(1L);
         DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
 
+        int databaseSizeBeforeCreate = dinosaurRepository.findAll().size();
+
         // An entity with an existing ID cannot be created, so this API call must fail
-        restDinosaurMockMvc.perform(post("/api/dinosaurs")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
+        restDinosaurMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Dinosaur in the database
@@ -151,10 +152,9 @@ public class DinosaurResourceIT {
         assertThat(dinosaurList).hasSize(databaseSizeBeforeCreate);
     }
 
-
     @Test
     @Transactional
-    public void checkNameIsRequired() throws Exception {
+    void checkNameIsRequired() throws Exception {
         int databaseSizeBeforeTest = dinosaurRepository.findAll().size();
         // set the field null
         dinosaur.setName(null);
@@ -162,10 +162,8 @@ public class DinosaurResourceIT {
         // Create the Dinosaur, which fails.
         DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
 
-
-        restDinosaurMockMvc.perform(post("/api/dinosaurs")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
+        restDinosaurMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
             .andExpect(status().isBadRequest());
 
         List<Dinosaur> dinosaurList = dinosaurRepository.findAll();
@@ -174,7 +172,7 @@ public class DinosaurResourceIT {
 
     @Test
     @Transactional
-    public void checkInsertDtIsRequired() throws Exception {
+    void checkInsertDtIsRequired() throws Exception {
         int databaseSizeBeforeTest = dinosaurRepository.findAll().size();
         // set the field null
         dinosaur.setInsertDt(null);
@@ -182,10 +180,8 @@ public class DinosaurResourceIT {
         // Create the Dinosaur, which fails.
         DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
 
-
-        restDinosaurMockMvc.perform(post("/api/dinosaurs")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
+        restDinosaurMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
             .andExpect(status().isBadRequest());
 
         List<Dinosaur> dinosaurList = dinosaurRepository.findAll();
@@ -194,7 +190,7 @@ public class DinosaurResourceIT {
 
     @Test
     @Transactional
-    public void checkModifiedDtIsRequired() throws Exception {
+    void checkModifiedDtIsRequired() throws Exception {
         int databaseSizeBeforeTest = dinosaurRepository.findAll().size();
         // set the field null
         dinosaur.setModifiedDt(null);
@@ -202,10 +198,8 @@ public class DinosaurResourceIT {
         // Create the Dinosaur, which fails.
         DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
 
-
-        restDinosaurMockMvc.perform(post("/api/dinosaurs")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
+        restDinosaurMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
             .andExpect(status().isBadRequest());
 
         List<Dinosaur> dinosaurList = dinosaurRepository.findAll();
@@ -214,12 +208,13 @@ public class DinosaurResourceIT {
 
     @Test
     @Transactional
-    public void getAllDinosaurs() throws Exception {
+    void getAllDinosaurs() throws Exception {
         // Initialize the database
         dinosaurRepository.saveAndFlush(dinosaur);
 
         // Get all the dinosaurList
-        restDinosaurMockMvc.perform(get("/api/dinosaurs?sort=id,desc"))
+        restDinosaurMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(dinosaur.getId().intValue())))
@@ -230,15 +225,16 @@ public class DinosaurResourceIT {
             .andExpect(jsonPath("$.[*].insertDt").value(hasItem(DEFAULT_INSERT_DT.toString())))
             .andExpect(jsonPath("$.[*].modifiedDt").value(hasItem(DEFAULT_MODIFIED_DT.toString())));
     }
-    
+
     @Test
     @Transactional
-    public void getDinosaur() throws Exception {
+    void getDinosaur() throws Exception {
         // Initialize the database
         dinosaurRepository.saveAndFlush(dinosaur);
 
         // Get the dinosaur
-        restDinosaurMockMvc.perform(get("/api/dinosaurs/{id}", dinosaur.getId()))
+        restDinosaurMockMvc
+            .perform(get(ENTITY_API_URL_ID, dinosaur.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(dinosaur.getId().intValue()))
@@ -249,17 +245,17 @@ public class DinosaurResourceIT {
             .andExpect(jsonPath("$.insertDt").value(DEFAULT_INSERT_DT.toString()))
             .andExpect(jsonPath("$.modifiedDt").value(DEFAULT_MODIFIED_DT.toString()));
     }
+
     @Test
     @Transactional
-    public void getNonExistingDinosaur() throws Exception {
+    void getNonExistingDinosaur() throws Exception {
         // Get the dinosaur
-        restDinosaurMockMvc.perform(get("/api/dinosaurs/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restDinosaurMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    public void updateDinosaur() throws Exception {
+    void putNewDinosaur() throws Exception {
         // Initialize the database
         dinosaurRepository.saveAndFlush(dinosaur);
 
@@ -278,9 +274,12 @@ public class DinosaurResourceIT {
             .modifiedDt(UPDATED_MODIFIED_DT);
         DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(updatedDinosaur);
 
-        restDinosaurMockMvc.perform(put("/api/dinosaurs")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
+        restDinosaurMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, dinosaurDTO.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO))
+            )
             .andExpect(status().isOk());
 
         // Validate the Dinosaur in the database
@@ -297,16 +296,20 @@ public class DinosaurResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingDinosaur() throws Exception {
+    void putNonExistingDinosaur() throws Exception {
         int databaseSizeBeforeUpdate = dinosaurRepository.findAll().size();
+        dinosaur.setId(count.incrementAndGet());
 
         // Create the Dinosaur
         DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restDinosaurMockMvc.perform(put("/api/dinosaurs")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
+        restDinosaurMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, dinosaurDTO.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the Dinosaur in the database
@@ -316,15 +319,203 @@ public class DinosaurResourceIT {
 
     @Test
     @Transactional
-    public void deleteDinosaur() throws Exception {
+    void putWithIdMismatchDinosaur() throws Exception {
+        int databaseSizeBeforeUpdate = dinosaurRepository.findAll().size();
+        dinosaur.setId(count.incrementAndGet());
+
+        // Create the Dinosaur
+        DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restDinosaurMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the Dinosaur in the database
+        List<Dinosaur> dinosaurList = dinosaurRepository.findAll();
+        assertThat(dinosaurList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void putWithMissingIdPathParamDinosaur() throws Exception {
+        int databaseSizeBeforeUpdate = dinosaurRepository.findAll().size();
+        dinosaur.setId(count.incrementAndGet());
+
+        // Create the Dinosaur
+        DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restDinosaurMockMvc
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dinosaurDTO)))
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the Dinosaur in the database
+        List<Dinosaur> dinosaurList = dinosaurRepository.findAll();
+        assertThat(dinosaurList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void partialUpdateDinosaurWithPatch() throws Exception {
+        // Initialize the database
+        dinosaurRepository.saveAndFlush(dinosaur);
+
+        int databaseSizeBeforeUpdate = dinosaurRepository.findAll().size();
+
+        // Update the dinosaur using partial update
+        Dinosaur partialUpdatedDinosaur = new Dinosaur();
+        partialUpdatedDinosaur.setId(dinosaur.getId());
+
+        partialUpdatedDinosaur
+            .name(UPDATED_NAME)
+            .weight(UPDATED_WEIGHT)
+            .diet(UPDATED_DIET)
+            .insertDt(UPDATED_INSERT_DT)
+            .modifiedDt(UPDATED_MODIFIED_DT);
+
+        restDinosaurMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedDinosaur.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedDinosaur))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the Dinosaur in the database
+        List<Dinosaur> dinosaurList = dinosaurRepository.findAll();
+        assertThat(dinosaurList).hasSize(databaseSizeBeforeUpdate);
+        Dinosaur testDinosaur = dinosaurList.get(dinosaurList.size() - 1);
+        assertThat(testDinosaur.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testDinosaur.getWeight()).isEqualTo(UPDATED_WEIGHT);
+        assertThat(testDinosaur.getLength()).isEqualTo(DEFAULT_LENGTH);
+        assertThat(testDinosaur.getDiet()).isEqualTo(UPDATED_DIET);
+        assertThat(testDinosaur.getInsertDt()).isEqualTo(UPDATED_INSERT_DT);
+        assertThat(testDinosaur.getModifiedDt()).isEqualTo(UPDATED_MODIFIED_DT);
+    }
+
+    @Test
+    @Transactional
+    void fullUpdateDinosaurWithPatch() throws Exception {
+        // Initialize the database
+        dinosaurRepository.saveAndFlush(dinosaur);
+
+        int databaseSizeBeforeUpdate = dinosaurRepository.findAll().size();
+
+        // Update the dinosaur using partial update
+        Dinosaur partialUpdatedDinosaur = new Dinosaur();
+        partialUpdatedDinosaur.setId(dinosaur.getId());
+
+        partialUpdatedDinosaur
+            .name(UPDATED_NAME)
+            .weight(UPDATED_WEIGHT)
+            .length(UPDATED_LENGTH)
+            .diet(UPDATED_DIET)
+            .insertDt(UPDATED_INSERT_DT)
+            .modifiedDt(UPDATED_MODIFIED_DT);
+
+        restDinosaurMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedDinosaur.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedDinosaur))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the Dinosaur in the database
+        List<Dinosaur> dinosaurList = dinosaurRepository.findAll();
+        assertThat(dinosaurList).hasSize(databaseSizeBeforeUpdate);
+        Dinosaur testDinosaur = dinosaurList.get(dinosaurList.size() - 1);
+        assertThat(testDinosaur.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testDinosaur.getWeight()).isEqualTo(UPDATED_WEIGHT);
+        assertThat(testDinosaur.getLength()).isEqualTo(UPDATED_LENGTH);
+        assertThat(testDinosaur.getDiet()).isEqualTo(UPDATED_DIET);
+        assertThat(testDinosaur.getInsertDt()).isEqualTo(UPDATED_INSERT_DT);
+        assertThat(testDinosaur.getModifiedDt()).isEqualTo(UPDATED_MODIFIED_DT);
+    }
+
+    @Test
+    @Transactional
+    void patchNonExistingDinosaur() throws Exception {
+        int databaseSizeBeforeUpdate = dinosaurRepository.findAll().size();
+        dinosaur.setId(count.incrementAndGet());
+
+        // Create the Dinosaur
+        DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
+
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        restDinosaurMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, dinosaurDTO.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the Dinosaur in the database
+        List<Dinosaur> dinosaurList = dinosaurRepository.findAll();
+        assertThat(dinosaurList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithIdMismatchDinosaur() throws Exception {
+        int databaseSizeBeforeUpdate = dinosaurRepository.findAll().size();
+        dinosaur.setId(count.incrementAndGet());
+
+        // Create the Dinosaur
+        DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restDinosaurMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(dinosaurDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the Dinosaur in the database
+        List<Dinosaur> dinosaurList = dinosaurRepository.findAll();
+        assertThat(dinosaurList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithMissingIdPathParamDinosaur() throws Exception {
+        int databaseSizeBeforeUpdate = dinosaurRepository.findAll().size();
+        dinosaur.setId(count.incrementAndGet());
+
+        // Create the Dinosaur
+        DinosaurDTO dinosaurDTO = dinosaurMapper.toDto(dinosaur);
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restDinosaurMockMvc
+            .perform(
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(dinosaurDTO))
+            )
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the Dinosaur in the database
+        List<Dinosaur> dinosaurList = dinosaurRepository.findAll();
+        assertThat(dinosaurList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void deleteDinosaur() throws Exception {
         // Initialize the database
         dinosaurRepository.saveAndFlush(dinosaur);
 
         int databaseSizeBeforeDelete = dinosaurRepository.findAll().size();
 
         // Delete the dinosaur
-        restDinosaurMockMvc.perform(delete("/api/dinosaurs/{id}", dinosaur.getId())
-            .accept(MediaType.APPLICATION_JSON))
+        restDinosaurMockMvc
+            .perform(delete(ENTITY_API_URL_ID, dinosaur.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

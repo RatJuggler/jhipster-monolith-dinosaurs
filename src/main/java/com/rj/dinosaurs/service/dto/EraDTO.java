@@ -1,13 +1,14 @@
 package com.rj.dinosaurs.service.dto;
 
-import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.Objects;
+import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link com.rj.dinosaurs.domain.Era} entity.
  */
 public class EraDTO implements Serializable {
-    
+
     private Long id;
 
     @NotNull
@@ -22,7 +23,6 @@ public class EraDTO implements Serializable {
     @Max(value = 999)
     private Integer toMa;
 
-    
     public Long getId() {
         return id;
     }
@@ -64,12 +64,16 @@ public class EraDTO implements Serializable {
             return false;
         }
 
-        return id != null && id.equals(((EraDTO) o).id);
+        EraDTO eraDTO = (EraDTO) o;
+        if (this.id == null) {
+            return false;
+        }
+        return Objects.equals(this.id, eraDTO.id);
     }
 
     @Override
     public int hashCode() {
-        return 31;
+        return Objects.hash(this.id);
     }
 
     // prettier-ignore

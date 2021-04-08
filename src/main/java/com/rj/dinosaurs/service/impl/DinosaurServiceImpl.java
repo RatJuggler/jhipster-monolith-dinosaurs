@@ -1,19 +1,17 @@
 package com.rj.dinosaurs.service.impl;
 
-import com.rj.dinosaurs.service.DinosaurService;
 import com.rj.dinosaurs.domain.Dinosaur;
 import com.rj.dinosaurs.repository.DinosaurRepository;
+import com.rj.dinosaurs.service.DinosaurService;
 import com.rj.dinosaurs.service.dto.DinosaurDTO;
 import com.rj.dinosaurs.service.mapper.DinosaurMapper;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 /**
  * Service Implementation for managing {@link Dinosaur}.
@@ -42,20 +40,33 @@ public class DinosaurServiceImpl implements DinosaurService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Page<DinosaurDTO> findAll(Pageable pageable) {
-        log.debug("Request to get all Dinosaurs");
-        return dinosaurRepository.findAll(pageable)
+    public Optional<DinosaurDTO> partialUpdate(DinosaurDTO dinosaurDTO) {
+        log.debug("Request to partially update Dinosaur : {}", dinosaurDTO);
+
+        return dinosaurRepository
+            .findById(dinosaurDTO.getId())
+            .map(
+                existingDinosaur -> {
+                    dinosaurMapper.partialUpdate(existingDinosaur, dinosaurDTO);
+                    return existingDinosaur;
+                }
+            )
+            .map(dinosaurRepository::save)
             .map(dinosaurMapper::toDto);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Page<DinosaurDTO> findAll(Pageable pageable) {
+        log.debug("Request to get all Dinosaurs");
+        return dinosaurRepository.findAll(pageable).map(dinosaurMapper::toDto);
+    }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<DinosaurDTO> findOne(Long id) {
         log.debug("Request to get Dinosaur : {}", id);
-        return dinosaurRepository.findById(id)
-            .map(dinosaurMapper::toDto);
+        return dinosaurRepository.findById(id).map(dinosaurMapper::toDto);
     }
 
     @Override

@@ -1,12 +1,10 @@
 package com.rj.dinosaurs.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
+import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.*;
-
-import java.io.Serializable;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Era.
@@ -46,8 +44,13 @@ public class Era implements Serializable {
         this.id = id;
     }
 
+    public Era id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public Era name(String name) {
@@ -60,7 +63,7 @@ public class Era implements Serializable {
     }
 
     public Integer getFromMa() {
-        return fromMa;
+        return this.fromMa;
     }
 
     public Era fromMa(Integer fromMa) {
@@ -73,7 +76,7 @@ public class Era implements Serializable {
     }
 
     public Integer getToMa() {
-        return toMa;
+        return this.toMa;
     }
 
     public Era toMa(Integer toMa) {
@@ -84,6 +87,7 @@ public class Era implements Serializable {
     public void setToMa(Integer toMa) {
         this.toMa = toMa;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -99,7 +103,8 @@ public class Era implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

@@ -1,13 +1,14 @@
 package com.rj.dinosaurs.service.dto;
 
-import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
-import com.rj.dinosaurs.web.rest.TestUtil;
 
-public class CladeDTOTest {
+import com.rj.dinosaurs.web.rest.TestUtil;
+import org.junit.jupiter.api.Test;
+
+class CladeDTOTest {
 
     @Test
-    public void dtoEqualsVerifier() throws Exception {
+    void dtoEqualsVerifier() throws Exception {
         TestUtil.equalsVerifier(CladeDTO.class);
         CladeDTO cladeDTO1 = new CladeDTO();
         cladeDTO1.setId(1L);

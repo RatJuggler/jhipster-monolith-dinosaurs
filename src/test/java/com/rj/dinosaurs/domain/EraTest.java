@@ -1,13 +1,14 @@
 package com.rj.dinosaurs.domain;
 
-import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
-import com.rj.dinosaurs.web.rest.TestUtil;
 
-public class EraTest {
+import com.rj.dinosaurs.web.rest.TestUtil;
+import org.junit.jupiter.api.Test;
+
+class EraTest {
 
     @Test
-    public void equalsVerifier() throws Exception {
+    void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Era.class);
         Era era1 = new Era();
         era1.setId(1L);

@@ -5,7 +5,7 @@ import { VERSION } from '../../app.constants';
 @Component({
   selector: 'jhi-footer',
   templateUrl: './footer.component.html',
-  styleUrls: ['footer.scss'],
+  styleUrls: ['./footer.component.scss'],
 })
 export class FooterComponent {
   version: string;

@@ -1,9 +1,7 @@
 package com.rj.dinosaurs.service.mapper;
 
-
 import com.rj.dinosaurs.domain.*;
 import com.rj.dinosaurs.service.dto.CladeDTO;
-
 import org.mapstruct.*;
 
 /**
@@ -11,15 +9,9 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface CladeMapper extends EntityMapper<CladeDTO, Clade> {
-
-
-
-    default Clade fromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        Clade clade = new Clade();
-        clade.setId(id);
-        return clade;
-    }
+    @Named("description")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "description", source = "description")
+    CladeDTO toDtoDescription(Clade clade);
 }

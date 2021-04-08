@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
-import { DinosaursSharedModule } from 'app/shared/shared.module';
-import { CladeComponent } from './clade.component';
-import { CladeDetailComponent } from './clade-detail.component';
-import { CladeUpdateComponent } from './clade-update.component';
-import { CladeDeleteDialogComponent } from './clade-delete-dialog.component';
-import { cladeRoute } from './clade.route';
+import { SharedModule } from 'app/shared/shared.module';
+import { CladeComponent } from './list/clade.component';
+import { CladeDetailComponent } from './detail/clade-detail.component';
+import { CladeUpdateComponent } from './update/clade-update.component';
+import { CladeDeleteDialogComponent } from './delete/clade-delete-dialog.component';
+import { CladeRoutingModule } from './route/clade-routing.module';
 
 @NgModule({
-  imports: [DinosaursSharedModule, RouterModule.forChild(cladeRoute)],
+  imports: [SharedModule, CladeRoutingModule],
   declarations: [CladeComponent, CladeDetailComponent, CladeUpdateComponent, CladeDeleteDialogComponent],
   entryComponents: [CladeDeleteDialogComponent],
 })
-export class DinosaursCladeModule {}
+export class CladeModule {}

@@ -11,12 +11,14 @@ describe('Clade e2e test', () => {
   let cladeComponentsPage: CladeComponentsPage;
   let cladeUpdatePage: CladeUpdatePage;
   let cladeDeleteDialog: CladeDeleteDialog;
+  const username = process.env.E2E_USERNAME ?? 'admin';
+  const password = process.env.E2E_PASSWORD ?? 'admin';
 
   before(async () => {
     await browser.get('/');
     navBarPage = new NavBarPage();
     signInPage = await navBarPage.getSignInPage();
-    await signInPage.autoSignInUsing('admin', 'admin');
+    await signInPage.autoSignInUsing(username, password);
     await browser.wait(ec.visibilityOf(navBarPage.entityMenu), 5000);
   });
 
@@ -57,6 +59,7 @@ describe('Clade e2e test', () => {
     cladeDeleteDialog = new CladeDeleteDialog();
     expect(await cladeDeleteDialog.getDialogTitle()).to.eq('Are you sure you want to delete this Clade?');
     await cladeDeleteDialog.clickOnConfirmButton();
+    await browser.wait(ec.visibilityOf(cladeComponentsPage.title), 5000);
 
     expect(await cladeComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeDelete - 1);
   });

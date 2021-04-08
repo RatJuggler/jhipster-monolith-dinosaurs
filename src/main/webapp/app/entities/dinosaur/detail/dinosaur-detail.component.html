@@ -1,0 +1,64 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="dinosaur">
+      <h2 data-cy="dinosaurDetailsHeading"><span>Dinosaur</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ dinosaur.id }}</span>
+        </dd>
+        <dt><span>Name</span></dt>
+        <dd>
+          <span>{{ dinosaur.name }}</span>
+        </dd>
+        <dt><span>Weight</span></dt>
+        <dd>
+          <span>{{ dinosaur.weight }}</span>
+        </dd>
+        <dt><span>Length</span></dt>
+        <dd>
+          <span>{{ dinosaur.length }}</span>
+        </dd>
+        <dt><span>Diet</span></dt>
+        <dd>
+          <span>{{ dinosaur.diet }}</span>
+        </dd>
+        <dt><span>Insert Dt</span></dt>
+        <dd>
+          <span>{{ dinosaur.insertDt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Modified Dt</span></dt>
+        <dd>
+          <span>{{ dinosaur.modifiedDt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Era</span></dt>
+        <dd>
+          <div *ngIf="dinosaur.era">
+            <a [routerLink]="['/era', dinosaur.era?.id, 'view']">{{ dinosaur.era?.name }}</a>
+          </div>
+        </dd>
+        <dt><span>Clade</span></dt>
+        <dd>
+          <div *ngIf="dinosaur.clade">
+            <a [routerLink]="['/clade', dinosaur.clade?.id, 'view']">{{ dinosaur.clade?.description }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/dinosaur', dinosaur.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -11,12 +11,14 @@ describe('Era e2e test', () => {
   let eraComponentsPage: EraComponentsPage;
   let eraUpdatePage: EraUpdatePage;
   let eraDeleteDialog: EraDeleteDialog;
+  const username = process.env.E2E_USERNAME ?? 'admin';
+  const password = process.env.E2E_PASSWORD ?? 'admin';
 
   before(async () => {
     await browser.get('/');
     navBarPage = new NavBarPage();
     signInPage = await navBarPage.getSignInPage();
-    await signInPage.autoSignInUsing('admin', 'admin');
+    await signInPage.autoSignInUsing(username, password);
     await browser.wait(ec.visibilityOf(navBarPage.entityMenu), 5000);
   });
 
@@ -59,6 +61,7 @@ describe('Era e2e test', () => {
     eraDeleteDialog = new EraDeleteDialog();
     expect(await eraDeleteDialog.getDialogTitle()).to.eq('Are you sure you want to delete this Era?');
     await eraDeleteDialog.clickOnConfirmButton();
+    await browser.wait(ec.visibilityOf(eraComponentsPage.title), 5000);
 
     expect(await eraComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeDelete - 1);
   });

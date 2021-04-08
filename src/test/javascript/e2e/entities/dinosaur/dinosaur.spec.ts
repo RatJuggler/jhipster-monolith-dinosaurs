@@ -11,12 +11,14 @@ describe('Dinosaur e2e test', () => {
   let dinosaurComponentsPage: DinosaurComponentsPage;
   let dinosaurUpdatePage: DinosaurUpdatePage;
   let dinosaurDeleteDialog: DinosaurDeleteDialog;
+  const username = process.env.E2E_USERNAME ?? 'admin';
+  const password = process.env.E2E_PASSWORD ?? 'admin';
 
   before(async () => {
     await browser.get('/');
     navBarPage = new NavBarPage();
     signInPage = await navBarPage.getSignInPage();
-    await signInPage.autoSignInUsing('admin', 'admin');
+    await signInPage.autoSignInUsing(username, password);
     await browser.wait(ec.visibilityOf(navBarPage.entityMenu), 5000);
   });
 
@@ -76,6 +78,7 @@ describe('Dinosaur e2e test', () => {
     dinosaurDeleteDialog = new DinosaurDeleteDialog();
     expect(await dinosaurDeleteDialog.getDialogTitle()).to.eq('Are you sure you want to delete this Dinosaur?');
     await dinosaurDeleteDialog.clickOnConfirmButton();
+    await browser.wait(ec.visibilityOf(dinosaurComponentsPage.title), 5000);
 
     expect(await dinosaurComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeDelete - 1);
   });

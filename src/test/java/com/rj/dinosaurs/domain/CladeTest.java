@@ -1,13 +1,14 @@
 package com.rj.dinosaurs.domain;
 
-import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
-import com.rj.dinosaurs.web.rest.TestUtil;
 
-public class CladeTest {
+import com.rj.dinosaurs.web.rest.TestUtil;
+import org.junit.jupiter.api.Test;
+
+class CladeTest {
 
     @Test
-    public void equalsVerifier() throws Exception {
+    void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Clade.class);
         Clade clade1 = new Clade();
         clade1.setId(1L);
